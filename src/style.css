@@ -2271,3 +2271,197 @@ textarea{resize:vertical;min-height:56px;line-height:1.6}
 #mode-chips button[data-v="long"] {
   display: none !important;
 }
+
+/* v5.3.6 workspace tabs: presentation only; existing control selectors stay unchanged. */
+.main-wrap {
+  grid-template-columns: 76px minmax(0, 1fr);
+}
+.workspace-tabs {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  padding: 12px 8px;
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+}
+.workspace-tab {
+  min-height: 52px;
+  padding: 7px 4px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.workspace-tab:hover {
+  color: var(--text);
+  background: rgba(255,255,255,.035);
+}
+.workspace-tab.is-active,
+.workspace-tab[aria-selected="true"] {
+  color: var(--text);
+  background: var(--accent-glow);
+  border-color: var(--border-accent);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.workspace-tab:focus-visible,
+.workspace-back-dashboard:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+}
+.workspace-tab-icon {
+  font-size: 17px;
+  line-height: 1;
+}
+[data-workspace-panel] {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+[data-workspace-panel][hidden] {
+  display: none !important;
+}
+.settings-panel {
+  justify-self: center;
+  width: min(720px, 100%);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+.workspace-back-dashboard {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  font: 700 12px var(--font-sans);
+  transition: var(--transition);
+}
+.workspace-back-dashboard:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+.settings-panel.disabled-panel .workspace-back-dashboard {
+  pointer-events: auto;
+  opacity: 1;
+  filter: none;
+  position: relative;
+  z-index: 3;
+}
+.output-panel {
+  width: 100%;
+}
+.dashboard-primary-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 2px;
+}
+.dashboard-primary-action .btn-generate {
+  width: min(320px, 100%);
+  margin: 0;
+}
+.dashboard-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.progress-window {
+  height: 36px;
+  display: block;
+}
+.progress-window[open] {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+.progress-header {
+  cursor: pointer;
+  list-style: none;
+}
+.progress-header::-webkit-details-marker {
+  display: none;
+}
+.progress-header::after {
+  content: 'v';
+  color: var(--text3);
+  transition: transform .18s ease;
+}
+.progress-window[open] .progress-header::after {
+  transform: rotate(180deg);
+}
+
+@media(max-width:900px) {
+  .main-wrap {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+  .workspace-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    flex-direction: row;
+    padding: 8px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .workspace-tab {
+    flex: 1;
+    min-height: 48px;
+    flex-direction: row;
+    font-size: 12px;
+  }
+  .workspace-tab.is-active,
+  .workspace-tab[aria-selected="true"] {
+    box-shadow: inset 0 -3px 0 var(--accent);
+  }
+  .settings-panel {
+    position: static;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    border-left: 0;
+    border-right: 0;
+  }
+  .dashboard-primary-action {
+    justify-content: stretch;
+  }
+  .dashboard-primary-action .btn-generate {
+    width: 100%;
+  }
+}
+
+@media(max-width:640px) {
+  .s-label {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .s-label-actions {
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .workspace-tab,
+  .workspace-back-dashboard,
+  .progress-header::after {
+    transition: none;
+  }
+}

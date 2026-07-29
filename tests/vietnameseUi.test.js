@@ -14,6 +14,17 @@ const runtimeSources = [
   : source).join('\n');
 
 assert.match(html, /<html lang="vi">/);
+assert.match(html, /id="workspace-tabs"/);
+assert.match(html, /id="workspace-tab-dashboard"[^>]*aria-selected="true"/);
+assert.match(html, /id="workspace-tab-settings"[^>]*aria-selected="false"/);
+assert.match(html, /data-workspace-panel="dashboard"/);
+assert.match(html, /data-workspace-panel="settings"/);
+assert.equal((html.match(/id="btn-generate"/g) || []).length, 1);
+assert.equal((html.match(/id="settings"/g) || []).length, 1);
+assert.equal((html.match(/id="output-panel"/g) || []).length, 1);
+for (const id of ['kakuyomu-assist', 'alphapolis-assist', 'longify-beta', 'sa-section']) {
+  assert.equal((html.match(new RegExp(`id="${id}"`, 'g')) || []).length, 1);
+}
 
 for (const expected of [
   'Trình tạo truyện AI',

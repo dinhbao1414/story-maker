@@ -18,3 +18,4 @@ import './directLong10000Runtime.js';
 import './publicRuntime.js';
 import './generationSettingsIo.js';
 import './stylePresetRuntime.js';
+import './workspaceTabs.js';

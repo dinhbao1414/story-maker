@@ -39,11 +39,11 @@
 
       <!-- 📡 AI進捗ログ窓 (常設) -->
       <div class="api-notice"><a href="./privacy.html" class="api-link">Chính sách quyền riêng tư</a></div>
-      <div id="progress-window" class="progress-window">
-        <div class="progress-header">
+      <details id="progress-window" class="progress-window">
+        <summary class="progress-header">
           <span class="progress-status-icon">📡</span>
           <span class="progress-title" id="progress-title-text">Tiến độ và nhật ký AI: Đang chờ</span>
-        </div>
+        </summary>
 
         <!-- 黄色の警告表示 (進捗窓の内部・上部に移動して段下がりを防止) -->
         <div class="global-alert-yellow" id="global-alert" style="display: none;">
@@ -54,16 +54,33 @@
         <div class="progress-content" id="progress-content">
           <pre id="progress-log" class="progress-log">Đang chờ bắt đầu tạo nội dung...</pre>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 
   <main class="main-wrap">
+    <nav class="workspace-tabs" id="workspace-tabs" aria-label="Khu vực làm việc" role="tablist">
+      <button type="button" class="workspace-tab is-active" id="workspace-tab-dashboard"
+        role="tab" data-workspace-tab="dashboard" aria-controls="output-panel"
+        aria-selected="true" tabindex="0">
+        <span class="workspace-tab-icon" aria-hidden="true">▣</span>
+        <span>Dashboard</span>
+      </button>
+      <button type="button" class="workspace-tab" id="workspace-tab-settings"
+        role="tab" data-workspace-tab="settings" aria-controls="settings"
+        aria-selected="false" tabindex="-1">
+        <span class="workspace-tab-icon" aria-hidden="true">⚙</span>
+        <span>Cài đặt</span>
+      </button>
+    </nav>
+
     <!-- ⚙️ Settings Sidebar -->
-    <aside class="settings-panel" id="settings">
+    <aside class="settings-panel" id="settings" data-workspace-panel="settings" role="tabpanel"
+      aria-labelledby="workspace-tab-settings" aria-hidden="true" hidden>
 
       <!-- 固定ヘッダー（スクロールしない） -->
       <div class="panel-fixed-top">
+        <button type="button" class="workspace-back-dashboard" data-workspace-action="dashboard">← Dashboard</button>
         <div class="panel-top-actions">
           <button class="btn-all-random" id="btn-all-random">
             <span class="icon">🎲</span> Ngẫu nhiên tất cả
@@ -74,11 +91,6 @@
           <button class="btn-util btn-settings-file" id="btn-settings-export" title="Lưu điều kiện tạo thành JSON, không gồm khóa API">⬇ Xuất điều kiện</button>
           <button class="btn-util btn-settings-file" id="btn-settings-import" title="Đọc JSON điều kiện tạo và khôi phục lên màn hình">⬆ Nhập điều kiện</button>
           <input id="settings-import-file" class="hidden" type="file" accept=".json,application/json">
-        </div>
-
-        <!-- 🎬 Generate Button（メインアクション・最上部配置） -->
-        <div class="generate-wrap">
-          <button class="btn-generate" id="btn-generate">Tạo truyện</button>
         </div>
       </div>
 
@@ -324,7 +336,11 @@
     </aside>
 
     <!-- 📺 Output Display -->
-    <article class="output-panel" id="output-panel">
+    <article class="output-panel" id="output-panel" data-workspace-panel="dashboard" role="tabpanel"
+      aria-labelledby="workspace-tab-dashboard" aria-hidden="false">
+      <div class="dashboard-primary-action">
+        <button class="btn-generate" id="btn-generate">Tạo truyện</button>
+      </div>
       <!-- 📌 追従ヘッダーラッパー -->
       <div class="output-sticky-header">
         <div class="output-header">
@@ -421,6 +437,7 @@
         </div>
       </div>
 
+      <div class="dashboard-tools">
       <section class="kakuyomu-assist" id="kakuyomu-assist" aria-label="Kakuyomu form-style preview">
         <div class="kakuyomu-assist-head">
           <label class="charcount-toggle kakuyomu-assist-toggle" for="kakuyomu-assist-enable">
@@ -590,6 +607,7 @@
           <span>Super Forced! Style Analyzer Engine β</span>
         </div>
       </section>
+      </div>
 
     </article>
 
