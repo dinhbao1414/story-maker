@@ -1,3 +1,5 @@
+import { OPENAI_RESPONSES_SUPPORTED, OPENAI_RESPONSES_URL } from './data.js';
+
 const DEFAULT_OPENAI_RESPONSES_BETA_MODELS = ['gpt-5.5', 'gpt-5.4', 'gpt-5.4-mini'];
 const BETA_QUERY_PARAMS = ['gpt5xBeta', 'openaiResponsesBeta', 'codexOpenAiResponsesBeta'];
 const MODEL_QUERY_PARAMS = ['gpt5xModel', 'openaiResponsesModel', 'codexOpenAiResponsesModel'];
@@ -39,6 +41,13 @@ function uniqueModels(models) {
 function resolveOpenAiResponsesBetaConfig(options = {}, runtime = globalThis) {
   const searchParams = getSearchParams(runtime);
   const allowed = options.openAiResponsesBetaAllowed !== false;
+
+  const localRuntime = ['localhost', '127.0.0.1'].includes(
+    String(runtime?.location?.hostname || '').toLowerCase(),
+  );
+  if (!OPENAI_RESPONSES_SUPPORTED || localRuntime) {
+    return { enabled: false, source: 'local-chat-only', models: [] };
+  }
 
   const queryValue = BETA_QUERY_PARAMS
     .map(name => searchParams.get(name))
@@ -165,7 +174,7 @@ function createAbortController(options = {}) {
 async function requestOpenAiResponses(apiKey, model, prompt, options = {}, stream = false) {
   const abort = createAbortController(options);
   try {
-    const response = await fetch('https://api.openai.com/v1/responses', {
+    const response = await fetch(OPENAI_RESPONSES_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

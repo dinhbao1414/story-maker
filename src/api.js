@@ -1,7 +1,11 @@
 // ============================================================
 // api.js — Gemini API呼び出し（フォールバック対応）
 // ============================================================
-import { GEMINI_MODELS } from './data.js';
+import {
+  GEMINI_MODELS,
+  OPENAI_TEXT_MODELS as RUNTIME_OPENAI_TEXT_MODELS,
+  OPENAI_VISION_MODELS as RUNTIME_OPENAI_VISION_MODELS,
+} from './data.js';
 
 export const diagnoseConnection = async (apiKey) => {
     if (!apiKey) return "API Key not set.";
@@ -345,9 +349,9 @@ const OPENAI_TEXT_MODELS = [
 ];
 
 async function _callOpenAI(apiKey, prompt, onFallback, options = {}) {
-  for (const modelId of OPENAI_TEXT_MODELS) {
+  for (const modelId of RUNTIME_OPENAI_TEXT_MODELS) {
     try {
-      if (modelId !== OPENAI_TEXT_MODELS[0] && onFallback) onFallback(modelId);
+      if (modelId !== RUNTIME_OPENAI_TEXT_MODELS[0] && onFallback) onFallback(modelId);
       const resp = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -391,9 +395,9 @@ const OPENAI_VISION_MODELS = [
 async function _callOpenAIVision(apiKey, prompt, imageBase64, mimeType, onFallback, options = {}) {
   const imageUrl = `data:${mimeType};base64,${imageBase64}`;
   
-  for (const modelId of OPENAI_VISION_MODELS) {
+  for (const modelId of RUNTIME_OPENAI_VISION_MODELS) {
     try {
-      if (modelId !== OPENAI_VISION_MODELS[0] && onFallback) onFallback(modelId);
+      if (modelId !== RUNTIME_OPENAI_VISION_MODELS[0] && onFallback) onFallback(modelId);
       const resp = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -525,9 +529,9 @@ async function _callOpenAIMultimodal(apiKey, prompt, images, onFallback, options
     "gpt-4.1-mini"
   ];
   
-  for (const modelId of OPENAI_VISION_MODELS) {
+  for (const modelId of RUNTIME_OPENAI_VISION_MODELS) {
     try {
-      if (modelId !== OPENAI_VISION_MODELS[0] && onFallback) onFallback(modelId);
+      if (modelId !== RUNTIME_OPENAI_VISION_MODELS[0] && onFallback) onFallback(modelId);
       
       const content = [{ type: "text", text: prompt }];
       images.forEach(img => {
@@ -638,9 +642,9 @@ export async function callGenerativeAIMultimodal(apiKey, prompt, images, onFallb
  * OpenAI APIストリーミング呼び出し
  */
 async function _callOpenAIStream(apiKey, prompt, onChunk, onFallback, options = {}) {
-  for (const modelId of OPENAI_TEXT_MODELS) {
+  for (const modelId of RUNTIME_OPENAI_TEXT_MODELS) {
     try {
-      if (modelId !== OPENAI_TEXT_MODELS[0] && onFallback) onFallback(modelId);
+      if (modelId !== RUNTIME_OPENAI_TEXT_MODELS[0] && onFallback) onFallback(modelId);
       
       const controller = new AbortController();
       let onAbort = null;

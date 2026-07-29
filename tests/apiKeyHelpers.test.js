@@ -26,9 +26,9 @@ assert.deepEqual(Xf(`  ${fakeOpenAiKey}  `, 'openai'), {
 });
 
 assert.equal(Lt('', 'gemini').ok, false);
-assert.equal(Lt('********', 'gemini').message, 'APIキーがマスク表示のままです。編集ボタンを押して実キーを入力し直してください。');
-assert.equal(Lt('abc', 'gemini').message, 'APIキーが短すぎます（3文字）。実キーを入力し直してください。');
-assert.equal(Lt('abc$defghijklmnopqrst', 'gemini').message, 'APIキーに使用できない文字が含まれています。コピー時の余分な文字を除いて入力し直してください。');
+assert.equal(Lt('********', 'gemini').message, 'Khóa API vẫn đang ở dạng che. Hãy bấm Chỉnh sửa rồi nhập lại khóa thật.');
+assert.equal(Lt('abc', 'gemini').message, 'Khóa API quá ngắn (3 ký tự). Hãy nhập lại khóa thật.');
+assert.equal(Lt('abc$defghijklmnopqrst', 'gemini').message, 'Khóa API chứa ký tự không hợp lệ. Hãy xóa ký tự thừa khi sao chép rồi nhập lại.');
 assert.equal(Lt(fakeGeminiKey, 'gemini').ok, true);
 
 assert.equal(gn(fakeOpenAiKey), 'gpt-4.1');

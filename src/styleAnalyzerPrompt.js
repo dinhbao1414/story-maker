@@ -72,7 +72,27 @@ const ca=`あなたはプロの文芸批評家・計量文体学の専門家で�
   "literary_influences": "文学的影響を感じる作家・流派（推定）",
   "unique_features": ["この作者固有の表現技法・癖を5つ以上箇条書き"],
   "anti_patterns": ["この作者が意図的に避けていると思われる表現"],
-  "reproduction_prompt": "この作風を他のAI（ChatGPT/Claude/Gemini等）で完全に再現するための詳細な指示文。600字以上で、文体・語彙・修辞・構造・感情設計の全側面を網羅すること"
+  "reproduction_prompt": "この作風を他のAI（ChatGPT/Claude/Gemini等）で完全に再現するための詳細な指示文。600字以上で、文体・語彙・修辞・構造・感情設計の全側面を網羅すること",
+  "generation_preset": {
+    "mode": "Choose exactly one: 4koma, 4koma_scenario, short_short, novel, medium, long_10000, scenario, manga, essay, poem, fairy, letter, diary, documentary, radio",
+    "theme": "A concise new-story theme inferred from the references",
+    "genre": "Recommended genre",
+    "worldview": "Recommended setting and world rules",
+    "target": "Recommended reader group",
+    "era": "Recommended historical period",
+    "ending": "Recommended ending style",
+    "narration": "Recommended narrative person and distance",
+    "characters": [
+      {
+        "name": "A new fictional name",
+        "sex": "Character sex or gender",
+        "role": "Story role",
+        "personality": "Core personality",
+        "note": "Conflict, desire, weakness, relationship function. Do not copy names or unique details from the source texts"
+      }
+    ],
+    "supplement": "Concrete instructions for a completely new story using this style"
+  }
 }
 \`\`\`
 

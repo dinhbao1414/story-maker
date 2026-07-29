@@ -6,105 +6,38 @@ import {
   PUBLIC_MODE_VALUES,
   isLongModeText,
 } from './modeContracts.js';
+import {
+  apiKeyProvider as keyProvider,
+  isRealApiKey,
+  normalizeApiKey,
+  readApiSession,
+  writeApiSession,
+} from './apiSession.js';
 import { installAlphapolisAssist } from './alphapolisAssist.js';
 import { installKakuyomuAssist } from './kakuyomuAssist.js';
 import { Gt } from './providerClients.js';
 import { editorialCallOptions, installEditorialBrushupRuntime } from './editorialBrushupRuntime.js';
 import { installPublicOutputCleanup } from './outputCleanup.js';
 import { installStandardTypewriterCursor } from './standardTypewriterRenderer.js';
+import { getVietnameseLabel } from './vietnameseLabels.js';
 
 const LONG_MODE_ENABLED = false;
 const FALLBACK_MODE = 'novel';
-const API_SESSION_KEY = 'story-maker.api.session.v500';
-const API_MEMORY_KEY = '__storyMakerApiRuntimeMemoryV500';
 let editorialBrushupInstalled = false;
 const SA_STANDARD_LOCKED_ATTR = 'data-sa-standard-generating-locked';
 
 const OUTPUT_GUIDE_HTML = `
         <div class="guide">
-          <h3>はじめ方</h3>
+          <h3>Bắt đầu</h3>
           <ol>
-            <li>上部のAPIキー欄にキー（GeminiまたはOpenAI）を入力して保存</li>
-            <li>左の設定パネルで出力モード・テーマ等を選択</li>
-            <li>「ストーリー生成」を押す</li>
-            <li>「🎲 全項目ランダム」で一括ランダム設定も可能</li>
-            <li>他で作った本文はOutputへ貼り付け、またはTXT/MDインポートすると、AI講評と「この小説をブラッシュアップ」の元本文として使えます</li>
+            <li>Nhập rồi lưu khóa Gemini hoặc OpenAI ở phía trên</li>
+            <li>Chọn chế độ đầu ra, chủ đề và các thiết lập bên trái</li>
+            <li>Bấm “Tạo truyện”</li>
+            <li>Có thể dùng “🎲 Ngẫu nhiên tất cả” để thiết lập nhanh</li>
+            <li>Có thể dán hoặc nhập tệp TXT/MD vào Kết quả để AI nhận xét và tinh chỉnh truyện có sẵn</li>
           </ol>
         </div>
 `;
-
-function memoryApiStorage() {
-  const root = window || {};
-  root[API_MEMORY_KEY] = root[API_MEMORY_KEY] || {};
-  const bag = root[API_MEMORY_KEY];
-  return {
-    getItem(key) {
-      return Object.prototype.hasOwnProperty.call(bag, key) ? bag[key] : null;
-    },
-    setItem(key, value) {
-      bag[key] = String(value || '');
-    },
-    removeItem(key) {
-      delete bag[key];
-    },
-  };
-}
-
-function apiStorage() {
-  // Keys must never survive reloads or be exposed through browser persistence.
-  return memoryApiStorage();
-}
-
-function normalizeApiKey(value) {
-  return String(value || '')
-    .replace(/[\u200B-\u200D\uFEFF]/g, '')
-    .trim()
-    .replace(/^["'`]+|["'`]+$/g, '')
-    .replace(/\s+/g, '');
-}
-
-function isRealApiKey(value) {
-  const normalized = normalizeApiKey(value);
-  return normalized.length >= 20 && !/^\*{6,}$/.test(normalized);
-}
-
-function keyProvider(value) {
-  return normalizeApiKey(value).startsWith('sk-') ? 'openai' : 'gemini';
-}
-
-function readApiSession() {
-  try {
-    const storage = apiStorage();
-    const parsed = JSON.parse(storage?.getItem(API_SESSION_KEY) || 'null');
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function writeApiSession(next) {
-  try {
-    const storage = apiStorage();
-    if (!storage) return;
-    const current = readApiSession();
-    const incomingGeminiKey = normalizeApiKey(next.geminiKey);
-    const incomingOpenaiKey = normalizeApiKey(next.openaiKey);
-    const geminiKey = isRealApiKey(incomingGeminiKey)
-      ? incomingGeminiKey
-      : normalizeApiKey(current.geminiKey);
-    const openaiKey = isRealApiKey(incomingOpenaiKey)
-      ? incomingOpenaiKey
-      : normalizeApiKey(current.openaiKey);
-    if (!geminiKey && !openaiKey) return;
-    storage.setItem(API_SESSION_KEY, JSON.stringify({
-      apiProvider: next.apiProvider === 'openai' ? 'openai' : 'gemini',
-      geminiKey,
-      openaiKey,
-    }));
-  } catch {
-    // Session persistence is best-effort only.
-  }
-}
 
 function preserveApiSession(previous) {
   const current = readApiSession();
@@ -131,11 +64,19 @@ function rememberVisibleApiKey() {
 function restoreVisibleApiKeyIfMainMissed() {
   const input = document.getElementById('apikey');
   const save = document.getElementById('key-save');
-  if (!input || !save || input.value || input.readOnly) return;
+  const edit = document.getElementById('key-edit');
+  if (!input || !save) return;
   const current = readApiSession();
   const provider = current.apiProvider === 'openai' ? 'openai' : 'gemini';
   const key = normalizeApiKey(provider === 'openai' ? current.openaiKey : current.geminiKey);
   if (!isRealApiKey(key)) return;
+  if (input.readOnly) {
+    document.getElementById('banner')?.classList.add('locked');
+    save.classList.add('hidden');
+    edit?.classList.remove('hidden');
+    return;
+  }
+  if (input.value) return;
   input.value = key;
   save.click();
 }
@@ -178,14 +119,14 @@ function hideLongMode() {
       button.setAttribute('aria-disabled', 'false');
       button.classList.remove('is-disabled');
       button.style.display = '';
-      button.title = '長編モードを利用できます。';
+      button.title = 'Có thể sử dụng chế độ tiểu thuyết dài.';
     } else {
       button.disabled = true;
       button.setAttribute('aria-disabled', 'true');
       button.classList.remove('active');
       button.classList.add('is-disabled');
       button.style.display = 'none';
-      button.title = '長編モードは公開UIから非表示です。';
+      button.title = 'Chế độ tiểu thuyết dài bị ẩn khỏi giao diện công khai.';
     }
   }
 }
@@ -197,7 +138,7 @@ function selectFallbackMode() {
   }
   const custom = document.getElementById('mode-custom');
   if (custom && isLongModeText(custom.value)) {
-    custom.value = MODE_LABELS[FALLBACK_MODE] || '短編小説';
+    custom.value = getVietnameseLabel(MODE_LABELS[FALLBACK_MODE] || '短編小説');
   }
   document.getElementById('long-novel-panel')?.classList.add('hidden');
 }
@@ -246,7 +187,7 @@ function installClickGuards() {
       event.stopImmediatePropagation();
       hideLongMode();
       selectFallbackMode();
-      alert('長編モードは現在機能停止中です。短編・中編など公開モードを選択してください。');
+      alert('Chế độ tiểu thuyết dài hiện đang tạm dừng. Hãy chọn truyện ngắn, truyện vừa hoặc chế độ công khai khác.');
       return;
     }
 
@@ -255,7 +196,7 @@ function installClickGuards() {
       event.stopImmediatePropagation();
       hideLongMode();
       selectFallbackMode();
-      alert('長編モードは現在機能停止中です。短編・中編など公開モードを選択してください。');
+      alert('Chế độ tiểu thuyết dài hiện đang tạm dừng. Hãy chọn truyện ngắn, truyện vừa hoặc chế độ công khai khác.');
     }
   }, true);
 }
@@ -298,7 +239,7 @@ function normalizedManualOutputText(value) {
 
 function updateOutputCounter(text) {
   const counter = document.querySelector('.char-counter');
-  if (counter) counter.textContent = `${String(text || '').length.toLocaleString()} 字`;
+  if (counter) counter.textContent = `${String(text || '').length.toLocaleString()} ký tự`;
 }
 
 function revealOutputCopyActions(visible) {
@@ -368,13 +309,13 @@ function installStyleAnalyzerGenerationLockSync() {
   setTimeout(sync, 0);
 }
 
-function setManualOutput(text, sourceLabel = '外部本文') {
+function setManualOutput(text, sourceLabel = 'Văn bản bên ngoài') {
   const output = document.getElementById('output');
   const tagRow = document.getElementById('tag-row');
   if (!output) return false;
   const nextText = normalizedManualOutputText(text);
   if (!nextText) {
-    alert('Outputへ入れる本文が空です。');
+    alert('Nội dung đưa vào Kết quả đang trống.');
     return false;
   }
   output.dataset.manualOutput = 'true';
@@ -409,7 +350,7 @@ function installOutputIntakeControls() {
   const fileInput = document.getElementById('output-import-file');
   const outputPanel = document.getElementById('output-panel');
   output.setAttribute('tabindex', '0');
-  output.title = 'クリックしてCtrl+Vでも本文を貼り付けできます';
+  output.title = 'Bấm vào đây rồi nhấn Ctrl+V để dán nội dung';
 
   const isEditableTarget = target => {
     const element = target?.closest?.('input, textarea, select, [contenteditable="true"]');
@@ -428,7 +369,7 @@ function installOutputIntakeControls() {
     const text = event.clipboardData?.getData('text/plain') || '';
     if (!normalizedManualOutputText(text)) return;
     event.preventDefault();
-    setManualOutput(text, '貼り付け本文');
+    setManualOutput(text, 'Nội dung đã dán');
   };
 
   output.addEventListener('click', () => {
@@ -444,9 +385,9 @@ function installOutputIntakeControls() {
   document.getElementById('btn-output-paste')?.addEventListener('click', async () => {
     try {
       const text = await navigator.clipboard.readText();
-      setManualOutput(text, '貼り付け本文');
+      setManualOutput(text, 'Nội dung đã dán');
     } catch {
-      alert('クリップボードを読み取れませんでした。ブラウザの許可を確認してください。');
+      alert('Không thể đọc bộ nhớ tạm. Hãy kiểm tra quyền của trình duyệt.');
     }
   });
 
@@ -459,9 +400,9 @@ function installOutputIntakeControls() {
     fileInput.value = '';
     if (!file) return;
     try {
-      setManualOutput(await file.text(), file.name || 'インポート本文');
+      setManualOutput(await file.text(), file.name || 'Nội dung đã nhập');
     } catch {
-      alert('TXT/MDファイルを読み込めませんでした。');
+      alert('Không thể đọc tệp TXT/MD.');
     }
   });
 
@@ -496,7 +437,7 @@ async function installLocalQaOutputLoader() {
   try {
     const response = await fetch(qaPath, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    setManualOutput(await response.text(), 'QAインポート本文');
+    setManualOutput(await response.text(), 'Nội dung QA đã nhập');
   } catch (error) {
     console.warn('QA output import failed:', error);
   }
@@ -520,7 +461,7 @@ async function callEditorialAi(prompt, context = {}) {
   const session = readApiSession();
   const provider = session.apiProvider === 'openai' ? 'openai' : 'gemini';
   const key = normalizeApiKey(provider === 'openai' ? session.openaiKey : session.geminiKey);
-  if (!isRealApiKey(key)) throw new Error('選択中のAPIキーを確認できません');
+  if (!isRealApiKey(key)) throw new Error('Không xác nhận được khóa API đang chọn');
   const model = provider === 'openai' ? 'gpt-5.5' : 'gemini-3.5-flash';
   return Gt(key, model, prompt, null, {
     ...editorialCallOptions(context),

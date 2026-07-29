@@ -7,10 +7,11 @@ import {
 } from '../src/openAiResponsesBeta.js';
 import { Gt, yt } from '../src/providerClients.js';
 
-function fakeRuntime(search) {
+function fakeRuntime(search, hostname = '') {
   return {
     location: {
       search,
+      hostname,
     },
   };
 }
@@ -59,6 +60,12 @@ assert.deepEqual(queryModelPriorityConfig.models.slice(0, 2), ['gpt-5.5', 'gpt-5
 
 const blockedConfig = resolveOpenAiResponsesBetaConfig({ openAiResponsesBeta: false }, fakeRuntime('?gpt5xBeta=1'));
 assert.equal(blockedConfig.enabled, false);
+
+const localConfig = resolveOpenAiResponsesBetaConfig(
+  { openAiResponsesBetaAllowed: true },
+  fakeRuntime('?gpt5xBeta=1', 'localhost')
+);
+assert.deepEqual(localConfig, { enabled: false, source: 'local-chat-only', models: [] });
 
 const jsonBody = buildOpenAiResponsesRequestBody(
   'gpt-5.5',

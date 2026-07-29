@@ -1,7 +1,7 @@
 const OPENAI_STYLE_ANALYZER_CHAR_LIMIT = 80000;
-const ANALYZE_READY_LABEL = '🔬 超強引！作風解析を実行';
-const OPENAI_LIMIT_LABEL = '⚠ 文字数超過 (OpenAI制限)';
-const OPENAI_LIMIT_TITLE = 'OpenAIモデルの入力上限を超える可能性が高いため実行できません。テキストを削るか、Geminiをご利用ください。';
+const ANALYZE_READY_LABEL = '🔬 Phân tích và tự điền thiết lập';
+const OPENAI_LIMIT_LABEL = '⚠ Vượt giới hạn ký tự (OpenAI)';
+const OPENAI_LIMIT_TITLE = 'Không thể chạy vì có khả năng vượt giới hạn đầu vào của model OpenAI. Hãy rút ngắn văn bản hoặc dùng Gemini.';
 
 function hasDirectStyleText(value) {
   return String(value || '').trim().length > 0;

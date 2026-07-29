@@ -1,69 +1,77 @@
-import { Ce } from './domHelpers.js';
 import { At, Et } from './legacyOptionData.js';
+import { getVietnameseLabel } from './vietnameseLabels.js';
 
-function Cf(e,t){const n=At.map(c=>`<option value="${c}">${c}</option>`).join(""),o=Et.map(c=>`<option value="${c}">${c}</option>`).join(""),r=e.map((c,p)=>`
+function Cf(characters, images) {
+  const roles = At.map(value => `<option value="${value}">${getVietnameseLabel(value)}</option>`).join('');
+  const personalities = Et.map(value => `<option value="${value}">${getVietnameseLabel(value)}</option>`).join('');
+  const cards = characters.map((character, index) => `
     <div class="ci-char-card">
       <div class="ci-char-header">
         <label class="ci-check-label">
-          <input type="checkbox" class="ci-check" data-idx="${p}" checked>
-          <span class="ci-char-name-display">${c.name||`キャラ${p+1}`}</span>
+          <input type="checkbox" class="ci-check" data-idx="${index}" checked>
+          <span class="ci-char-name-display">${character.name || `Nhân vật ${index + 1}`}</span>
         </label>
-        <span class="ci-char-badge">${c.role.includes("(推定)")?"🤖 AI推定":"📖 テキスト読取"}</span>
+        <span class="ci-char-badge">${character.role.includes('(推定') ? '🤖 AI suy luận' : '📖 Đọc từ văn bản'}</span>
       </div>
       <div class="ci-char-fields">
         <div class="ci-field">
-          <label class="ci-field-label">名前</label>
-          <input type="text" class="ci-input ci-name" data-idx="${p}" value="${(c.name||"").replace(/"/g,"&quot;")}">
+          <label class="ci-field-label">Tên</label>
+          <input type="text" class="ci-input ci-name" data-idx="${index}" value="${(character.name || '').replace(/"/g, '&quot;')}">
         </div>
         <div class="ci-field">
-          <label class="ci-field-label">性別</label>
-          <input type="text" class="ci-input ci-sex" data-idx="${p}" value="${(c.sex||"").replace(/"/g,"&quot;")}">
+          <label class="ci-field-label">Giới tính</label>
+          <input type="text" class="ci-input ci-sex" data-idx="${index}" value="${(character.sex || '').replace(/"/g, '&quot;')}">
         </div>
         <div class="ci-field">
-          <label class="ci-field-label">役割</label>
+          <label class="ci-field-label">Vai trò</label>
           <div class="ci-select-wrap">
-            <select class="ci-select ci-role-select" data-idx="${p}">
-              <option value="">-- 自由入力に切替 --</option>
-              ${n}
+            <select class="ci-select ci-role-select" data-idx="${index}">
+              <option value="">-- Chuyển sang nhập tự do --</option>
+              ${roles}
             </select>
-            <input type="text" class="ci-input ci-role-input" data-idx="${p}" value="${(c.role||"").replace(/\(推定\)/g,"").trim().replace(/"/g,"&quot;")}" placeholder="自由入力...">
+            <input type="text" class="ci-input ci-role-input" data-idx="${index}" value="${(character.role || '').replace(/\(推定\)/g, '').trim().replace(/"/g, '&quot;')}" placeholder="Nhập tự do...">
           </div>
         </div>
         <div class="ci-field">
-          <label class="ci-field-label">性格</label>
+          <label class="ci-field-label">Tính cách</label>
           <div class="ci-select-wrap">
-            <select class="ci-select ci-personality-select" data-idx="${p}">
-              <option value="">-- 自由入力に切替 --</option>
-              ${o}
+            <select class="ci-select ci-personality-select" data-idx="${index}">
+              <option value="">-- Chuyển sang nhập tự do --</option>
+              ${personalities}
             </select>
-            <input type="text" class="ci-input ci-personality-input" data-idx="${p}" value="${(c.personality||"").replace(/\(推定\)/g,"").trim().replace(/"/g,"&quot;")}" placeholder="自由入力...">
+            <input type="text" class="ci-input ci-personality-input" data-idx="${index}" value="${(character.personality || '').replace(/\(推定\)/g, '').trim().replace(/"/g, '&quot;')}" placeholder="Nhập tự do...">
           </div>
         </div>
         <div class="ci-field ci-field-full">
-          <label class="ci-field-label">詳細メモ</label>
-          <textarea class="ci-textarea ci-note" data-idx="${p}" rows="3">${(c.note||"").replace(/</g,"&lt;")}</textarea>
+          <label class="ci-field-label">Ghi chú chi tiết</label>
+          <textarea class="ci-textarea ci-note" data-idx="${index}" rows="3">${(character.note || '').replace(/</g, '&lt;')}</textarea>
         </div>
       </div>
     </div>
-  `).join(""),a=Array.isArray(t)?t:t?[t]:[],i=a.length>0?`<div class="ci-thumbnail-wrap">${a.map((c,p)=>`<img src="${c}" class="ci-thumbnail" alt="解析元画像 ${p+1}">`).join("")}</div>`:"";return`
+  `).join('');
+  const imageList = Array.isArray(images) && images.length
+    ? `<div class="ci-thumbnail-wrap">${images.map((image, index) => `<img src="${image}" class="ci-thumbnail" alt="Ảnh nguồn ${index + 1}">`).join('')}</div>`
+    : '';
+  return `
     <div class="ci-modal-overlay" id="ci-modal">
       <div class="ci-modal">
         <div class="ci-modal-header">
-          <h3 class="ci-modal-title">📷 キャラクター認識結果</h3>
-          <span class="ci-modal-count">${e.length} キャラクター検出</span>
+          <h3 class="ci-modal-title">📷 Kết quả nhận diện nhân vật</h3>
+          <span class="ci-modal-count">Đã phát hiện ${characters.length} nhân vật</span>
           <button class="ci-modal-close" id="ci-modal-close">✕</button>
         </div>
-        ${i}
+        ${imageList}
         <div class="ci-char-list">
-          ${r}
+          ${cards}
         </div>
         <div class="ci-modal-actions">
-          <button class="ci-btn ci-btn-primary" id="ci-btn-register">✅ 選択したキャラを登録</button>
-          <button class="ci-btn ci-btn-secondary" id="ci-btn-cancel">キャンセル</button>
+          <button class="ci-btn ci-btn-primary" id="ci-btn-register">✅ Đăng ký nhân vật đã chọn</button>
+          <button class="ci-btn ci-btn-secondary" id="ci-btn-cancel">Hủy</button>
         </div>
       </div>
     </div>
-  `}
+  `;
+}
 
 export {
   Cf,

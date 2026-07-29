@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,45 +14,45 @@
   <div class="fixed-header-wrapper">
     <!-- 🚀 Header / Control Bar (API Settings) -->
     <header class="title-bar">
-      <h1><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(139,108,255,0.15)"/><path d="M8 7h8M8 11h5" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round"/></svg> Story Maker <span class="title-version">v5.3.6</span> <span class="title-sub">— AI物語メーカー</span></h1>
+      <h1><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(139,108,255,0.15)"/><path d="M8 7h8M8 11h5" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round"/></svg> Story Maker <span class="title-version">v5.3.6</span> <span class="title-sub">— Trình tạo truyện AI</span></h1>
     </header>
 
     <div id="banner" class="banner">
       <div class="banner-row">
-        <div class="banner-label" id="engine-label">⚠ API未設定</div>
-        <input type="password" id="apikey" placeholder="Gemini または OpenAI のAPIキーを入力" autocomplete="new-password">
-        <button id="key-save">保存</button>
-        <button id="key-edit" class="hidden">編集</button>
-        <button id="btn-switch-api" class="btn-switch-api" title="設定内容は保持したまま、APIエンジン（Gemini / OpenAI）のみを切り替えます">🔄 API切替</button>
-        <button id="btn-reload" class="btn-reload" title="ページ全体を再読み込みします（保存済みAPIキーは同じタブ内で復元されます）">🔄 リロード</button>
+        <div class="banner-label" id="engine-label">⚠ Chưa cấu hình API</div>
+        <input type="password" id="apikey" placeholder="Nhập khóa API Gemini hoặc OpenAI" autocomplete="new-password">
+        <button id="key-save">Lưu</button>
+        <button id="key-edit" class="hidden">Chỉnh sửa</button>
+        <button id="btn-switch-api" class="btn-switch-api" title="Giữ nguyên thiết lập hiện tại và chỉ chuyển API giữa Gemini và OpenAI">🔄 Đổi API</button>
+        <button id="btn-reload" class="btn-reload" title="Tải lại toàn bộ trang; khóa API trong tab này sẽ được khôi phục">🔄 Tải lại</button>
       </div>
       <div class="api-notice">
-        🔑 APIキー取得:
+        🔑 Lấy khóa API:
         <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="api-link api-link-gemini">Gemini API</a>
         <span class="api-link-sep">/</span>
         <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener" class="api-link api-link-openai">OpenAI API</a>
         <span class="api-link-sep">—</span>
-        <span class="api-notice-security">⚠️ キーは保存せず、再読み込み・ページを閉じると消去。API通信時のみ選択中の提供元へ送信</span>
+        <span class="api-notice-security">⚠️ Khóa không được lưu lâu dài và sẽ bị xóa khi đóng trang; chỉ gửi tới nhà cung cấp API đang chọn</span>
         <span class="api-link-sep">|</span>
-        <span class="api-notice-security">🔄「API切替」は入力内容やキーを保持したままAPIのみを切り替えます</span>
+        <span class="api-notice-security">🔄 Nút “Đổi API” giữ nguyên nội dung và khóa hiện tại</span>
       </div>
 
       <!-- 📡 AI進捗ログ窓 (常設) -->
-      <div class="api-notice"><a href="./privacy.html" class="api-link">プライバシーポリシー</a></div>
+      <div class="api-notice"><a href="./privacy.html" class="api-link">Chính sách quyền riêng tư</a></div>
       <div id="progress-window" class="progress-window">
         <div class="progress-header">
           <span class="progress-status-icon">📡</span>
-          <span class="progress-title" id="progress-title-text">AI進捗・思考ログ: 待機中</span>
+          <span class="progress-title" id="progress-title-text">Tiến độ và nhật ký AI: Đang chờ</span>
         </div>
 
         <!-- 黄色の警告表示 (進捗窓の内部・上部に移動して段下がりを防止) -->
         <div class="global-alert-yellow" id="global-alert" style="display: none;">
-          ⚠️ <strong>注意:</strong> AIが思考している間（API通信中）は数秒〜数十秒かかる場合があります。結果が表示されるまでお待ちください。
+          ⚠️ <strong>Chú ý:</strong> AI có thể cần từ vài giây đến vài chục giây để xử lý. Vui lòng chờ kết quả xuất hiện.
         </div>
 
         <div class="thought-score-board" id="thought-score-board" style="display: none;"></div>
         <div class="progress-content" id="progress-content">
-          <pre id="progress-log" class="progress-log">AIの生成開始を待っています...</pre>
+          <pre id="progress-log" class="progress-log">Đang chờ bắt đầu tạo nội dung...</pre>
         </div>
       </div>
     </div>
@@ -66,19 +66,19 @@
       <div class="panel-fixed-top">
         <div class="panel-top-actions">
           <button class="btn-all-random" id="btn-all-random">
-            <span class="icon">🎲</span> 全項目ランダム
+            <span class="icon">🎲</span> Ngẫu nhiên tất cả
           </button>
-          <button class="btn-util" id="btn-reset-all" title="全てリセット">🗑️ 全リセット</button>
+          <button class="btn-util" id="btn-reset-all" title="Đặt lại tất cả">🗑️ Đặt lại tất cả</button>
         </div>
         <div class="settings-io-actions">
-          <button class="btn-util btn-settings-file" id="btn-settings-export" title="APIキーを含めず現在の生成条件をJSON保存">⬇ 条件Export</button>
-          <button class="btn-util btn-settings-file" id="btn-settings-import" title="生成条件JSONを読み込んで画面へ復元">⬆ 条件Import</button>
+          <button class="btn-util btn-settings-file" id="btn-settings-export" title="Lưu điều kiện tạo thành JSON, không gồm khóa API">⬇ Xuất điều kiện</button>
+          <button class="btn-util btn-settings-file" id="btn-settings-import" title="Đọc JSON điều kiện tạo và khôi phục lên màn hình">⬆ Nhập điều kiện</button>
           <input id="settings-import-file" class="hidden" type="file" accept=".json,application/json">
         </div>
 
         <!-- 🎬 Generate Button（メインアクション・最上部配置） -->
         <div class="generate-wrap">
-          <button class="btn-generate" id="btn-generate">ストーリー生成</button>
+          <button class="btn-generate" id="btn-generate">Tạo truyện</button>
         </div>
       </div>
 
@@ -88,68 +88,68 @@
       <!-- 📝 出力モード -->
       <section class="s-section" id="section-mode">
         <div class="s-label">
-          <span>📄 出力モード</span>
+          <span>📄 Chế độ đầu ra</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="mode" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-mode">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="mode" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="mode" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-mode">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="mode" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="mode-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="mode-custom" placeholder="プリセットにない形式を入力" autocomplete="off">
+          <input type="text" class="custom-input" id="mode-custom" placeholder="Nhập định dạng không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="mode-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="mode-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="mode-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 💡 テーマ / シード -->
+      <!-- 💡 Chủ đề / Ý tưởng -->
       <section class="s-section" id="section-theme">
         <div class="s-label">
-          <span>💡 テーマ / シード</span>
+          <span>💡 Chủ đề / Ý tưởng</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="theme" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-theme">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="theme" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="theme" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-theme">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="theme" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="theme-cat-chips"></div>
         <div class="chips chips-sub" id="theme-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="theme-custom" placeholder="プリセットにないテーマを入力" autocomplete="off">
+          <input type="text" class="custom-input" id="theme-custom" placeholder="Nhập chủ đề không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="theme-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="theme-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="theme-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 👥 登場人物 -->
+      <!-- 👥 Nhân vật -->
       <section class="s-section" id="section-chars">
         <div class="s-label">
-          <span>👥 登場人物</span>
+          <span>👥 Nhân vật</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="chars" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-chars-content" title="現在の人数を維持して、全キャラの名前・役割・性格・メモをランダム化">🎲 内容ランダム</button>
-            <button class="btn-rnd" id="btn-rand-chars-all" title="短編向けの人数(1~4名)もランダムに決定し、全キャラの内容もランダム化します">🎲 人数＋内容ランダム</button>
-            <button class="btn-section-clear" data-section="chars" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="chars" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-chars-content" title="Giữ nguyên số lượng và tạo ngẫu nhiên thông tin của mọi nhân vật">🎲 Ngẫu nhiên nội dung</button>
+            <button class="btn-rnd" id="btn-rand-chars-all" title="Chọn ngẫu nhiên 1–4 nhân vật và tạo toàn bộ thông tin">🎲 Ngẫu nhiên số lượng + nội dung</button>
+            <button class="btn-section-clear" data-section="chars" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="char-controls-row">
           <button id="btn-add-char" class="btn-util">＋</button>
           <span class="char-count-display" id="char-count-display">0</span>
           <button id="btn-remove-char" class="btn-util">−</button>
-          <span class="char-unit">人</span>
+          <span class="char-unit">người</span>
         </div>
 
         <!-- キャラクターシート画像取り込みゾーン -->
         <div class="ci-dropzone" id="ci-dropzone">
           <div class="ci-dropzone-icon">📷</div>
           <div class="ci-dropzone-text">
-            <strong>キャラクターシート画像をドロップ</strong>
-            <span>または クリックして画像を選択（複数枚OK）</span>
+            <strong>Thả ảnh hồ sơ nhân vật</strong>
+            <span>hoặc bấm để chọn nhiều ảnh</span>
           </div>
-          <div class="ci-dropzone-hint">PNG / JPG / WEBP 対応 ・ AIが自動認識して登録</div>
+          <div class="ci-dropzone-hint">Hỗ trợ PNG / JPG / WEBP · AI tự nhận diện và thêm nhân vật</div>
           <div class="ci-spinner hidden" id="ci-spinner">
-            <span class="spinner"></span> 画像を解析中...
+            <span class="spinner"></span> Đang phân tích ảnh...
           </div>
         </div>
         <input type="file" id="ci-file-input" accept="image/*" multiple class="hidden">
@@ -157,164 +157,164 @@
 
         <div id="char-list" class="char-cards"></div>
         <p class="char-section-hint">
-          📷 <strong>キャラシートがある場合</strong> → 上のエリアに画像をドロップ（複数枚OK）<br>
-          ✍️ <strong>手動設定の場合</strong> → ＋/− で人数を追加して各項目を入力・メニュー選択<br>
-          🎲 <strong>おまかせの場合</strong> → 0人のまま生成、または「人数＋内容ランダム」で自動生成<br>
+          📷 <strong>Nếu có ảnh hồ sơ nhân vật</strong> → Thả một hoặc nhiều ảnh vào khu vực phía trên<br>
+          ✍️ <strong>Nếu nhập thủ công</strong> → Dùng ＋/− để đổi số lượng rồi nhập hoặc chọn từng mục<br>
+          🎲 <strong>Nếu để AI tự chọn</strong> → Giữ 0 nhân vật hoặc dùng “Ngẫu nhiên số lượng + nội dung”<br>
         </p>
       </section>
 
-      <!-- 🗺️ ジャンル -->
+      <!-- 🗺️ Thể loại -->
       <section class="s-section" id="section-genre">
         <div class="s-label">
-          <span>🗺️ ジャンル</span>
+          <span>🗺️ Thể loại</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="genre" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-genre">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="genre" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="genre" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-genre">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="genre" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="genre-cat-chips"></div>
         <div class="chips chips-sub" id="genre-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="genre-custom" placeholder="プリセットにないジャンルを入力" autocomplete="off">
+          <input type="text" class="custom-input" id="genre-custom" placeholder="Nhập thể loại không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="genre-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="genre-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="genre-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 🌍 世界観・雰囲気 (NEW) -->
+      <!-- 🌍 Bối cảnh thế giới (NEW) -->
       <section class="s-section" id="section-worldview">
         <div class="s-label">
-          <span>🌍 世界観・雰囲気</span>
+          <span>🌍 Bối cảnh thế giới</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="worldview" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-worldview">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="worldview" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="worldview" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-worldview">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="worldview" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="worldview-cat-chips"></div>
         <div class="chips chips-sub" id="worldview-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="worldview-custom" placeholder="プリセットにない世界観を入力" autocomplete="off">
+          <input type="text" class="custom-input" id="worldview-custom" placeholder="Nhập bối cảnh không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="worldview-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="worldview-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="worldview-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 🎯 ターゲット層 (NEW) -->
+      <!-- 🎯 Đối tượng độc giả (NEW) -->
       <section class="s-section" id="section-target">
         <div class="s-label">
-          <span>🎯 ターゲット層</span>
+          <span>🎯 Đối tượng độc giả</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="target" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-target">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="target" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="target" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-target">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="target" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="target-cat-chips"></div>
         <div class="chips chips-sub" id="target-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="target-custom" placeholder="プリセットにないターゲットを入力" autocomplete="off">
+          <input type="text" class="custom-input" id="target-custom" placeholder="Nhập đối tượng độc giả không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="target-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="target-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="target-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 🕰️ 時代設定 -->
+      <!-- 🕰️ Thời đại -->
       <section class="s-section" id="section-era">
         <div class="s-label">
-          <span>🕰️ 時代設定</span>
+          <span>🕰️ Thời đại</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="era" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-era">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="era" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="era" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-era">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="era" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="era-cat-chips"></div>
         <div class="chips chips-sub" id="era-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="era-custom" placeholder="プリセットにない時代設定を入力" autocomplete="off">
+          <input type="text" class="custom-input" id="era-custom" placeholder="Nhập thời đại không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="era-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="era-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="era-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 🏁 オチの型 -->
+      <!-- 🏁 Kiểu kết thúc -->
       <section class="s-section" id="section-ending">
         <div class="s-label">
-          <span>🏁 オチの型</span>
+          <span>🏁 Kiểu kết thúc</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="ending" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-ending">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="ending" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="ending" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-ending">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="ending" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="ending-cat-chips"></div>
         <div class="chips chips-sub" id="ending-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="ending-custom" placeholder="プリセットにないオチの型を入力" autocomplete="off">
+          <input type="text" class="custom-input" id="ending-custom" placeholder="Nhập kiểu kết thúc không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="ending-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="ending-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="ending-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 🎙️ 語り口 -->
+      <!-- 🎙️ Ngôi kể -->
       <section class="s-section" id="section-narr">
         <div class="s-label">
-          <span>🎙️ 語り口</span>
+          <span>🎙️ Ngôi kể</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="narr" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-rnd" id="btn-rand-narr">🎲 ランダム</button>
-            <button class="btn-section-clear" data-section="narr" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="narr" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-rnd" id="btn-rand-narr">🎲 Ngẫu nhiên</button>
+            <button class="btn-section-clear" data-section="narr" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="chips" id="narr-cat-chips"></div>
         <div class="chips chips-sub" id="narr-sub-chips"></div>
         <div class="custom-input-wrap">
-          <input type="text" class="custom-input" id="narr-custom" placeholder="プリセットにない語り口を入力" autocomplete="off">
+          <input type="text" class="custom-input" id="narr-custom" placeholder="Nhập cách kể không có trong danh sách" autocomplete="off">
           <button class="custom-clear-btn hidden" id="narr-custom-clear">✕</button>
-          <button class="custom-rnd-btn" id="narr-custom-rnd">🎲 生成</button>
+          <button class="custom-rnd-btn" id="narr-custom-rnd">🎲 Tạo</button>
         </div>
       </section>
 
-      <!-- 📁 万能インプット（画像・URL・文書） -->
+      <!-- 📁 Tư liệu đầu vào（画像・URL・文書） -->
       <section class="s-section" id="section-universal-intake">
         <div class="s-label">
-          <span>📁 万能インプット</span>
+          <span>📁 Tư liệu đầu vào</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="universal" title="この項目をロックして全リセットから保護">🔓</button>
-            <button class="btn-section-clear" id="btn-clear-universal-intake" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="universal" title="Khóa mục này để không bị xóa khi đặt lại tất cả">🔓</button>
+            <button class="btn-section-clear" id="btn-clear-universal-intake" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="ui-dropzone" id="ui-dropzone" tabindex="0">
           <div class="ui-dropzone-icon">📥</div>
           <div class="ui-dropzone-text">
-            <strong>画像・URL・テキストをドロップ</strong>
-            <span>または ここにコピペ (Ctrl+V) — URL本文の外部取得は行いません</span>
+            <strong>Thả ảnh, URL hoặc văn bản</strong>
+            <span>hoặc dán tại đây (Ctrl+V) — ứng dụng không tự tải nội dung từ URL</span>
           </div>
-          <div class="ui-dropzone-hint">PNG/JPG/WEBP画像、Webリンク、.txt/.mdファイル対応</div>
+          <div class="ui-dropzone-hint">Hỗ trợ ảnh PNG/JPG/WEBP, liên kết web và tệp .txt/.md</div>
           <div class="ui-spinner hidden" id="ui-spinner">
-            <span class="spinner"></span> 読み込み/解析中...
+            <span class="spinner"></span> Đang đọc và phân tích...
           </div>
         </div>
         <div class="ui-input-row">
-          <input type="text" id="ui-text-input" placeholder="URLやテキストを直接入力してEnterで追加">
-          <button id="ui-btn-add" class="ui-btn-add" title="追加">＋</button>
+          <input type="text" id="ui-text-input" placeholder="Nhập URL hoặc văn bản rồi nhấn Enter để thêm">
+          <button id="ui-btn-add" class="ui-btn-add" title="Thêm">＋</button>
         </div>
         <div class="ui-asset-list hidden" id="ui-asset-list"></div>
       </section>
 
-      <!-- 📎 補足メモ -->
+      <!-- 📎 Yêu cầu bổ sung -->
       <section class="s-section" id="section-supplement">
         <div class="s-label">
-          <span>📎 補足メモ</span>
+          <span>📎 Yêu cầu bổ sung</span>
           <div class="s-label-actions">
-            <button class="btn-lock" data-section="supplement" title="この項目をロックしてランダム変更から保護">🔓</button>
-            <button class="btn-section-clear" data-section="supplement" title="クリア">🗑️</button>
+            <button class="btn-lock" data-section="supplement" title="Khóa mục này để không bị thay đổi khi chọn ngẫu nhiên">🔓</button>
+            <button class="btn-section-clear" data-section="supplement" title="Xóa">🗑️</button>
           </div>
         </div>
         <div class="custom-textarea-wrap">
-          <textarea id="supplement" class="custom-textarea" placeholder="例：「最後に主人公が笑う場面を入れて」「方言を使って」"></textarea>
+          <textarea id="supplement" class="custom-textarea" placeholder="Ví dụ: “Thêm cảnh nhân vật chính mỉm cười ở cuối truyện”, “Dùng giọng miền Nam”"></textarea>
           <button class="custom-clear-btn hidden" id="supplement-clear">✕</button>
         </div>
       </section>
@@ -329,13 +329,13 @@
       <div class="output-sticky-header">
         <div class="output-header">
           <div class="output-title">OUTPUT</div>
-          <div id="char-counter" class="char-counter">0 字</div>
+          <div id="char-counter" class="char-counter">0 ký tự</div>
           <div class="output-actions">
-            <button id="btn-copy" class="btn-secondary hidden">📋 全文Copy</button>
-            <button id="btn-download" class="btn-secondary hidden">📄 .txt保存</button>
-            <button id="btn-output-paste" class="btn-secondary" title="クリップボードの小説本文をOutputへ貼り付け">📋 貼り付け</button>
-            <button id="btn-output-import" class="btn-secondary" title="TXT/MDファイルの小説本文をOutputへインポート">📥 TXTインポート</button>
-            <button id="btn-output-clear" class="btn-secondary" title="Outputを空に戻す">🗑️ クリア</button>
+            <button id="btn-copy" class="btn-secondary hidden">📋 Sao chép toàn bộ</button>
+            <button id="btn-download" class="btn-secondary hidden">📄 Lưu .txt</button>
+            <button id="btn-output-paste" class="btn-secondary" title="Dán nội dung truyện từ clipboard vào Output">📋 Dán</button>
+            <button id="btn-output-import" class="btn-secondary" title="Nhập nội dung truyện từ tệp TXT/MD vào Output">📥 Nhập TXT</button>
+            <button id="btn-output-clear" class="btn-secondary" title="Xóa toàn bộ Output">🗑️ Xóa</button>
             <input id="output-import-file" class="hidden" type="file" accept=".txt,.md,text/plain,text/markdown">
           </div>
         </div>
@@ -346,11 +346,11 @@
           <div class="long-novel-header">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span class="long-novel-icon">📖</span>
-              <span class="long-novel-title" id="long-novel-title">長編小説モード</span>
+              <span class="long-novel-title" id="long-novel-title">Chế độ tiểu thuyết dài</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-              <span class="ln-warning-text">※生成中にブラウザが「応答なし」になる場合がありますが、AIの長考処理中のためそのまま待機してください。</span>
-              <span class="ln-warning-text">※生成中は章の確定まで進行表示になります。途中で止める場合は「ここで中断」を押してください。</span>
+              <span class="ln-warning-text">Trong lúc tạo, trình duyệt có thể tạm báo không phản hồi. Hãy tiếp tục chờ vì AI đang xử lý nội dung dài.</span>
+              <span class="ln-warning-text">Tiến độ hiển thị đến khi chương được chốt. Muốn dừng giữa chừng, bấm “Dừng tại đây”.</span>
             </div>
           </div>
 
@@ -360,11 +360,11 @@
               <span class="ln-work-title" id="ln-work-title">—</span>
             </div>
             <div class="long-novel-stats">
-              <span class="ln-stat">📊 進捗: <strong id="ln-progress">0 / 0 章</strong></span>
-              <span class="ln-stat">📝 小説本文: <strong id="ln-char-count">0</strong> 字</span>
-              <span class="ln-stat">🎯 目標: <strong id="ln-target">—</strong></span>
+              <span class="ln-stat">📊 Tiến độ: <strong id="ln-progress">0 / 0 chương</strong></span>
+              <span class="ln-stat">📝 Nội dung truyện: <strong id="ln-char-count">0</strong> ký tự</span>
+              <span class="ln-stat">🎯 Mục tiêu: <strong id="ln-target">—</strong></span>
             </div>
-            <div class="ln-live-status" id="ln-live-status">待機中</div>
+            <div class="ln-live-status" id="ln-live-status">Đang chờ</div>
             <!-- プログレスバー -->
             <div class="ln-progress-bar-bg">
               <div class="ln-progress-bar-fill" id="ln-progress-bar" style="width: 0%"></div>
@@ -374,20 +374,20 @@
           <!-- 章制御ボタン -->
           <div class="long-novel-actions">
             <button id="btn-ln-pause" class="btn-ln-next" disabled>
-              待機中
+              Đang chờ
             </button>
             <button id="btn-ln-abort" class="btn-ln-abort hidden">
-              ⏹ ここで中断
+              ⏹ Dừng tại đây
             </button>
           </div>
 
-          <!-- 📋 小説本文パート（コピー/TXT） -->
+          <!-- 📋 Nội dung truyệnパート（コピー/TXT） -->
           <div class="ln-section" id="ln-novel-section">
             <div class="ln-section-header">
-              <span class="ln-section-label">📋 小説本文</span>
+              <span class="ln-section-label">📋 Nội dung truyện</span>
               <div class="ln-section-actions">
-                <button id="btn-ln-copy-novel" class="btn-ln-action" title="小説本文をコピー">📋 コピー</button>
-                <button id="btn-ln-save-novel" class="btn-ln-action" title="小説本文を.txt保存">📄 .txt保存</button>
+                <button id="btn-ln-copy-novel" class="btn-ln-action" title="Sao chép nội dung truyện">📋 Sao chép</button>
+                <button id="btn-ln-save-novel" class="btn-ln-action" title="Lưu nội dung truyện thành .txt">📄 Lưu .txt</button>
               </div>
             </div>
           </div>
@@ -395,14 +395,14 @@
           <!-- 📝 文脈メモ・指示パート（折りたたみ） -->
           <div class="ln-section" id="ln-memo-section">
             <div class="ln-section-header ln-section-toggle" id="ln-memo-toggle">
-              <span class="ln-section-label">📝 文脈メモ・伏線管理 <span class="ln-toggle-arrow" id="ln-memo-arrow">▶</span></span>
+              <span class="ln-section-label">📝 Ghi chú ngữ cảnh và chi tiết cài cắm <span class="ln-toggle-arrow" id="ln-memo-arrow">▶</span></span>
               <div class="ln-section-actions">
-                <button id="btn-ln-copy-memo" class="btn-ln-action" title="メモをコピー">📋 コピー</button>
-                <button id="btn-ln-save-memo" class="btn-ln-action" title="メモを.txt保存">📄 .txt保存</button>
+                <button id="btn-ln-copy-memo" class="btn-ln-action" title="Sao chép ghi chú">📋 Sao chép</button>
+                <button id="btn-ln-save-memo" class="btn-ln-action" title="Lưu ghi chú thành .txt">📄 Lưu .txt</button>
               </div>
             </div>
             <div class="ln-memo-content hidden" id="ln-memo-content">
-              <pre class="ln-memo-text" id="ln-memo-text">（まだメモはありません）</pre>
+              <pre class="ln-memo-text" id="ln-memo-text">(Chưa có ghi chú)</pre>
             </div>
           </div>
         </div>
@@ -410,13 +410,13 @@
 
       <div id="output" class="output-box empty text-selectable">
         <div class="guide">
-          <h3>はじめ方</h3>
+          <h3>Cách bắt đầu</h3>
           <ol>
-            <li>上部のAPIキー欄にキー（GeminiまたはOpenAI）を入力して保存</li>
-            <li>左の設定パネルで出力モード・テーマ等を選択</li>
-            <li>「ストーリー生成」を押す</li>
-            <li>「🎲 全項目ランダム」で一括ランダム設定も可能</li>
-            <li>他で作った本文はOutputへ貼り付け、またはTXT/MDインポートすると、AI講評と「この小説をブラッシュアップ」の元本文として使えます</li>
+            <li>Nhập khóa Gemini hoặc OpenAI vào ô phía trên rồi bấm Lưu</li>
+            <li>Chọn chế độ đầu ra, chủ đề và các thiết lập ở bảng bên trái</li>
+             <li>Bấm “Tạo truyện”</li>
+             <li>Có thể dùng “🎲 Ngẫu nhiên tất cả” để chọn nhanh</li>
+            <li>Có thể dán hoặc nhập TXT/MD từ nơi khác để dùng làm bản gốc cho đánh giá và tinh chỉnh bằng AI</li>
           </ol>
         </div>
       </div>
@@ -425,14 +425,14 @@
         <div class="kakuyomu-assist-head">
           <label class="charcount-toggle kakuyomu-assist-toggle" for="kakuyomu-assist-enable">
             <input type="checkbox" id="kakuyomu-assist-enable">
-            <span class="charcount-toggle-label">Kakuyomuフォーム風プレビュー</span>
+            <span class="charcount-toggle-label">Xem trước theo biểu mẫu Kakuyomu</span>
           </label>
-          <span class="kakuyomu-assist-status" id="kakuyomu-assist-status">出力後に表示</span>
+          <span class="kakuyomu-assist-status" id="kakuyomu-assist-status">Hiển thị sau khi tạo</span>
         </div>
         <div class="kakuyomu-assist-body hidden" id="kakuyomu-assist-body">
           <div class="kakuyomu-assist-toolbar">
-            <button type="button" class="btn-secondary kakuyomu-copy-btn" data-copy-kind="all" title="このプレビューの全推奨項目をまとめてコピー">全項目コピー</button>
-            <button type="button" class="btn-secondary kakuyomu-save-btn" data-save-kind="all" title="このプレビューの全推奨項目をTXTで保存">全項目TXT保存</button>
+            <button type="button" class="btn-secondary kakuyomu-copy-btn" data-copy-kind="all" title="Sao chép toàn bộ mục đề xuất trong bản xem trước">Sao chép tất cả</button>
+            <button type="button" class="btn-secondary kakuyomu-save-btn" data-save-kind="all" title="Lưu toàn bộ mục đề xuất thành TXT">Lưu tất cả thành TXT</button>
           </div>
           <div class="kakuyomu-form-preview" id="kakuyomu-form-preview" aria-live="polite"></div>
         </div>
@@ -441,70 +441,70 @@
         <div class="kakuyomu-assist-head">
           <label class="charcount-toggle kakuyomu-assist-toggle" for="alphapolis-assist-enable">
             <input type="checkbox" id="alphapolis-assist-enable">
-            <span class="charcount-toggle-label">アルファポリスフォーム風プレビュー</span>
+            <span class="charcount-toggle-label">Xem trước theo biểu mẫu Alphapolis</span>
           </label>
-          <span class="kakuyomu-assist-status" id="alphapolis-assist-status">出力後に表示</span>
+          <span class="kakuyomu-assist-status" id="alphapolis-assist-status">Hiển thị sau khi tạo</span>
         </div>
         <div class="kakuyomu-assist-body hidden" id="alphapolis-assist-body">
           <div class="kakuyomu-assist-toolbar">
-            <button type="button" class="btn-secondary kakuyomu-copy-btn alphapolis-copy-btn" data-copy-kind="all" title="このプレビューの全推奨項目をまとめてコピー">全項目コピー</button>
-            <button type="button" class="btn-secondary kakuyomu-save-btn alphapolis-save-btn" data-save-kind="all" title="このプレビューの全推奨項目をTXTで保存">全項目TXT保存</button>
+            <button type="button" class="btn-secondary kakuyomu-copy-btn alphapolis-copy-btn" data-copy-kind="all" title="Sao chép toàn bộ mục đề xuất trong bản xem trước">Sao chép tất cả</button>
+            <button type="button" class="btn-secondary kakuyomu-save-btn alphapolis-save-btn" data-save-kind="all" title="Lưu toàn bộ mục đề xuất thành TXT">Lưu tất cả thành TXT</button>
           </div>
           <div class="kakuyomu-form-preview alphapolis-form-preview" id="alphapolis-form-preview" aria-live="polite"></div>
         </div>
       </section>
-      <section class="longify-beta" id="longify-beta" aria-label="AI講評・ブラッシュアップ" aria-disabled="false">
+      <section class="longify-beta" id="longify-beta" aria-label="Đánh giá và tinh chỉnh bằng AI" aria-disabled="false">
         <div class="longify-beta-head">
           <div class="longify-beta-copy">
             <div class="longify-beta-titleline">
-              <span class="longify-beta-badge" aria-label="β版">📘 β版</span>
-              <div class="longify-beta-title">この小説をブラッシュアップ</div>
+              <span class="longify-beta-badge" aria-label="Bản beta">📘 Bản beta</span>
+              <div class="longify-beta-title">Tinh chỉnh truyện này</div>
             </div>
-            <div class="longify-beta-status" id="longify-beta-status">どの出力モードでも、生成後にAI講評と合否を表示します</div>
+            <div class="longify-beta-status" id="longify-beta-status">Sau khi tạo, AI sẽ đánh giá và hiển thị kết quả ở mọi chế độ đầu ra</div>
             <div class="longify-beta-provider-warning hidden" id="longify-gemini-warning" role="note" aria-hidden="true">
-              <strong>長い本文のブラッシュアップには時間がかかる場合があります</strong>
-              <span>元原稿は、点数または必須品質が改善した候補だけに置き換わります。失敗時は保持されます。</span>
+              <strong>Tinh chỉnh nội dung dài có thể mất nhiều thời gian</strong>
+              <span>Bản gốc chỉ được thay khi bản mới cải thiện điểm hoặc chất lượng bắt buộc; nếu thất bại, bản gốc được giữ lại.</span>
             </div>
           </div>
           <div class="longify-beta-actions">
             <button type="button" class="btn-secondary longify-beta-button" id="btn-longify-beta" disabled>
-              この小説をブラッシュアップ
+              Tinh chỉnh truyện này
             </button>
             <button type="button" class="btn-secondary longify-stop-button hidden" id="btn-longify-stop" disabled>
-              中断
+              Dừng
             </button>
           </div>
         </div>
-        <div class="longify-beta-controls" aria-label="AI講評・ブラッシュアップ設定">
+         <div class="longify-beta-controls" aria-label="Thiết lập đánh giá và tinh chỉnh bằng AI">
           <label class="longify-beta-check" for="longify-auto-brushup-until-pass">
             <input type="checkbox" id="longify-auto-brushup-until-pass" checked>
-            <span>高得点を目指して自動ブラッシュアップ（最大3回）</span>
-            <small>100点を目標に、85点以上でも最大3回まで改善を継続。85〜89点は公開可能、90点以上は編集合格。OFFなら押すたびに1回だけ実行</small>
+            <span>Tự động tinh chỉnh để đạt điểm cao (tối đa 3 lần)</span>
+            <small>Mục tiêu 100 điểm; tiếp tục cải thiện tối đa 3 lần kể cả khi đạt 85 điểm. 85–89: có thể xuất bản; từ 90: đạt chuẩn biên tập. Nếu tắt, mỗi lần bấm chỉ chạy một lượt.</small>
           </label>
         </div>
         <div class="longify-beta-review hidden" id="longify-beta-review" aria-live="polite"></div>
       </section>
 
       <!-- ============================================================
-           🧪 β版: 超強引！作風解析エンジン (Super Forced! Style Analyzer Engine)
+           🧪 Bản beta: 超強引！作風解析エンジン (Super Forced! Style Analyzer Engine)
            OUTPUT欄の直下。OUTPUT生成後に活性化する。
            ============================================================ -->
       <section class="sa-beta-section sa-inactive" id="sa-section">
 
-        <!-- β版バナー -->
+        <!-- Bản betaバナー -->
         <div class="sa-beta-banner" style="flex-direction: column; align-items: stretch; gap: 8px;">
           <div style="display: flex; align-items: flex-start; gap: 14px;">
-            <div class="sa-beta-badge">🧪 β版</div>
+            <div class="sa-beta-badge">🧪 Bản beta</div>
             <div class="sa-beta-text">
-              <strong>超強引！作風解析エンジン — Super Forced! Style Analyzer Engine</strong>
-              <span>実験的機能です。正式リリースではありません。解析精度やUI/UXは予告なく変更される場合があります。</span>
+              <strong>Công cụ phân tích phong cách chuyên sâu</strong>
+              <span>Đây là tính năng thử nghiệm. Độ chính xác và giao diện có thể thay đổi mà không báo trước.</span>
             </div>
           </div>
           <div style="border-top: 1px solid rgba(251,191,36,0.2); margin-top: 10px; padding-top: 10px;">
             <p class="sa-desc-hint" style="margin: 0; padding: 0;">
-              💡 <strong>ストーリー生成前でも作風解析は実行可能</strong><br>
-              ストーリーを生成する前であっても、ご自身の文章・画像を先にドロップ（またはテキスト貼り付け）して「超強引！作風解析エンジン」を実行し、解析結果のコピーやJSON保存を行うことが可能です。<br>
-              💡 <strong>どんな資料でも強引に全項目を解析・補完</strong>：たとえ短すぎる単語や、文章が含まれない画像のみのファイルであっても、AIが豊かな想像力で超強引に補完し、すべてのパラメータを100%埋めて出力します。
+               💡 <strong>Có thể phân tích phong cách trước khi tạo truyện</strong><br>
+              Bạn có thể thả văn bản hoặc hình ảnh trước khi tạo truyện, chạy phân tích phong cách rồi sao chép kết quả hoặc lưu JSON.<br>
+              💡 <strong>Phân tích và bổ sung mọi thông số từ bất kỳ tư liệu nào</strong>: Ngay cả với văn bản rất ngắn hoặc chỉ có hình ảnh, AI sẽ suy luận để điền đầy đủ các thông số.
             </p>
           </div>
         </div>
@@ -512,18 +512,18 @@
         <!-- STEP 1: テキスト・画像ドロップと直接貼付 -->
         <div class="sa-block">
           <div class="sa-block-header">
-            <span class="sa-block-title">📥 STEP 1 — テキスト・画像を投入</span>
+            <span class="sa-block-title">📥 BƯỚC 1 — Thêm văn bản và hình ảnh</span>
             <span class="sa-file-count hidden" id="sa-file-count"></span>
-            <button class="btn-secondary sa-btn-small" id="btn-sa-clear">🗑️ 全クリア</button>
+             <button class="btn-secondary sa-btn-small" id="btn-sa-clear">🗑️ Xóa tất cả</button>
           </div>
 
           <div class="sa-dropzone" id="sa-dropzone">
             <div class="sa-dropzone-icon">📥</div>
             <div class="sa-dropzone-text">
-              <strong>テキストや画像をドロップ（複数OK）</strong>
-              <span>またはクリックして選択 — .txt / .md / 画像対応</span>
+              <strong>Thả một hoặc nhiều văn bản hoặc hình ảnh</strong>
+              <span>hoặc bấm để chọn — hỗ trợ .txt / .md / hình ảnh</span>
             </div>
-            <div class="sa-dropzone-hint">文体分析用の作品テキストや、色彩・トーン分析用のイラスト画像を投入してください（要件を満たさない短い文章や画像のみでも、AIが超強引に想像して全項目を解析します）</div>
+            <div class="sa-dropzone-hint">Thêm văn bản để phân tích cách viết hoặc hình ảnh để phân tích màu sắc và sắc thái. AI vẫn có thể suy luận từ tư liệu ngắn.</div>
           </div>
           <input type="file" id="sa-file-input" accept=".txt,.md,.csv,text/plain,text/markdown,image/*" multiple class="hidden">
 
@@ -531,55 +531,55 @@
           <div class="sa-file-list" id="sa-file-list"></div>
 
           <div class="sa-direct-input-wrap">
-            <textarea id="sa-direct-text" class="sa-direct-textarea" placeholder="または、解析したい文章を直接ここに貼り付けることも可能です..."></textarea>
-            <button id="btn-sa-add-text" class="sa-btn-add-text" disabled>確定追加</button>
+            <textarea id="sa-direct-text" class="sa-direct-textarea" placeholder="Hoặc dán trực tiếp văn bản cần phân tích tại đây..."></textarea>
+             <button id="btn-sa-add-text" class="sa-btn-add-text" disabled>Xác nhận thêm</button>
           </div>
         </div>
 
         <!-- STEP 2: 作風解析 → 解析結果 → リライト -->
         <div class="sa-block">
           <div class="sa-block-header">
-            <span class="sa-block-title">🔬 STEP 2 — 超強引！作風解析・リライト</span>
+            <span class="sa-block-title">🔬 BƯỚC 2 — Phân tích và tự điền thiết lập</span>
           </div>
-          <p class="sa-desc">投入テキストの文体・トーン・修辞技法・描写傾向・語彙レベル・構造パターン等をAIが深層分析しパラメータ化します。</p>
+          <p class="sa-desc">AI phân tích sâu văn phong, sắc thái, biện pháp tu từ, xu hướng miêu tả, từ vựng và cấu trúc của nội dung đã thêm.</p>
           <!-- API進捗ステータス -->
           <div class="sa-api-status hidden" id="sa-api-status"></div>
-          <button class="sa-btn-action" id="btn-sa-analyze" disabled>🔬 超強引！作風解析を実行</button>
+          <button class="sa-btn-action" id="btn-sa-analyze" disabled>🔬 Phân tích và tự điền thiết lập</button>
 
           <!-- 解析結果 -->
           <div class="sa-result-wrap hidden" id="sa-result-wrap">
             <div class="sa-block-header">
-              <span class="sa-block-title">📊 解析結果</span>
+              <span class="sa-block-title">📊 Kết quả phân tích</span>
               <div class="output-actions">
-                <button class="btn-secondary" id="btn-sa-copy" title="人間が読める形式でコピー">📋 コピー</button>
-                <button class="btn-secondary" id="btn-sa-json" title="AI小説ツール向けJSON形式で保存">💾 JSON保存</button>
+                <button class="btn-secondary" id="btn-sa-copy" title="Sao chép ở định dạng dễ đọc">📋 Sao chép</button>
+                <button class="btn-secondary" id="btn-sa-json" title="Lưu JSON dùng cho công cụ viết truyện AI">💾 Lưu JSON</button>
               </div>
             </div>
-            <p class="sa-format-hint">📋コピー → 人間が読める解析テキスト ／ 💾JSON → ChatGPT・Claude等のAI小説ツールにそのまま投入可能な構造化データ<br>
-            <strong style="color: #6ee7b7; display: block; margin-top: 6px;">💡 連携: 保存したJSONファイルは、AI 4-koma System のSTEP1（キャラクターシートや360度画像と同じドロップエリア）に直接ドラッグ＆ドロップして適用可能です。</strong></p>
+            <p class="sa-format-hint">📋 Sao chép: văn bản phân tích dễ đọc ／ 💾 JSON: dữ liệu có cấu trúc dùng trực tiếp với các công cụ viết truyện AI<br>
+            <strong style="color: #6ee7b7; display: block; margin-top: 6px;">💡 Tích hợp: Có thể kéo tệp JSON đã lưu vào BƯỚC 1 của AI 4-koma System để áp dụng trực tiếp.</strong></p>
             <div class="sa-result-box" id="sa-result"></div>
           </div>
 
           <!-- リライト実行ボタン（解析完了後に表示） -->
           <div class="sa-reflect-wrap hidden" id="sa-reflect-wrap">
             <div class="sa-divider"></div>
-            <p class="sa-desc">解析した作風を上のOUTPUTストーリーに適用してリライトします（プロット維持・文体のみ変換）。</p>
+            <p class="sa-desc">Áp dụng phong cách đã phân tích để viết lại truyện trong Output, giữ nguyên cốt truyện và chỉ đổi văn phong.</p>
             <!-- リライト用API進捗ステータス -->
             <div class="sa-api-status hidden" id="sa-reflect-api-status"></div>
-            <button class="sa-btn-action sa-btn-reflect" id="btn-sa-reflect" disabled>🎨 この作風でリライト実行</button>
+            <button class="sa-btn-action sa-btn-reflect" id="btn-sa-reflect" disabled>🎨 Viết lại theo phong cách này</button>
             <p class="sa-desc-hint" id="sa-reflect-hint">
-              ※上の出力エリアにストーリーが生成されると、この作風でリライトを実行できるようになります。
+              Có thể viết lại theo phong cách này sau khi Output có nội dung truyện.
             </p>
           </div>
 
           <!-- リライト結果 -->
           <div class="sa-result-wrap hidden" id="sa-reflect-result-wrap">
             <div class="sa-block-header">
-              <span class="sa-block-title">🎨 リライト結果</span>
-              <span class="sa-reflect-counter" id="sa-reflect-counter">0 字</span>
+              <span class="sa-block-title">🎨 Kết quả viết lại</span>
+              <span class="sa-reflect-counter" id="sa-reflect-counter">0 ký tự</span>
               <div class="output-actions">
-                <button class="btn-secondary" id="btn-sa-reflect-copy">📋 コピー</button>
-                <button class="btn-secondary" id="btn-sa-reflect-dl">📄 .txt保存</button>
+                <button class="btn-secondary" id="btn-sa-reflect-copy">📋 Sao chép</button>
+                <button class="btn-secondary" id="btn-sa-reflect-dl">📄 Lưu .txt</button>
               </div>
             </div>
             <div class="sa-result-box sa-reflect-output" id="sa-reflect-output"></div>

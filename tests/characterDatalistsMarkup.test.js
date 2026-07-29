@@ -9,7 +9,7 @@ assert.deepEqual(DEFAULT_SEX_OPTIONS, ['男性', '女性', '無性', '回答無�
 
 assert.equal(
   createDatalistMarkup('roles-list', ['主人公', '相棒']),
-  '<datalist id="roles-list"><option value="主人公"></option><option value="相棒"></option></datalist>',
+  '<datalist id="roles-list"><option value="主人公" label="Nhân vật chính"></option><option value="相棒" label="Cộng sự"></option></datalist>',
 );
 
 assert.equal(
@@ -21,11 +21,11 @@ assert.equal(createDatalistMarkup('empty', null), '<datalist id="empty"></datali
 
 const markup = createCharacterDatalistsMarkup(['主人公'], ['熱血']);
 
-assert.equal(markup.roles, '<datalist id="roles-list"><option value="主人公"></option></datalist>');
-assert.equal(markup.personalities, '<datalist id="personalities-list"><option value="熱血"></option></datalist>');
+assert.equal(markup.roles, '<datalist id="roles-list"><option value="主人公" label="Nhân vật chính"></option></datalist>');
+assert.equal(markup.personalities, '<datalist id="personalities-list"><option value="熱血" label="Nhiệt huyết"></option></datalist>');
 assert.equal(
   markup.sex,
-  '<datalist id="sex-list"><option value="男性"></option><option value="女性"></option><option value="無性"></option><option value="回答無し"></option></datalist>',
+  '<datalist id="sex-list"><option value="男性" label="Nam"></option><option value="女性" label="Nữ"></option><option value="無性" label="Phi giới tính"></option><option value="回答無し" label="Không trả lời"></option></datalist>',
 );
 
 const custom = createCharacterDatalistsMarkup(['A'], ['B'], ['C'], (value) => `{${value}}`);

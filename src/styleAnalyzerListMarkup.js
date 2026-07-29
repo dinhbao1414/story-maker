@@ -11,8 +11,8 @@ function createStyleAnalyzerTextFileListMarkup(files, escapeHtml = defaultEscape
   return (Array.isArray(files) ? files : []).map((file, index) => `
     <div class="sa-file-item">
       <span class="sa-file-name">📄 ${escapeHtml(file?.name)}</span>
-      <span class="sa-file-chars">${Number(file?.charCount || 0).toLocaleString()}字</span>
-      <button class="sa-file-remove" data-idx="${index}" title="除去">✕</button>
+      <span class="sa-file-chars">${Number(file?.charCount || 0).toLocaleString()} ký tự</span>
+      <button class="sa-file-remove" data-idx="${index}" title="Xóa">✕</button>
     </div>
   `).join('');
 }
@@ -22,7 +22,7 @@ function createStyleAnalyzerImageListMarkup(images, escapeHtml = defaultEscape) 
     <div class="sa-image-item">
       <img src="${escapeHtml(image?.previewUrl)}" alt="${escapeHtml(image?.name)}" class="sa-image-thumb" />
       <span class="sa-image-name">${escapeHtml(image?.name)}</span>
-      <button class="sa-file-remove" data-img-idx="${index}" title="除去">✕</button>
+      <button class="sa-file-remove" data-img-idx="${index}" title="Xóa">✕</button>
     </div>
   `).join('');
 }

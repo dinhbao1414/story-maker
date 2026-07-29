@@ -10,10 +10,11 @@ const textMarkup = createStyleAnalyzerTextFileListMarkup([
 ]);
 
 assert.match(textMarkup, /📄 memo\.md/);
-assert.match(textMarkup, /1,234字/);
+assert.match(textMarkup, /1,234 ký tự/);
 assert.match(textMarkup, /data-idx="0"/);
 assert.match(textMarkup, /&lt;bad&amp;name&gt;\.txt/);
-assert.match(textMarkup, /0字/);
+assert.match(textMarkup, /0 ký tự/);
+assert.match(textMarkup, /title="Xóa"/);
 
 assert.equal(createStyleAnalyzerTextFileListMarkup(null), '');
 

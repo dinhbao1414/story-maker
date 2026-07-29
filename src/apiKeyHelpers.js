@@ -30,16 +30,16 @@ export function summarizeApiKey(value, provider) {
 export function validateApiKey(value, provider) {
   const summary = summarizeApiKey(value, provider);
   if (summary.empty) {
-    return { ok: false, message: 'APIキーが未設定です。編集ボタンを押して実キーを入力してください。', summary };
+    return { ok: false, message: 'Chưa cấu hình khóa API. Hãy bấm Chỉnh sửa rồi nhập khóa thật.', summary };
   }
   if (summary.masked) {
-    return { ok: false, message: 'APIキーがマスク表示のままです。編集ボタンを押して実キーを入力し直してください。', summary };
+    return { ok: false, message: 'Khóa API vẫn đang ở dạng che. Hãy bấm Chỉnh sửa rồi nhập lại khóa thật.', summary };
   }
   if (summary.short) {
-    return { ok: false, message: `APIキーが短すぎます（${summary.length}文字）。実キーを入力し直してください。`, summary };
+    return { ok: false, message: `Khóa API quá ngắn (${summary.length} ký tự). Hãy nhập lại khóa thật.`, summary };
   }
   if (summary.badChars) {
-    return { ok: false, message: 'APIキーに使用できない文字が含まれています。コピー時の余分な文字を除いて入力し直してください。', summary };
+    return { ok: false, message: 'Khóa API chứa ký tự không hợp lệ. Hãy xóa ký tự thừa khi sao chép rồi nhập lại.', summary };
   }
   return { ok: true, summary };
 }

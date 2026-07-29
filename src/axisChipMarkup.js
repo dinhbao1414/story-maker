@@ -1,3 +1,5 @@
+import { getVietnameseLabel } from './vietnameseLabels.js';
+
 function defaultEscape(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -9,15 +11,17 @@ function defaultEscape(value) {
 
 function createSubChipMarkup(values, escapeHtml = defaultEscape) {
   return (Array.isArray(values) ? values : []).map((value) => {
-    const escaped = escapeHtml(value);
-    return `<button class="chip sub-chip" data-v="${escaped}">${escaped}</button>`;
+    const escapedValue = escapeHtml(value);
+    const escapedLabel = escapeHtml(getVietnameseLabel(value));
+    return `<button class="chip sub-chip" data-v="${escapedValue}">${escapedLabel}</button>`;
   }).join('');
 }
 
 function createCategoryChipMarkup(categories, escapeHtml = defaultEscape) {
   return Object.keys(categories || {}).map((category) => {
-    const escaped = escapeHtml(category);
-    return `<button class="chip cat-chip" data-cat="${escaped}">${escaped}</button>`;
+    const escapedValue = escapeHtml(category);
+    const escapedLabel = escapeHtml(getVietnameseLabel(category));
+    return `<button class="chip cat-chip" data-cat="${escapedValue}">${escapedLabel}</button>`;
   }).join('');
 }
 

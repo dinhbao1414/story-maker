@@ -238,7 +238,7 @@ async function applyUniversalAssets(assets = []) {
   }
 }
 
-async function applyGenerationSettings(payload) {
+export async function applyGenerationSettings(payload, { announce = true } = {}) {
   const settings = payload.settings || {};
   if (byId('settings')?.classList.contains('generating')) {
     alert('Generation is running. Import after it finishes.');
@@ -254,7 +254,7 @@ async function applyGenerationSettings(payload) {
   await applyUniversalAssets(settings.universalAssets || []);
   restoreLocks(settings.locked || {});
   window.dispatchEvent(new CustomEvent('story-maker:settings-imported'));
-  alert('Generation settings imported.');
+  if (announce) alert('Generation settings imported.');
 }
 
 function importGenerationSettingsFromFile(file) {

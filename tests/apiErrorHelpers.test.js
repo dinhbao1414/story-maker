@@ -17,22 +17,22 @@ assert.equal(ia('thinking_config invalid_argument'), true);
 
 assert.equal(
   xr('Gemini text failure', 'Blocked by Safety Filter', [], { safety: true }),
-  '【コンテンツ制限】安全フィルターによりブロックされました。言い回しを変更してください。',
+  '【Hạn chế nội dung】Bộ lọc an toàn đã chặn yêu cầu. Hãy thay đổi cách diễn đạt.',
 );
 
 assert.equal(
   xr('Gemini vision failure', 'Blocked by Safety Filter', [], { safety: true, vision: true }),
-  '【コンテンツ制限】画像が安全フィルターによりブロックされました。別の画像をお試しください。',
+  '【Hạn chế nội dung】Bộ lọc an toàn đã chặn ảnh. Hãy thử ảnh khác.',
 );
 
 assert.equal(
   xr('Gemini text failure', 'Diagnostic Failed: API key not valid', [], { auth: true }),
-  '【認証エラー】APIキーが無効です。正しいキーを設定してください。',
+  '【Lỗi xác thực】Khóa API không hợp lệ. Hãy nhập đúng khóa.',
 );
 
 assert.match(
   xr('Gemini text failure', 'Available Models: gemini-2.5-flash', ['gemini-pro: 404 not found']),
-  /利用可能モデルまたは送信形式で失敗しました。/,
+  /model khả dụng hoặc định dạng yêu cầu không được chấp nhận/,
 );
 
 console.log('api error helper tests passed');

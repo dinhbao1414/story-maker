@@ -13,9 +13,9 @@ import { STORY_MAKER_FOOTER } from '../src/version.js';
 
 assert.equal(EDITORIAL_PASS_SCORE, 90);
 assert.equal(EDITORIAL_PUBLISHABLE_SCORE, 85);
-assert.deepEqual(getEditorialScoreTier(90), { id: 'editorial_pass', label: '編集合格', autoBrushupRequired: false });
-assert.deepEqual(getEditorialScoreTier(89), { id: 'publishable', label: '公開可能・任意ブラッシュアップ', autoBrushupRequired: false });
-assert.deepEqual(getEditorialScoreTier(84), { id: 'needs_brushup', label: '要ブラッシュアップ', autoBrushupRequired: true });
+assert.deepEqual(getEditorialScoreTier(90), { id: 'editorial_pass', label: 'Đạt chuẩn biên tập', autoBrushupRequired: false });
+assert.deepEqual(getEditorialScoreTier(89), { id: 'publishable', label: 'Có thể xuất bản · tinh chỉnh tùy chọn', autoBrushupRequired: false });
+assert.deepEqual(getEditorialScoreTier(84), { id: 'needs_brushup', label: 'Cần tinh chỉnh', autoBrushupRequired: true });
 assert.equal(getEditorialReviewFamily('short'), 'fiction');
 assert.equal(getEditorialReviewFamily('long_10000'), 'fiction');
 assert.equal(getEditorialReviewFamily('script'), 'script');

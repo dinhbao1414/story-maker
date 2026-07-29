@@ -4,7 +4,7 @@ export class DirectLong10000ValidationError extends Error {
   constructor(validation) {
     const issues = Array.isArray(validation?.issues) ? validation.issues : [];
     const charCount = Number(validation?.charCount || 0);
-    super(`長編（10000字～）の完成条件を満たしていません: ${issues.join(', ')}（${charCount.toLocaleString()}字）`);
+    super(`Truyện dài (từ 10.000 chữ) chưa đạt điều kiện hoàn tất: ${issues.join(', ')} (${charCount.toLocaleString()} ký tự)`);
     this.name = 'DirectLong10000ValidationError';
     this.category = 'quality';
     this.charCount = charCount;
@@ -28,7 +28,7 @@ export function applyDirectLong10000UiResult({ mode, text, root, status } = {}) 
       root.dataset.directLongChars = String(validation.charCount);
       root.dataset.directLongIssues = '';
     }
-    if (status) status.textContent = `AI進捗・思考ログ: 完了（${validation.charCount.toLocaleString()}字）`;
+    if (status) status.textContent = `Tiến độ và nhật ký AI: Hoàn tất (${validation.charCount.toLocaleString()} ký tự)`;
     return validation;
   } catch (error) {
     if (!(error instanceof DirectLong10000ValidationError)) throw error;
@@ -38,7 +38,7 @@ export function applyDirectLong10000UiResult({ mode, text, root, status } = {}) 
       root.dataset.directLongIssues = error.issues.join(',');
     }
     if (status) {
-      status.textContent = `AI進捗・思考ログ: 失敗（${error.charCount.toLocaleString()}字 / ${error.issues.join(', ')}）`;
+      status.textContent = `Tiến độ và nhật ký AI: Thất bại (${error.charCount.toLocaleString()} ký tự / ${error.issues.join(', ')})`;
     }
     return { ok: false, charCount: error.charCount, issues: [...error.issues] };
   }

@@ -3,7 +3,7 @@ function createDirectStyleTextEntry(value, existingCount = 0) {
   if (!text) return null;
 
   return {
-    name: `直接入力テキスト_${existingCount + 1}`,
+    name: `Văn bản nhập trực tiếp_${existingCount + 1}`,
     text,
     charCount: text.length,
   };
@@ -16,7 +16,7 @@ function countStyleAnalyzerTextFileChars(textFiles) {
 
 function createStyleAnalyzerFileCountLabel(textFiles) {
   const files = Array.isArray(textFiles) ? textFiles : [];
-  return `${files.length}件 / ${countStyleAnalyzerTextFileChars(files).toLocaleString()}字`;
+  return `${files.length} mục / ${countStyleAnalyzerTextFileChars(files).toLocaleString()} ký tự`;
 }
 
 export {

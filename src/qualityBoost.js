@@ -12,8 +12,42 @@ import {
   shouldSkipQualityPrompt,
 } from './modeContracts.js';
 import { cleanOutputForPublicMode } from './outputCleanup.js';
+import {
+  OPENAI_CHAT_COMPLETIONS_URL,
+  OPENAI_LOCAL_RUNTIME,
+  OPENAI_TEXT_MODELS,
+} from './data.js';
 
 const OPENAI_SYSTEM_MARKER = '[SMK_OPENAI_PUBLIC_MODE_SYSTEM_V500]';
+
+function isOpenAiChatCompletionsUrl(url) {
+  const value = String(url || '');
+  return value.startsWith(OPENAI_CHAT_COMPLETIONS_URL)
+    || /https:\/\/api\.openai\.com\/v1\/chat\/completions/i.test(value);
+}
+
+function adaptOpenAiRuntimeRequest(input, init = {}) {
+  const url = typeof input === 'string' ? input : input?.url;
+  if (!OPENAI_LOCAL_RUNTIME || !isOpenAiChatCompletionsUrl(url)) {
+    return { input, init };
+  }
+  const body = parseJsonBody(init.body);
+  if (!body || typeof body !== 'object') {
+    return { input: OPENAI_CHAT_COMPLETIONS_URL, init };
+  }
+  const model = String(body.model || '');
+  const mappedModel = model.startsWith('cx/')
+    ? model
+    : model.includes('nano')
+      ? OPENAI_TEXT_MODELS[2]
+      : model.includes('mini')
+        ? OPENAI_TEXT_MODELS[1]
+        : OPENAI_TEXT_MODELS[0];
+  return {
+    input: OPENAI_CHAT_COMPLETIONS_URL,
+    init: { ...init, body: JSON.stringify({ ...body, model: mappedModel }) },
+  };
+}
 
 const OPENAI_SYSTEM_LENGTH_RULES = Object.fromEntries(
   Object.entries(MODE_LENGTH_TARGETS).map(([mode, spec]) => [
@@ -825,7 +859,7 @@ async function rewriteShortOpenAiText(originalFetch, init, body, mode, draft, re
     response_format: body.response_format,
   };
 
-  const response = await originalFetch('https://api.openai.com/v1/chat/completions', {
+  const response = await originalFetch(OPENAI_CHAT_COMPLETIONS_URL, {
     method: 'POST',
     headers: continuationHeaders(init),
     body: JSON.stringify(rewriteBody),
@@ -887,7 +921,7 @@ async function rewriteShortGeminiText(originalFetch, input, init, body, mode, dr
 
 async function ensureOpenAiStreamLength(input, init, response, originalFetch) {
   const url = typeof input === 'string' ? input : input && input.url;
-  if (!/api\.openai\.com/i.test(url || '')) return response;
+  if (!isOpenAiChatCompletionsUrl(url)) return response;
   const body = parseJsonBody(init?.body);
   if (!body || body.stream !== true || body.response_format?.type === 'json_object') return response;
   const mode = resolvePromptMode(collectOpenAiText(body));
@@ -1032,11 +1066,13 @@ function boostRequest(input, init = {}) {
   if (!url || !init || typeof init.body !== 'string') return init;
   const body = parseJsonBody(init.body);
   if (!body || typeof body !== 'object') return init;
+  if (body.response_format?.type === 'json_object'
+    || body.generationConfig?.responseMimeType === 'application/json') return init;
 
   let nextBody = body;
   if (/generativelanguage\.googleapis\.com/i.test(url)) {
     nextBody = boostGeminiBody(body);
-  } else if (/api\.openai\.com/i.test(url)) {
+  } else if (isOpenAiChatCompletionsUrl(url)) {
     nextBody = boostOpenAiBody(body);
   }
 
@@ -1048,10 +1084,11 @@ function boostRequest(input, init = {}) {
 if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
   const originalFetch = window.fetch.bind(window);
   window.fetch = async (input, init) => {
-    const nextInit = boostRequest(input, init || {});
-    const response = await originalFetch(input, nextInit);
-    const openAiResponse = await ensureOpenAiStreamLength(input, nextInit, response, originalFetch);
-    return ensureGeminiStreamLength(input, nextInit, openAiResponse, originalFetch);
+    const boostedInit = boostRequest(input, init || {});
+    const adaptedRequest = adaptOpenAiRuntimeRequest(input, boostedInit);
+    const response = await originalFetch(adaptedRequest.input, adaptedRequest.init);
+    const openAiResponse = await ensureOpenAiStreamLength(adaptedRequest.input, adaptedRequest.init, response, originalFetch);
+    return ensureGeminiStreamLength(adaptedRequest.input, adaptedRequest.init, openAiResponse, originalFetch);
   };
   document.documentElement.dataset.smkQualityBoost = 'ready';
 } else if (typeof document !== 'undefined') {

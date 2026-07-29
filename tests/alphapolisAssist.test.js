@@ -106,15 +106,15 @@ assert.match(formatted, /投稿前チェック:/);
 assert.equal(formatted.includes('Created By'), false);
 
 const html = renderAlphapolisPreview(preview);
-assert.match(html, /Alphapolis Form Preview/);
-assert.match(html, /選択肢: 未選択 \/ 男性向け \/ 女性向け/);
+assert.match(html, /Xem trước biểu mẫu Alphapolis/);
+assert.match(html, /Lựa chọn: Chưa chọn \/ Dành cho nam giới \/ Dành cho nữ giới/);
 assert.match(html, /data-copy-kind="tag"/);
 assert.doesNotMatch(html, /data-copy-kind="chapterSetting"/);
 assert.doesNotMatch(html, /data-copy-kind="chapterName"/);
 assert.doesNotMatch(html, /data-copy-kind="guidelineChecks"/);
 assert.match(html, /data-copy-kind="episodeTitle"/);
 assert.match(html, /data-copy-kind="episodeBody"/);
-assert.match(html, /投稿前チェック/);
+assert.match(html, /Kiểm tra trước khi đăng/);
 
 const unchaptered = buildAlphapolisPreview({
   storyText: 'タイトル: 夕焼けの手紙\n短い物語だが、主人公は最後に大切な手紙を読み、家族と和解する。静かな余韻の中で物語は終わる。',

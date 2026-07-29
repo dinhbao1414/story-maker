@@ -55,23 +55,23 @@ export function formatEditorialProgress({ phase = '', attempt = 0, maxAttempts =
   if (phase === 'decision') {
     decision ||= {};
     const issueLabels = {
-      score_not_improved: '点数が上がっていない',
-      content_loss: '本文が短くなりすぎた',
-      format: '出力形式違反',
-      unclosed_ending: '未完結',
-      duplicate_paragraph: '段落重複',
+      score_not_improved: 'Điểm không tăng',
+      content_loss: 'Nội dung bị rút ngắn quá nhiều',
+      format: 'Sai định dạng đầu ra',
+      unclosed_ending: 'Kết thúc chưa hoàn chỉnh',
+      duplicate_paragraph: 'Trùng đoạn văn',
     };
     const currentScore = Number.isFinite(decision.currentScore) ? decision.currentScore : '―';
     const candidateScore = Number.isFinite(decision.candidateScore) ? decision.candidateScore : '―';
     const verdict = decision.adopt
-      ? '採用'
-      : `不採用: ${(decision.issues || []).map(issue => issueLabels[issue] || issue).join('・') || '採用条件未達'}`;
-    return `採点結果（${Math.max(1, Number(attempt) || 1)}/${Math.max(1, Number(maxAttempts) || 3)}回）: 前回${currentScore}点 → 候補${candidateScore}点（${verdict}）`;
+      ? 'Đã áp dụng'
+      : `Không áp dụng: ${(decision.issues || []).map(issue => issueLabels[issue] || issue).join(' · ') || 'Chưa đạt điều kiện áp dụng'}`;
+    return `Kết quả chấm điểm (${Math.max(1, Number(attempt) || 1)}/${Math.max(1, Number(maxAttempts) || 3)} lần): trước ${currentScore} điểm → bản đề xuất ${candidateScore} điểm (${verdict})`;
   }
-  const step = `${Math.max(1, Number(attempt) || 1)}/${Math.max(1, Number(maxAttempts) || 3)}回・100点目標`;
-  if (phase === 'brushup') return `API稼働中: 改稿を生成中（${step}）...`;
-  if (phase === 'review' && Number(attempt) > 0) return `API稼働中: 改稿後を再採点中（${step}）...`;
-  return 'API稼働中: 元原稿を講評中...';
+  const step = `${Math.max(1, Number(attempt) || 1)}/${Math.max(1, Number(maxAttempts) || 3)} lần · mục tiêu 100 điểm`;
+  if (phase === 'brushup') return `API đang hoạt động: Đang tạo bản sửa (${step})...`;
+  if (phase === 'review' && Number(attempt) > 0) return `API đang hoạt động: Đang chấm lại sau sửa (${step})...`;
+  return 'API đang hoạt động: Đang nhận xét bản gốc...';
 }
 
 export function buildEditorialFormatRepairPrompt({ text = '', mode = '', modeLabel = '' } = {}) {
@@ -85,15 +85,15 @@ export function buildEditorialFormatRepairPrompt({ text = '', mode = '', modeLab
 }
 
 export function formatEditorialElapsedProgress(message = '', elapsedSeconds = 0) {
-  return `${String(message || '').trim()}（開始から${Math.max(0, Math.floor(Number(elapsedSeconds) || 0))}秒経過）`;
+  return `${String(message || '').trim()} (đã trôi qua ${Math.max(0, Math.floor(Number(elapsedSeconds) || 0))} giây)`;
 }
 
 export function updateEditorialProgressSurface({ titleElement, logElement, message = '', reset = false } = {}) {
   const text = String(message || '').trim();
   if (!text) return;
-  if (titleElement) titleElement.textContent = `AI進捗・思考ログ: ${text}`;
+  if (titleElement) titleElement.textContent = `Tiến độ và nhật ký AI: ${text}`;
   if (!logElement) return;
-  const prior = reset ? '【ブラッシュアップ進捗】' : String(logElement.textContent || '').trim();
+  const prior = reset ? '【Tiến độ tinh chỉnh】' : String(logElement.textContent || '').trim();
   logElement.textContent = [prior, text].filter(Boolean).join('\n');
   const container = logElement.closest?.('#progress-content');
   if (container) container.scrollTop = container.scrollHeight;
@@ -109,8 +109,8 @@ export function updateEditorialAuxiliaryUi({ alertElement, scoreBoard, message =
     alertElement.style.display = 'none';
     return;
   }
-  const detail = String(message || 'ブラッシュアップ処理中...').trim().replace(/^API稼働中:\s*/, '');
-  alertElement.textContent = `⚠️ API稼働中: ${detail}`;
+  const detail = String(message || 'Đang tinh chỉnh...').trim().replace(/^API đang hoạt động:\s*/, '');
+  alertElement.textContent = `⚠️ API đang hoạt động: ${detail}`;
   alertElement.style.display = 'flex';
 }
 
@@ -142,10 +142,10 @@ export function shouldStartAutomaticBrushup({ checked = false, review = null, ru
 export function formatEditorialCompletion({ score = 0, attempts = 0, maxAttempts = 3 } = {}) {
   const numericScore = Number.isFinite(Number(score)) ? Number(score) : 0;
   const tier = getEditorialScoreTier(numericScore);
-  if (tier.id === 'editorial_pass') return `ブラッシュアップ完了・編集合格（${numericScore}点）`;
-  if (tier.id === 'publishable') return `ブラッシュアップ完了・公開可能（${numericScore}点／編集合格${EDITORIAL_PASS_SCORE}点）`;
-  if (attempts >= maxAttempts) return `最大${maxAttempts}回終了・要ブラッシュアップ（${numericScore}点／公開可能${EDITORIAL_PUBLISHABLE_SCORE}点）`;
-  return `ブラッシュアップ${attempts}回終了・要ブラッシュアップ（${numericScore}点／公開可能${EDITORIAL_PUBLISHABLE_SCORE}点）`;
+  if (tier.id === 'editorial_pass') return `Tinh chỉnh hoàn tất · đạt chuẩn biên tập (${numericScore} điểm)`;
+  if (tier.id === 'publishable') return `Tinh chỉnh hoàn tất · có thể xuất bản (${numericScore} điểm / đạt chuẩn ${EDITORIAL_PASS_SCORE} điểm)`;
+  if (attempts >= maxAttempts) return `Đã kết thúc tối đa ${maxAttempts} lần · cần tinh chỉnh (${numericScore} điểm / có thể xuất bản từ ${EDITORIAL_PUBLISHABLE_SCORE} điểm)`;
+  return `Đã tinh chỉnh ${attempts} lần · cần tinh chỉnh (${numericScore} điểm / có thể xuất bản từ ${EDITORIAL_PUBLISHABLE_SCORE} điểm)`;
 }
 
 export function prepareEditorialReviewText(text = '', mode = '', cleaner = cleanOutputForPublicMode) {
@@ -163,7 +163,7 @@ export async function renderEditorialTypewriterOutput(output, text, { timers = g
     for (const frame of frames) {
       output.textContent = frame;
       const counter = output.ownerDocument?.querySelector?.('.char-counter');
-      if (counter) counter.textContent = `${Array.from(frame).length.toLocaleString()} 字`;
+      if (counter) counter.textContent = `${Array.from(frame).length.toLocaleString()} ký tự`;
       output.scrollTop = output.scrollHeight;
       onFrame?.(frame);
       if (frame !== frames[frames.length - 1] && Number(delayMs) > 0) {
@@ -208,7 +208,7 @@ export async function runEditorialBrushup({
   let currentReview = initialReview?.valid && initialReview?.structuredValid
     ? initialReview
     : await runEditorialReview({ text: currentText, mode, modeLabel, callAi, onProgress, attempt: 0, maxAttempts: attemptLimit, requireStructured: true });
-  if (!currentReview.valid) throw new Error('AI講評の必須項目を取得できませんでした');
+  if (!currentReview.valid) throw new Error('Không lấy được đầy đủ các mục nhận xét AI');
   let rejectedCandidate = null;
   let attempts = 0;
   const decisions = [];
@@ -246,25 +246,25 @@ function escapeEditorialHtml(value = '') {
 }
 
 export function createEditorialReviewMarkup(review, { attempts = 0, error = '' } = {}) {
-  if (error) return `<div class="editorial-review-error"><strong>AI講評を取得できませんでした。</strong><span>本文は保持されています。</span><pre>${escapeEditorialHtml(error)}</pre></div>`;
+  if (error) return `<div class="editorial-review-error"><strong>Không lấy được nhận xét AI.</strong><span>Giữ nguyên nội dung hiện tại.</span><pre>${escapeEditorialHtml(error)}</pre></div>`;
   const valid = Boolean(review?.valid && Number.isFinite(review?.score));
   const score = valid ? Math.max(0, Math.min(100, review.score)) : 0;
   const tier = getEditorialScoreTier(score);
   return [
     '<div class="editorial-review-card">',
     '<div class="editorial-review-score-panel">',
-    `<div class="editorial-review-score-label">AI総合点 <span>${valid ? tier.label : '要ブラッシュアップ'}</span></div>`,
+    `<div class="editorial-review-score-label">Điểm tổng AI <span>${valid ? tier.label : 'Cần tinh chỉnh'}</span></div>`,
     `<div class="editorial-review-score-value">${valid ? score : '—'}<small>/100</small></div>`,
     `<div class="editorial-review-score-bar"><div class="editorial-review-score-bar-fill ${tier.id === 'editorial_pass' ? 'passed' : ''}" style="width:${score}%"></div></div>`,
-    attempts ? `<div class="editorial-review-attempts">ブラッシュアップ回数: ${attempts}回</div>` : '',
+    attempts ? `<div class="editorial-review-attempts">Số lần tinh chỉnh: ${attempts}</div>` : '',
     '</div>',
     '<div class="editorial-review-detail">',
-    '<h4>総評</h4>',
-    `<pre class="editorial-review-commentary">${escapeEditorialHtml(review?.commentary || '講評を取得できませんでした。')}</pre>`,
-    '<h4>点数を上げるための問題点</h4>',
-    `<pre class="editorial-review-problems">${escapeEditorialHtml(review?.problems || '具体的な問題点を取得できませんでした。')}</pre>`,
-    '<h4>次の改稿で行うこと</h4>',
-    `<pre class="editorial-review-revision-plan">${escapeEditorialHtml(review?.revisionPlan || '具体的な改稿方針を取得できませんでした。')}</pre>`,
+    '<h4>Tổng quan</h4>',
+    `<pre class="editorial-review-commentary">${escapeEditorialHtml(review?.commentary || 'Không lấy được nhận xét tổng quan.')}</pre>`,
+    '<h4>Điểm cần cải thiện</h4>',
+    `<pre class="editorial-review-problems">${escapeEditorialHtml(review?.problems || 'Không lấy được các vấn đề cụ thể.')}</pre>`,
+    '<h4>Việc cần làm ở lần sửa tiếp theo</h4>',
+    `<pre class="editorial-review-revision-plan">${escapeEditorialHtml(review?.revisionPlan || 'Không lấy được kế hoạch sửa cụ thể.')}</pre>`,
     '</div>',
     '</div>',
   ].join('');
@@ -288,13 +288,13 @@ export function setEditorialBrushupRunningState({ button, statusElement, running
   if (!button) return;
   if (running) {
     button.disabled = true;
-    button.textContent = 'ブラッシュアップ中...';
+    button.textContent = 'Đang tinh chỉnh...';
     if (statusElement) {
-      statusElement.textContent = 'ブラッシュアップを開始しました。しばらくお待ちください...';
+      statusElement.textContent = 'Đã bắt đầu tinh chỉnh. Vui lòng chờ...';
     }
     return;
   }
-  button.textContent = 'この小説をブラッシュアップ';
+  button.textContent = 'Tinh chỉnh truyện này';
 }
 
 export function resetEditorialBrushupForNewGeneration({ doc, sectionElement, button, reviewElement, statusElement, autoCheckbox } = {}) {
@@ -302,14 +302,14 @@ export function resetEditorialBrushupForNewGeneration({ doc, sectionElement, but
   sectionElement?.setAttribute?.('aria-disabled', 'true');
   if (button) {
     button.disabled = true;
-    button.textContent = 'この小説をブラッシュアップ';
+    button.textContent = 'Tinh chỉnh truyện này';
   }
   if (autoCheckbox) autoCheckbox.disabled = true;
   if (reviewElement) {
     reviewElement.innerHTML = '';
     reviewElement.classList?.add?.('hidden');
   }
-  if (statusElement) statusElement.textContent = '新しい本文の生成・AI講評を待っています...';
+  if (statusElement) statusElement.textContent = 'Đang chờ nội dung mới và nhận xét AI...';
   const dataset = doc?.documentElement?.dataset;
   if (dataset) {
     delete dataset.editorialReviewResult;
@@ -378,7 +378,7 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
         }
       }
       if (!hasEditorialModeFormat(reviewedText, mode)) {
-        const repairMessage = 'API稼働中: 出力モードの必須形式を自動修正中...';
+        const repairMessage = 'API đang hoạt động: Đang tự sửa định dạng bắt buộc của chế độ đầu ra...';
         statusElement && (statusElement.textContent = repairMessage);
         updateEditorialProgressSurface({ titleElement: progressTitleElement, logElement: progressLogElement, message: repairMessage, reset: true });
         updateEditorialAuxiliaryUi({ alertElement: globalAlertElement, scoreBoard: thoughtScoreBoard, message: repairMessage, active: true });
@@ -386,7 +386,7 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
           stage: 'brushup', mode, charLength: reviewedText.length, attempt: 0,
         });
         const repairedText = String(repair?.text || repair || '').trim();
-        if (!hasEditorialModeFormat(repairedText, mode)) throw new Error('出力モードの必須形式を自動修正できませんでした');
+        if (!hasEditorialModeFormat(repairedText, mode)) throw new Error('Không thể tự sửa định dạng bắt buộc của chế độ đầu ra');
         reviewedText = withStoryMakerFooter(repairedText);
         if (output.dataset) output.dataset.editorialBrushupRendering = 'true';
         try {
@@ -396,9 +396,9 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
           if (output.dataset) delete output.dataset.editorialBrushupRendering;
         }
         const repairedCounter = output.ownerDocument?.querySelector?.('.char-counter');
-        if (repairedCounter) repairedCounter.textContent = `${Array.from(reviewedText).length.toLocaleString()} 字`;
+        if (repairedCounter) repairedCounter.textContent = `${Array.from(reviewedText).length.toLocaleString()} ký tự`;
       }
-      const reviewMessage = 'API稼働中: 新しい本文を講評中...';
+      const reviewMessage = 'API đang hoạt động: Đang nhận xét nội dung mới...';
       statusElement && (statusElement.textContent = reviewMessage);
       updateEditorialProgressSurface({ titleElement: progressTitleElement, logElement: progressLogElement, message: reviewMessage, reset: true });
       updateEditorialAuxiliaryUi({ alertElement: globalAlertElement, scoreBoard: thoughtScoreBoard, message: reviewMessage, active: true });
@@ -409,7 +409,7 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
       renderEditorialReview(review, reviewElement);
       sectionElement?.classList?.remove?.('is-waiting');
       sectionElement?.setAttribute?.('aria-disabled', 'false');
-      statusElement && (statusElement.textContent = review.valid ? `AI講評: ${getEditorialScoreTier(review.score).label}` : 'AI講評: 要ブラッシュアップ');
+      statusElement && (statusElement.textContent = review.valid ? `Nhận xét AI: ${getEditorialScoreTier(review.score).label}` : 'Nhận xét AI: Cần tinh chỉnh');
       doc.documentElement.dataset.editorialReviewResult = review.valid ? 'completed' : 'failed';
       doc.documentElement.dataset.editorialReviewScore = review.valid ? String(review.score) : '';
       if (shouldStartAutomaticBrushup({ checked: autoCheckbox?.checked, review, running: brushupRunning })) {
@@ -419,7 +419,7 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
     } catch (error) {
       if (token !== reviewRun) return null;
       renderEditorialReview(null, reviewElement, { error: error?.message || String(error) });
-      statusElement && (statusElement.textContent = 'AI講評を取得できませんでした（本文は保持）');
+      statusElement && (statusElement.textContent = 'Không lấy được nhận xét AI (giữ nguyên nội dung)');
       doc.documentElement.dataset.editorialReviewResult = 'failed';
       sectionElement?.classList?.remove?.('is-waiting');
       sectionElement?.setAttribute?.('aria-disabled', 'false');
@@ -458,26 +458,26 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
     updateEditorialProgressSurface({
       titleElement: progressTitleElement,
       logElement: progressLogElement,
-      message: 'ブラッシュアップ開始・API接続準備中...',
+      message: 'Đang bắt đầu tinh chỉnh · chuẩn bị kết nối API...',
       reset: true,
     });
     updateEditorialAuxiliaryUi({
       alertElement: globalAlertElement,
       scoreBoard: thoughtScoreBoard,
-      message: 'ブラッシュアップ開始・API接続準備中...',
+      message: 'Đang bắt đầu tinh chỉnh · chuẩn bị kết nối API...',
       active: true,
     });
     const source = output.textContent;
     const reusableReview = latestReview?.valid && latestReview?.structuredValid ? latestReview : null;
     const startedAt = Date.now();
     let currentProgressMessage = reusableReview
-      ? 'API稼働中: 初回講評を再利用して改稿準備中...'
-      : 'API稼働中: 元原稿を講評中...';
+      ? 'API đang hoạt động: Dùng lại nhận xét ban đầu để chuẩn bị sửa...'
+      : 'API đang hoạt động: Đang nhận xét bản gốc...';
     const renderElapsedProgress = () => {
       const elapsedMessage = formatEditorialElapsedProgress(currentProgressMessage, (Date.now() - startedAt) / 1000);
       brushupButton.textContent = elapsedMessage;
       if (statusElement) statusElement.textContent = elapsedMessage;
-      if (progressTitleElement) progressTitleElement.textContent = `AI進捗・思考ログ: ${elapsedMessage}`;
+      if (progressTitleElement) progressTitleElement.textContent = `Tiến độ và nhật ký AI: ${elapsedMessage}`;
       if (progressLogElement) {
         const lines = String(progressLogElement.textContent || '').split('\n');
         if (lines.length) lines[lines.length - 1] = elapsedMessage;
@@ -504,24 +504,24 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
           updateEditorialAuxiliaryUi({ alertElement: globalAlertElement, scoreBoard: thoughtScoreBoard, message, active: true });
         },
       });
-      currentProgressMessage = 'ブラッシュアップ本文を流れる表示で反映中...';
+      currentProgressMessage = 'Đang hiển thị dần bản sửa...';
       if (statusElement) statusElement.textContent = currentProgressMessage;
       updateEditorialProgressSurface({
         titleElement: progressTitleElement,
         logElement: progressLogElement,
-        message: 'ブラッシュアップ本文を流れる表示で反映中...',
+        message: 'Đang hiển thị dần bản sửa...',
       });
       updateEditorialAuxiliaryUi({
         alertElement: globalAlertElement,
         scoreBoard: thoughtScoreBoard,
-        message: 'ブラッシュアップ本文を流れる表示で反映中...',
+        message: 'Đang hiển thị dần bản sửa...',
         active: true,
       });
       const reveal = prepareEditorialReveal(result.text);
       await renderEditorialTypewriterOutput(output, reveal.bodyText, { timers });
       output.textContent = reveal.finalText;
       const finalCounter = output.ownerDocument?.querySelector?.('.char-counter');
-      if (finalCounter) finalCounter.textContent = `${Array.from(reveal.finalText).length.toLocaleString()} 字`;
+      if (finalCounter) finalCounter.textContent = `${Array.from(reveal.finalText).length.toLocaleString()} ký tự`;
       renderEditorialReview(result.review, reviewElement, { attempts: result.attempts });
       latestReview = result.review?.valid ? result.review : null;
       latestReviewText = latestReview ? editorialTextFingerprint(reveal.finalText) : '';
@@ -539,11 +539,11 @@ export function installEditorialBrushupRuntime({ doc = globalThis.document, time
     } catch (error) {
       output.textContent = source;
       renderEditorialReview(null, reviewElement, { error: error?.message || String(error) });
-      statusElement && (statusElement.textContent = 'ブラッシュアップ失敗（元原稿を保持）');
+      statusElement && (statusElement.textContent = 'Tinh chỉnh thất bại (giữ nguyên bản gốc)');
       updateEditorialProgressSurface({
         titleElement: progressTitleElement,
         logElement: progressLogElement,
-        message: `ブラッシュアップ失敗・元原稿を保持（${error?.message || String(error)}）`,
+        message: `Tinh chỉnh thất bại · giữ nguyên bản gốc (${error?.message || String(error)})`,
       });
       doc.documentElement.dataset.editorialBrushupResult = 'failed';
     } finally {

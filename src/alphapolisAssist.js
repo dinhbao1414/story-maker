@@ -1,5 +1,6 @@
 import { Ce } from './domHelpers.js';
 import { buildStoryExportFileName } from './fileIoHelpers.js';
+import { getVietnameseLabel } from './vietnameseLabels.js';
 
 const MAX_TITLE_CHARS = 70;
 const MAX_INTRODUCTION_CHARS = 1200;
@@ -494,8 +495,8 @@ function readSettingsFromDom() {
 }
 
 function renderCopyButton(kind, options = {}) {
-  const label = options.label || 'コピー';
-  const title = options.title || `${label}します`;
+  const label = options.label || 'Sao chép';
+  const title = options.title || `Sao chép ${label}`;
   const index = options.index === undefined ? '' : ` data-copy-index="${Ce(String(options.index))}"`;
   const className = options.className ? ` ${options.className}` : '';
   return `<button type="button" class="btn-secondary kakuyomu-copy-btn alphapolis-copy-btn${className}" data-copy-kind="${Ce(kind)}"${index} title="${Ce(title)}" aria-label="${Ce(title)}">${Ce(label)}</button>`;
@@ -503,7 +504,7 @@ function renderCopyButton(kind, options = {}) {
 
 function renderRow({ label, value, kind, note = '', multiline = false, contentHtml = '', hideAction = false }) {
   const valueClass = multiline ? 'kakuyomu-preview-value is-multiline' : 'kakuyomu-preview-value';
-  const body = contentHtml || `<div class="${valueClass}">${Ce(value)}</div>`;
+  const body = contentHtml || `<div class="${valueClass}">${Ce(getVietnameseLabel(value))}</div>`;
   const noteHtml = note ? `<div class="kakuyomu-preview-note">${Ce(note)}</div>` : '';
   const actionHtml = hideAction ? '' : renderCopyButton(kind);
   return `
@@ -516,20 +517,20 @@ function renderRow({ label, value, kind, note = '', multiline = false, contentHt
 }
 
 function renderOptionNote(options) {
-  return `選択肢: ${options.join(' / ')}`;
+  return `Lựa chọn: ${options.map(getVietnameseLabel).join(' / ')}`;
 }
 
 function renderTags(preview) {
   const tags = preview.tags.map((tag, index) => `
     <span class="kakuyomu-tag-item">
       <span class="kakuyomu-tag">${Ce(tag)}</span>
-      ${renderCopyButton('tag', { label: 'タグコピー', index })}
+      ${renderCopyButton('tag', { label: 'Sao chép thẻ', index })}
     </span>
   `).join('');
   return renderRow({
-    label: 'タグ',
+    label: 'Thẻ',
     kind: 'tags',
-    note: '1タグ20文字以内、最大10個。AI生成作品をデフォルトで含めます。',
+    note: 'Mỗi thẻ tối đa 20 ký tự, nhiều nhất 10 thẻ. Mặc định gồm thẻ tác phẩm do AI tạo.',
     hideAction: true,
     contentHtml: `<div class="kakuyomu-tag-list">${tags}</div>`,
   });
@@ -537,18 +538,18 @@ function renderTags(preview) {
 
 function renderEpisode(episode, index) {
   const chapterNameMeta = episode.chapterSetting === '新しい章を追加する'
-    ? ` / 新しい章名: ${Ce(episode.chapterName)}`
+    ? ` / Tên chương mới: ${Ce(episode.chapterName)}`
     : '';
   return `
     <section class="kakuyomu-body-block alphapolis-episode-block">
       <div class="kakuyomu-body-block-head">
         <div>
           <div class="kakuyomu-body-block-title">#${index + 1} ${Ce(episode.episodeTitle)}</div>
-          <div class="kakuyomu-body-block-meta">${charLength(episode.body)}字 / 章の設定: ${Ce(episode.chapterSetting)}${chapterNameMeta}</div>
+          <div class="kakuyomu-body-block-meta">${charLength(episode.body)} ký tự / Thiết lập chương: ${Ce(getVietnameseLabel(episode.chapterSetting))}${chapterNameMeta}</div>
         </div>
         <div class="kakuyomu-body-block-actions">
-          ${renderCopyButton('episodeTitle', { label: '話タイトルコピー', index })}
-          ${renderCopyButton('episodeBody', { label: '本文コピー', index, className: 'kakuyomu-chapter-copy' })}
+          ${renderCopyButton('episodeTitle', { label: 'Sao chép tiêu đề tập', index })}
+          ${renderCopyButton('episodeBody', { label: 'Sao chép nội dung', index, className: 'kakuyomu-chapter-copy' })}
         </div>
       </div>
       <pre class="kakuyomu-body-preview kakuyomu-chapter-preview">${Ce(episode.body)}</pre>
@@ -564,24 +565,24 @@ export function renderAlphapolisPreview(preview) {
   return `
     <div class="kakuyomu-preview-titlebar alphapolis-preview-titlebar">
       <div>
-        <div class="kakuyomu-preview-kicker">Alphapolis Form Preview</div>
+        <div class="kakuyomu-preview-kicker">Xem trước biểu mẫu Alphapolis</div>
         <div class="kakuyomu-preview-name">${Ce(preview.title)}</div>
       </div>
-      <span class="kakuyomu-preview-count">${charLength(preview.title)} / ${MAX_TITLE_CHARS}字</span>
+      <span class="kakuyomu-preview-count">${charLength(preview.title)} / ${MAX_TITLE_CHARS} ký tự</span>
     </div>
-    ${renderRow({ label: 'タイトル', value: preview.title, kind: 'title', note: '70文字以内' })}
-    ${renderRow({ label: '内容紹介', value: preview.introduction, kind: 'introduction', multiline: true, note: '1,200文字以内' })}
-    ${renderRow({ label: 'HOTランキング用ジャンル', value: preview.hotGenre, kind: 'hotGenre', note: renderOptionNote(preview.options.hotRanking) })}
-    ${renderRow({ label: 'カテゴリ', value: preview.category, kind: 'category', note: renderOptionNote(preview.options.category) })}
-    ${renderRow({ label: '長編・短編', value: preview.lengthKind, kind: 'lengthKind', note: renderOptionNote(preview.options.length) })}
-    ${renderRow({ label: '執筆状態', value: preview.writingStatus, kind: 'writingStatus', note: renderOptionNote(preview.options.status) })}
-    ${renderRow({ label: 'R指定', value: preview.rating, kind: 'rating', note: renderOptionNote(preview.options.rating) })}
+    ${renderRow({ label: 'Tiêu đề', value: preview.title, kind: 'title', note: 'Tối đa 70 ký tự' })}
+    ${renderRow({ label: 'Giới thiệu nội dung', value: preview.introduction, kind: 'introduction', multiline: true, note: 'Tối đa 1.200 ký tự' })}
+    ${renderRow({ label: 'Thể loại xếp hạng HOT', value: preview.hotGenre, kind: 'hotGenre', note: renderOptionNote(preview.options.hotRanking) })}
+    ${renderRow({ label: 'Danh mục', value: preview.category, kind: 'category', note: renderOptionNote(preview.options.category) })}
+    ${renderRow({ label: 'Độ dài', value: preview.lengthKind, kind: 'lengthKind', note: renderOptionNote(preview.options.length) })}
+    ${renderRow({ label: 'Trạng thái viết', value: preview.writingStatus, kind: 'writingStatus', note: renderOptionNote(preview.options.status) })}
+    ${renderRow({ label: 'Phân loại độ tuổi', value: preview.rating, kind: 'rating', note: renderOptionNote(preview.options.rating) })}
     ${renderTags(preview)}
-    ${renderRow({ label: '表紙画像', value: preview.coverImage, kind: 'coverImage' })}
-    ${renderRow({ label: '感想の受付', value: preview.impressions, kind: 'impressions' })}
-    ${renderRow({ label: '投稿ガイドライン', value: preview.guideline, kind: 'guideline' })}
-    ${renderRow({ label: '投稿前チェック', value: preview.guidelineChecks.join('\n'), kind: 'guidelineChecks', multiline: true, hideAction: true })}
-    ${renderRow({ label: '話の投稿', kind: 'episodeBody', multiline: true, hideAction: true, contentHtml: renderEpisodes(preview) })}
+    ${renderRow({ label: 'Ảnh bìa', value: preview.coverImage, kind: 'coverImage' })}
+    ${renderRow({ label: 'Nhận bình luận', value: preview.impressions, kind: 'impressions' })}
+    ${renderRow({ label: 'Hướng dẫn đăng bài', value: preview.guideline, kind: 'guideline' })}
+    ${renderRow({ label: 'Kiểm tra trước khi đăng', value: preview.guidelineChecks.join('\n'), kind: 'guidelineChecks', multiline: true, hideAction: true })}
+    ${renderRow({ label: 'Đăng tập', kind: 'episodeBody', multiline: true, hideAction: true, contentHtml: renderEpisodes(preview) })}
   `;
 }
 
@@ -636,7 +637,7 @@ async function copyText(value, button) {
     document.execCommand('copy');
     textarea.remove();
   }
-  button.textContent = 'コピー済み';
+  button.textContent = 'Đã sao chép';
   button.classList.add('is-copied');
   restoreButtonText(button, originalText);
 }
@@ -655,7 +656,7 @@ function saveTextFile(value, button) {
   anchor.click();
   anchor.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  button.textContent = '保存済み';
+  button.textContent = 'Đã lưu';
   button.classList.add('is-copied');
   restoreButtonText(button, originalText);
 }
@@ -690,7 +691,7 @@ export function installAlphapolisAssist() {
     });
   };
 
-  const applyLockedUi = (value, message = '処理完了後に最新内容へ更新') => {
+  const applyLockedUi = (value, message = 'Cập nhật nội dung mới nhất sau khi xử lý xong') => {
     const locked = Boolean(value);
     rootEl.classList.toggle('is-busy', locked);
     rootEl.setAttribute('aria-busy', locked ? 'true' : 'false');
@@ -708,7 +709,7 @@ export function installAlphapolisAssist() {
     queued = false;
     const generationActive = isStoryGenerationActive();
     if (busy || generationActive) {
-      applyLockedUi(true, generationActive ? '生成完了後に最新内容へ更新' : '処理完了後に最新内容へ更新');
+      applyLockedUi(true, generationActive ? 'Cập nhật nội dung mới nhất sau khi tạo xong' : 'Cập nhật nội dung mới nhất sau khi xử lý xong');
       return;
     }
     applyLockedUi(false);
@@ -718,7 +719,7 @@ export function installAlphapolisAssist() {
     bodyEl.classList.toggle('hidden', !enabled || !canPreview);
     if (!canPreview) {
       lastPreview = null;
-      statusEl.textContent = '出力後に表示';
+      statusEl.textContent = 'Hiển thị sau khi có kết quả';
       previewEl.innerHTML = '';
       setCopyControlsDisabled(true);
       return;
@@ -729,8 +730,8 @@ export function installAlphapolisAssist() {
       settings: readSettingsFromDom(),
     });
     statusEl.textContent = enabled
-      ? `表示中: ${lastPreview.episodes.length}話 / ${lastPreview.tags.length}タグ候補`
-      : 'チェックで表示';
+      ? `Đang hiển thị: ${lastPreview.episodes.length} tập / ${lastPreview.tags.length} thẻ đề xuất`
+      : 'Đánh dấu để hiển thị';
     if (enabled) previewEl.innerHTML = renderAlphapolisPreview(lastPreview);
     setCopyControlsDisabled(!enabled);
   };

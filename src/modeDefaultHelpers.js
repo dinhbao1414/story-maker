@@ -1,6 +1,8 @@
+import { getVietnameseLabel } from './vietnameseLabels.js';
+
 export function findModeLabel(modes, value) {
   const mode = modes.find(item => item.value === value) || modes[0];
-  return mode ? mode.label : '';
+  return mode ? getVietnameseLabel(mode.label) : '';
 }
 
 export function pickCategoryTuple(categories, categoryIndex = 0, valueIndex = 0) {

@@ -72,15 +72,15 @@ const fullResult = formatStyleAnalysisResult({
   reproduction_prompt: '短く、湿度を残す。',
 });
 
-assert.match(fullResult, /^🏷️ 作風名: 湿った硬質文体/);
-assert.match(fullResult, /🎙️ 語りの視点:\n  ・人称: 一人称/);
-assert.match(fullResult, /📝 文体:\n  ・平均文長: 短中混合/);
-assert.match(fullResult, /🔮 修辞技法:\n  ・比喩スタイル: 物理感覚/);
-assert.match(fullResult, /💬 セリフ:\n  ・文体: 短い/);
-assert.match(fullResult, /🏗️ 構造:\n  ・テンポ: 緩急あり/);
-assert.match(fullResult, /✨ 固有の特徴:\n  ・比喩が物理的\n  ・説明を急がない/);
-assert.match(fullResult, /🚫 回避パターン:\n  ・万能感\n  ・説明過多/);
-assert.match(fullResult, /━━━ 再現プロンプト ━━━\n短く、湿度を残す。$/);
+assert.match(fullResult, /^🏷️ Tên phong cách: 湿った硬質文体/);
+assert.match(fullResult, /🎙️ Góc kể:\n  ・Ngôi kể: 一人称/);
+assert.match(fullResult, /📝 Văn phong:\n  ・Độ dài câu trung bình: 短中混合/);
+assert.match(fullResult, /🔮 Biện pháp tu từ:\n  ・Kiểu ẩn dụ: 物理感覚/);
+assert.match(fullResult, /💬 Hội thoại:\n  ・Văn phong: 短い/);
+assert.match(fullResult, /🏗️ Cấu trúc:\n  ・Nhịp độ: 緩急あり/);
+assert.match(fullResult, /✨ Đặc điểm riêng:\n  ・比喩が物理的\n  ・説明を急がない/);
+assert.match(fullResult, /🚫 Mẫu cần tránh:\n  ・万能感\n  ・説明過多/);
+assert.match(fullResult, /━━━ Prompt tái tạo phong cách ━━━\n短く、湿度を残す。$/);
 
 const fallbackResult = formatStyleAnalysisResult({
   narrative_voice: '三人称',
@@ -88,9 +88,9 @@ const fallbackResult = formatStyleAnalysisResult({
   pacing: 'ゆっくり',
 });
 
-assert.match(fallbackResult, /🎙️ 語りの視点: 三人称/);
-assert.match(fallbackResult, /💬 セリフ回し: 間を置く/);
-assert.match(fallbackResult, /⏱️ テンポ: ゆっくり/);
-assert.match(fallbackResult, /━━━ 再現プロンプト ━━━\n（生成されませんでした）$/);
+assert.match(fallbackResult, /🎙️ Góc kể: 三人称/);
+assert.match(fallbackResult, /💬 Cách thoại: 間を置く/);
+assert.match(fallbackResult, /⏱️ Nhịp độ: ゆっくり/);
+assert.match(fallbackResult, /━━━ Prompt tái tạo phong cách ━━━\n\(Không tạo được\)$/);
 
 console.log('styleAnalyzerResultFormatter tests passed');

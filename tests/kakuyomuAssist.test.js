@@ -61,7 +61,7 @@ assert.equal(getKakuyomuCopyValue(preview, 'tags'), preview.tags.join('\n'));
 const previewHtml = renderKakuyomuPreview(preview);
 assert.equal((previewHtml.match(/data-copy-kind="tag"/g) || []).length, preview.tags.length);
 assert.match(previewHtml, /data-copy-index="0"/);
-assert.match(previewHtml, /35文字以内/);
+assert.match(previewHtml, /Tối đa 35 ký tự/);
 assert.equal(previewHtml.includes('タグ一覧をコピー'), false);
 assert.equal(previewHtml.includes('AI利用タグ'), false);
 
@@ -104,9 +104,9 @@ assert.equal(getKakuyomuCopyValue(chapteredPreview, 'body'), chapteredPreview.bo
 const chapteredHtml = renderKakuyomuPreview(chapteredPreview);
 assert.match(chapteredHtml, /data-copy-kind="chapterTitle"/);
 assert.match(chapteredHtml, /data-copy-kind="chapterBody"/);
-assert.match(chapteredHtml, /全文表示/);
-assert.match(chapteredHtml, /章タイトルコピー/);
-assert.match(chapteredHtml, /本文コピー/);
+assert.match(chapteredHtml, /Xem toàn văn/);
+assert.match(chapteredHtml, /Sao chép tiêu đề chương/);
+assert.match(chapteredHtml, /Sao chép nội dung/);
 assert.match(chapteredHtml, /kakuyomu-chapter-preview/);
 
 const longifyTitleArtifactStory = `【砂糖菓子と騎士たちの誓い】

@@ -60,24 +60,24 @@ export function buildApiFailureMessage(label, diagnosis, details, options = {}) 
   const diagnosisText = toText(diagnosis);
   const detailText = Array.isArray(details) ? details.join('\n') : toText(details);
   const diagnosisLooksAvailable = hasAvailableModels(diagnosisText);
-  const detailBlock = detailText ? `\n\n[各モデルのエラー詳細]\n${detailText}` : '';
+  const detailBlock = detailText ? `\n\n[Chi tiết lỗi từng model]\n${detailText}` : '';
 
   if (options.safety || isSafetyError(diagnosisText) || isSafetyError(detailText)) {
     return options.vision ?
-      '【コンテンツ制限】画像が安全フィルターによりブロックされました。別の画像をお試しください。' :
-      '【コンテンツ制限】安全フィルターによりブロックされました。言い回しを変更してください。';
+      '【Hạn chế nội dung】Bộ lọc an toàn đã chặn ảnh. Hãy thử ảnh khác.' :
+      '【Hạn chế nội dung】Bộ lọc an toàn đã chặn yêu cầu. Hãy thay đổi cách diễn đạt.';
   }
 
   if (options.quota || isQuotaError(diagnosisText) || isQuotaError(detailText)) {
-    return '【API制限】使用回数の上限に達しました。しばらく時間を置いてから再試行してください。';
+    return '【Giới hạn API】Đã đạt giới hạn sử dụng. Hãy chờ một lúc rồi thử lại.';
   }
 
   if (isAuthError(diagnosisText) || (options.auth && !diagnosisLooksAvailable && !isModelOrRequestError(detailText))) {
-    return '【認証エラー】APIキーが無効です。正しいキーを設定してください。';
+    return '【Lỗi xác thực】Khóa API không hợp lệ. Hãy nhập đúng khóa.';
   }
 
   if (diagnosisLooksAvailable || isModelOrRequestError(diagnosisText) || isModelOrRequestError(detailText)) {
-    return `【モデル/リクエストエラー】APIキーは保存されていますが、利用可能モデルまたは送信形式で失敗しました。\n診断: ${diagnosisText}${detailBlock}`;
+    return `【Lỗi model / yêu cầu】Khóa API đã lưu nhưng model khả dụng hoặc định dạng yêu cầu không được chấp nhận.\nChẩn đoán: ${diagnosisText}${detailBlock}`;
   }
 
   return `${label}: ${diagnosisText}${detailBlock}`;

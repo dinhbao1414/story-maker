@@ -980,6 +980,13 @@ export function isGenerationInProgress(output) {
   );
 }
 
+export function isOutputPlaceholder(output) {
+  return Boolean(
+    output?.classList?.contains?.('empty')
+    || output?.querySelector?.('.guide'),
+  );
+}
+
 export function installPublicOutputCleanup() {
   const output = document.getElementById('output');
   if (!output) return;
@@ -989,6 +996,7 @@ export function installPublicOutputCleanup() {
     if (applying) return;
     if (isGenerationInProgress(output)) return;
     if (output?.dataset?.manualOutput === 'true') return;
+    if (isOutputPlaceholder(output)) return;
     const mode = currentMode();
     if (!PUBLIC_MODE_VALUES.includes(mode)) return;
     const text = output.innerText || output.textContent || '';

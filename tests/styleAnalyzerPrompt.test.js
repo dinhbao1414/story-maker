@@ -16,6 +16,10 @@ assert.match(ca, /structure/);
 assert.match(ca, /unique_features/);
 assert.match(ca, /anti_patterns/);
 assert.match(ca, /reproduction_prompt/);
+assert.match(ca, /generation_preset/);
+assert.match(ca, /long_10000/);
+assert.match(ca, /characters/);
+assert.match(ca, /Do not copy names/);
 assert.match(ca, /判定不可/);
 assert.match(ca, /JSONの構文エラー/);
 

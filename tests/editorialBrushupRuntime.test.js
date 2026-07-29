@@ -39,10 +39,10 @@ const progressButton = { disabled: false, textContent: 'この小説をブラッ
 const progressStatus = { textContent: 'AI講評: 要ブラッシュアップ' };
 setEditorialBrushupRunningState({ button: progressButton, statusElement: progressStatus, running: true });
 assert.equal(progressButton.disabled, true);
-assert.equal(progressButton.textContent, 'ブラッシュアップ中...');
-assert.equal(progressStatus.textContent, 'ブラッシュアップを開始しました。しばらくお待ちください...');
+assert.equal(progressButton.textContent, 'Đang tinh chỉnh...');
+assert.equal(progressStatus.textContent, 'Đã bắt đầu tinh chỉnh. Vui lòng chờ...');
 setEditorialBrushupRunningState({ button: progressButton, statusElement: progressStatus, running: false });
-assert.equal(progressButton.textContent, 'この小説をブラッシュアップ');
+assert.equal(progressButton.textContent, 'Tinh chỉnh truyện này');
 const resetButton = { disabled: false, textContent: '古い完了表示' };
 const resetSection = { attributes: {}, classList: { added: [], add(value) { this.added.push(value); } }, setAttribute(name, value) { this.attributes[name] = value; } };
 const resetReview = { innerHTML: '<div>古い講評</div>', classList: { added: [], add(value) { this.added.push(value); } } };
@@ -59,23 +59,23 @@ assert.deepEqual(resetSection.classList.added, ['is-waiting']);
 assert.equal(resetSection.attributes['aria-disabled'], 'true');
 assert.equal(resetButton.disabled, true);
 assert.equal(resetAutoCheckbox.disabled, true);
-assert.equal(resetButton.textContent, 'この小説をブラッシュアップ');
+assert.equal(resetButton.textContent, 'Tinh chỉnh truyện này');
 assert.equal(resetReview.innerHTML, '');
 assert.deepEqual(resetReview.classList.added, ['hidden']);
-assert.equal(resetStatus.textContent, '新しい本文の生成・AI講評を待っています...');
+assert.equal(resetStatus.textContent, 'Đang chờ nội dung mới và nhận xét AI...');
 assert.deepEqual(resetDoc.documentElement.dataset, {});
-assert.equal(formatEditorialProgress({ phase: 'review', attempt: 0, maxAttempts: 3 }), 'API稼働中: 元原稿を講評中...');
-assert.equal(formatEditorialProgress({ phase: 'brushup', attempt: 2, maxAttempts: 3 }), 'API稼働中: 改稿を生成中（2/3回・100点目標）...');
-assert.equal(formatEditorialProgress({ phase: 'review', attempt: 2, maxAttempts: 3 }), 'API稼働中: 改稿後を再採点中（2/3回・100点目標）...');
+assert.equal(formatEditorialProgress({ phase: 'review', attempt: 0, maxAttempts: 3 }), 'API đang hoạt động: Đang nhận xét bản gốc...');
+assert.equal(formatEditorialProgress({ phase: 'brushup', attempt: 2, maxAttempts: 3 }), 'API đang hoạt động: Đang tạo bản sửa (2/3 lần · mục tiêu 100 điểm)...');
+assert.equal(formatEditorialProgress({ phase: 'review', attempt: 2, maxAttempts: 3 }), 'API đang hoạt động: Đang chấm lại sau sửa (2/3 lần · mục tiêu 100 điểm)...');
 assert.equal(
   formatEditorialProgress({ phase: 'decision', attempt: 1, maxAttempts: 3, decision: { adopt: false, currentScore: 89, candidateScore: 87, issues: ['score_not_improved'] } }),
-  '採点結果（1/3回）: 前回89点 → 候補87点（不採用: 点数が上がっていない）',
+  'Kết quả chấm điểm (1/3 lần): trước 89 điểm → bản đề xuất 87 điểm (Không áp dụng: Điểm không tăng)',
 );
 assert.equal(
   formatEditorialProgress({ phase: 'decision', attempt: 2, maxAttempts: 3, decision: { adopt: true, currentScore: 89, candidateScore: 92, issues: [] } }),
-  '採点結果（2/3回）: 前回89点 → 候補92点（採用）',
+  'Kết quả chấm điểm (2/3 lần): trước 89 điểm → bản đề xuất 92 điểm (Đã áp dụng)',
 );
-assert.equal(formatEditorialElapsedProgress('API稼働中: 改稿を生成中（1/3回・100点目標）...', 12.9), 'API稼働中: 改稿を生成中（1/3回・100点目標）...（開始から12秒経過）');
+assert.equal(formatEditorialElapsedProgress('API đang hoạt động: Đang tạo bản sửa (1/3 lần · mục tiêu 100 điểm)...', 12.9), 'API đang hoạt động: Đang tạo bản sửa (1/3 lần · mục tiêu 100 điểm)... (đã trôi qua 12 giây)');
 assert.deepEqual(createEditorialTypewriterFrames('abcdefg', { chunkSize: 3 }), ['abc', 'abcdef', 'abcdefg']);
 assert.equal(createEditorialTypewriterFrames('あ'.repeat(1200)).length, 600);
 const editorialReveal = prepareEditorialReveal(`本文\n\n${STORY_MAKER_FOOTER}.`);
@@ -89,10 +89,10 @@ assert.equal(shouldStartAutomaticBrushup({ checked: true, review: { valid: true,
 assert.equal(shouldStartAutomaticBrushup({ checked: true, review: { valid: true, score: 100 }, running: false }), false);
 assert.equal(shouldStartAutomaticBrushup({ checked: false, review: { valid: true, score: 70 }, running: false }), false);
 assert.equal(shouldStartAutomaticBrushup({ checked: true, review: { valid: true, score: 70 }, running: true }), false);
-assert.equal(formatEditorialCompletion({ score: 84, attempts: 3, maxAttempts: 3 }), '最大3回終了・要ブラッシュアップ（84点／公開可能85点）');
-assert.equal(formatEditorialCompletion({ score: 89, attempts: 1, maxAttempts: 3 }), 'ブラッシュアップ完了・公開可能（89点／編集合格90点）');
-assert.equal(formatEditorialCompletion({ score: 92, attempts: 3, maxAttempts: 3 }), 'ブラッシュアップ完了・編集合格（92点）');
-assert.equal(formatEditorialCompletion({ score: 100, attempts: 2, maxAttempts: 3 }), 'ブラッシュアップ完了・編集合格（100点）');
+assert.equal(formatEditorialCompletion({ score: 84, attempts: 3, maxAttempts: 3 }), 'Đã kết thúc tối đa 3 lần · cần tinh chỉnh (84 điểm / có thể xuất bản từ 85 điểm)');
+assert.equal(formatEditorialCompletion({ score: 89, attempts: 1, maxAttempts: 3 }), 'Tinh chỉnh hoàn tất · có thể xuất bản (89 điểm / đạt chuẩn 90 điểm)');
+assert.equal(formatEditorialCompletion({ score: 92, attempts: 3, maxAttempts: 3 }), 'Tinh chỉnh hoàn tất · đạt chuẩn biên tập (92 điểm)');
+assert.equal(formatEditorialCompletion({ score: 100, attempts: 2, maxAttempts: 3 }), 'Tinh chỉnh hoàn tất · đạt chuẩn biên tập (100 điểm)');
 assert.equal(
   prepareEditorialReviewText(`本文\n\n${STORY_MAKER_FOOTER}.`, 'novel', text => `${text}\n\n`),
   `本文\n\n${STORY_MAKER_FOOTER}`,
@@ -126,10 +126,10 @@ assert.match(formatRepairPrompt, /「絵\/状況:」「セリフ:」「狙い:�
 assert.doesNotMatch(formatRepairPrompt, /Created By AI Story Maker/);
 const progressTitle = { textContent: '' };
 const progressLog = { textContent: '' };
-updateEditorialProgressSurface({ titleElement: progressTitle, logElement: progressLog, message: 'API稼働中: 元原稿を講評中...', reset: true });
-updateEditorialProgressSurface({ titleElement: progressTitle, logElement: progressLog, message: 'API稼働中: 改稿を生成中（1/3回・100点目標）...' });
-assert.equal(progressTitle.textContent, 'AI進捗・思考ログ: API稼働中: 改稿を生成中（1/3回・100点目標）...');
-assert.equal(progressLog.textContent, '【ブラッシュアップ進捗】\nAPI稼働中: 元原稿を講評中...\nAPI稼働中: 改稿を生成中（1/3回・100点目標）...');
+updateEditorialProgressSurface({ titleElement: progressTitle, logElement: progressLog, message: 'API đang hoạt động: Đang nhận xét bản gốc...', reset: true });
+updateEditorialProgressSurface({ titleElement: progressTitle, logElement: progressLog, message: 'API đang hoạt động: Đang tạo bản sửa (1/3 lần · mục tiêu 100 điểm)...' });
+assert.equal(progressTitle.textContent, 'Tiến độ và nhật ký AI: API đang hoạt động: Đang tạo bản sửa (1/3 lần · mục tiêu 100 điểm)...');
+assert.equal(progressLog.textContent, '【Tiến độ tinh chỉnh】\nAPI đang hoạt động: Đang nhận xét bản gốc...\nAPI đang hoạt động: Đang tạo bản sửa (1/3 lần · mục tiêu 100 điểm)...');
 
 const reviewMarkup = createEditorialReviewMarkup({
   score: 86,
@@ -140,22 +140,22 @@ const reviewMarkup = createEditorialReviewMarkup({
 }, { attempts: 1 });
 assert.match(reviewMarkup, /editorial-review-score-value[^>]*>86/);
 assert.match(reviewMarkup, /editorial-review-score-bar-fill/);
-assert.match(reviewMarkup, /<h4>総評<\/h4>/);
+assert.match(reviewMarkup, /<h4>Tổng quan<\/h4>/);
 assert.match(reviewMarkup, /<pre class="editorial-review-commentary">全体講評。<\/pre>/);
-assert.match(reviewMarkup, /<h4>点数を上げるための問題点<\/h4>/);
+assert.match(reviewMarkup, /<h4>Điểm cần cải thiện<\/h4>/);
 assert.match(reviewMarkup, /主人公の選択が弱いため4点減点/);
-assert.match(reviewMarkup, /<h4>次の改稿で行うこと<\/h4>/);
+assert.match(reviewMarkup, /<h4>Việc cần làm ở lần sửa tiếp theo<\/h4>/);
 assert.match(reviewMarkup, /損失を引き受ける行動/);
-assert.match(reviewMarkup, /ブラッシュアップ回数: 1回/);
-assert.match(reviewMarkup, /公開可能・任意ブラッシュアップ/);
+assert.match(reviewMarkup, /Số lần tinh chỉnh: 1/);
+assert.match(reviewMarkup, /Có thể xuất bản · tinh chỉnh tùy chọn/);
 
 const apiAlert = { textContent: '', style: { display: 'none' } };
 const generationScores = { innerHTML: 'old graph', style: { display: 'grid' } };
-updateEditorialAuxiliaryUi({ alertElement: apiAlert, scoreBoard: generationScores, message: '改稿を生成中（1/3回）', active: true });
-assert.equal(apiAlert.textContent, '⚠️ API稼働中: 改稿を生成中（1/3回）');
+updateEditorialAuxiliaryUi({ alertElement: apiAlert, scoreBoard: generationScores, message: 'Đang tạo bản sửa (1/3 lần)', active: true });
+assert.equal(apiAlert.textContent, '⚠️ API đang hoạt động: Đang tạo bản sửa (1/3 lần)');
 assert.equal(apiAlert.style.display, 'flex');
-updateEditorialAuxiliaryUi({ alertElement: apiAlert, scoreBoard: generationScores, message: 'API稼働中: 再採点中', active: true });
-assert.equal(apiAlert.textContent, '⚠️ API稼働中: 再採点中');
+updateEditorialAuxiliaryUi({ alertElement: apiAlert, scoreBoard: generationScores, message: 'API đang hoạt động: Đang chấm lại', active: true });
+assert.equal(apiAlert.textContent, '⚠️ API đang hoạt động: Đang chấm lại');
 assert.equal(generationScores.innerHTML, '');
 assert.equal(generationScores.style.display, 'none');
 updateEditorialAuxiliaryUi({ alertElement: apiAlert, scoreBoard: generationScores, active: false });

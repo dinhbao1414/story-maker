@@ -10,8 +10,8 @@ const modes = [
   { value: 'novel', label: '小説' },
 ];
 
-assert.equal(findModeLabel(modes, 'novel'), '小説');
-assert.equal(findModeLabel(modes, 'missing'), 'ショート');
+assert.equal(findModeLabel(modes, 'novel'), 'Tiểu thuyết');
+assert.equal(findModeLabel(modes, 'missing'), 'Truyện cực ngắn');
 assert.equal(findModeLabel([], 'missing'), '');
 
 const categories = {

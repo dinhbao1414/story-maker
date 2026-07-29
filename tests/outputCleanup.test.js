@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
-import { cleanOutputForPublicMode, isGenerationInProgress } from '../src/outputCleanup.js';
+import {
+  cleanOutputForPublicMode,
+  isGenerationInProgress,
+  isOutputPlaceholder,
+} from '../src/outputCleanup.js';
 import { STORY_MAKER_FOOTER } from '../src/version.js';
 
 function escapeRegExp(value) {
@@ -360,5 +364,18 @@ try {
   if (originalDocument === undefined) delete globalThis.document;
   else globalThis.document = originalDocument;
 }
+
+assert.equal(
+  isOutputPlaceholder({ classList: { contains: value => value === 'empty' }, querySelector: () => null }),
+  true,
+);
+assert.equal(
+  isOutputPlaceholder({ classList: { contains: () => false }, querySelector: selector => selector === '.guide' }),
+  true,
+);
+assert.equal(
+  isOutputPlaceholder({ classList: { contains: () => false }, querySelector: () => null }),
+  false,
+);
 
 console.log('outputCleanup tests passed');

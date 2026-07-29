@@ -49,21 +49,80 @@ export function clearPersistedApiSession() {
 }
 
 export function writeApiSession(state) {
-  // API keys live only in the in-memory UI state for this page instance.
-  // Clear legacy persisted values in case a user upgrades from an older release.
-  void state;
-  clearPersistedApiSession();
+  try {
+    const storage = getApiSessionStorage();
+    if (!storage || !state || typeof state !== 'object') return false;
+
+    const current = readApiSession();
+    const hasGeminiKey = Object.prototype.hasOwnProperty.call(state, 'geminiKey');
+    const hasOpenaiKey = Object.prototype.hasOwnProperty.call(state, 'openaiKey');
+    let geminiKey = normalizeApiKey(hasGeminiKey ? state.geminiKey : current.geminiKey);
+    let openaiKey = normalizeApiKey(hasOpenaiKey ? state.openaiKey : current.openaiKey);
+    const activeKey = normalizeApiKey(state.apiKey);
+    let apiProvider = state.apiProvider === 'openai'
+      ? 'openai'
+      : state.apiProvider === 'gemini'
+        ? 'gemini'
+        : current.apiProvider || 'gemini';
+
+    if (isRealApiKey(activeKey)) {
+      apiProvider = apiKeyProvider(activeKey);
+      if (apiProvider === 'openai') openaiKey = activeKey;
+      else geminiKey = activeKey;
+    }
+    if (!isRealApiKey(geminiKey)) geminiKey = '';
+    if (!isRealApiKey(openaiKey)) openaiKey = '';
+
+    if (apiProvider === 'openai' && !openaiKey) apiProvider = geminiKey ? 'gemini' : 'openai';
+    if (apiProvider === 'gemini' && !geminiKey) apiProvider = openaiKey ? 'openai' : 'gemini';
+    if (!geminiKey && !openaiKey) {
+      storage.removeItem(API_SESSION_KEY);
+      storage.removeItem(LEGACY_API_SESSION_KEY);
+      clearApiSessionFromWindowName();
+      return false;
+    }
+
+    storage.setItem(API_SESSION_KEY, JSON.stringify({
+      apiProvider,
+      geminiKey,
+      openaiKey,
+    }));
+    storage.removeItem(LEGACY_API_SESSION_KEY);
+    clearApiSessionFromWindowName();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function readApiSession() {
-  clearPersistedApiSession();
-  return {};
+  try {
+    const parsed = JSON.parse(getApiSessionStorage()?.getItem(API_SESSION_KEY) || 'null');
+    if (!parsed || typeof parsed !== 'object') return {};
+    const geminiKey = isRealApiKey(parsed.geminiKey) ? normalizeApiKey(parsed.geminiKey) : '';
+    const openaiKey = isRealApiKey(parsed.openaiKey) ? normalizeApiKey(parsed.openaiKey) : '';
+    if (!geminiKey && !openaiKey) return {};
+    const apiProvider = parsed.apiProvider === 'openai' && openaiKey
+      ? 'openai'
+      : geminiKey
+        ? 'gemini'
+        : 'openai';
+    return {
+      apiProvider,
+      geminiKey,
+      openaiKey,
+      apiKey: apiProvider === 'openai' ? openaiKey : geminiKey,
+    };
+  } catch {
+    return {};
+  }
 }
 
 export function restoreApiSession(state) {
-  void state;
-  clearPersistedApiSession();
-  return false;
+  const session = readApiSession();
+  if (!state || typeof state !== 'object' || !session.apiKey) return false;
+  Object.assign(state, session);
+  return true;
 }
 
 export function sanitizeApiSession(session) {
@@ -73,5 +132,3 @@ export function sanitizeApiSession(session) {
     hasOpenAI: isRealApiKey(session?.openaiKey),
   };
 }
-
-clearPersistedApiSession();

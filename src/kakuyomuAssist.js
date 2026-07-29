@@ -1,5 +1,6 @@
 import { Ce } from './domHelpers.js';
 import { buildStoryExportFileName } from './fileIoHelpers.js';
+import { getVietnameseLabel } from './vietnameseLabels.js';
 
 const AI_USE_TAG = 'AI本文利用';
 const MAX_CATCH_COPY_CHARS = 35;
@@ -400,24 +401,24 @@ function readSettingsFromDom() {
 }
 
 const COPY_BUTTON_LABELS = {
-  all: '全項目コピー',
-  tags: 'タグ一覧をコピー',
-  body: '全文コピー',
-  chapterTitle: '章タイトルコピー',
-  chapterBody: '本文コピー',
+  all: 'Sao chép tất cả',
+  tags: 'Sao chép danh sách thẻ',
+  body: 'Sao chép toàn văn',
+  chapterTitle: 'Sao chép tiêu đề chương',
+  chapterBody: 'Sao chép nội dung',
 };
 
 const COPY_BUTTON_TITLES = {
-  all: 'このプレビューの全推奨項目をまとめてコピー',
-  tags: 'タグ欄に貼る候補タグだけをコピー',
-  body: '投稿本文の全文をコピー',
-  chapterTitle: 'この章のタイトルをコピー',
-  chapterBody: 'この章の本文だけをコピー',
+  all: 'Sao chép toàn bộ mục đề xuất trong bản xem trước',
+  tags: 'Sao chép các thẻ đề xuất để dán vào ô thẻ',
+  body: 'Sao chép toàn bộ nội dung đăng bài',
+  chapterTitle: 'Sao chép tiêu đề chương này',
+  chapterBody: 'Sao chép riêng nội dung chương này',
 };
 
 function renderCopyButton(kind, options = {}) {
-  const label = options.label || COPY_BUTTON_LABELS[kind] || 'コピー';
-  const title = options.title || COPY_BUTTON_TITLES[kind] || `${label}します`;
+  const label = options.label || COPY_BUTTON_LABELS[kind] || 'Sao chép';
+  const title = options.title || COPY_BUTTON_TITLES[kind] || `Sao chép ${label}`;
   const className = options.className ? ` ${options.className}` : '';
   const index = options.index === undefined ? '' : ` data-copy-index="${Ce(String(options.index))}"`;
   return `<button type="button" class="btn-secondary kakuyomu-copy-btn${className}" data-copy-kind="${Ce(kind)}"${index} title="${Ce(title)}" aria-label="${Ce(title)}">${Ce(label)}</button>`;
@@ -425,7 +426,7 @@ function renderCopyButton(kind, options = {}) {
 
 function renderRow({ label, value, kind, note = '', multiline = false, contentHtml = '', hideAction = false }) {
   const valueClass = multiline ? 'kakuyomu-preview-value is-multiline' : 'kakuyomu-preview-value';
-  const body = contentHtml || `<div class="${valueClass}">${Ce(value)}</div>`;
+  const body = contentHtml || `<div class="${valueClass}">${Ce(getVietnameseLabel(value))}</div>`;
   const noteHtml = note ? `<div class="kakuyomu-preview-note">${Ce(note)}</div>` : '';
   const actionHtml = hideAction ? '' : renderCopyButton(kind);
   return `
@@ -442,17 +443,17 @@ function renderTags(preview) {
     <span class="kakuyomu-tag-item">
       <span class="kakuyomu-tag">${Ce(tag)}</span>
       ${renderCopyButton('tag', {
-        label: 'コピー',
-        title: `${tag}をコピー`,
+        label: 'Sao chép',
+        title: `Sao chép ${tag}`,
         index,
         className: 'kakuyomu-tag-copy',
       })}
     </span>
   `).join('');
   return renderRow({
-    label: 'タグ',
+    label: 'Thẻ',
     kind: 'tags',
-    note: '最大8個、各20文字以内。AI利用状況に合わせてAIタグは作者判断で調整。',
+    note: 'Tối đa 8 thẻ, mỗi thẻ không quá 20 ký tự. Tác giả tự điều chỉnh thẻ AI theo tình trạng sử dụng AI.',
     hideAction: true,
     contentHtml: `<div class="kakuyomu-tag-list">${tags}</div>`,
   });
@@ -461,7 +462,7 @@ function renderTags(preview) {
 function renderSelfRatings(preview) {
   const value = preview.selfRatings.length ? preview.selfRatings.join(' / ') : '該当なし推奨';
   return renderRow({
-    label: 'セルフレイティング',
+    label: 'Tự phân loại độ tuổi',
     value,
     kind: 'selfRatings',
   });
@@ -469,7 +470,7 @@ function renderSelfRatings(preview) {
 
 function renderImageColor(preview) {
   return renderRow({
-    label: 'イメージカラー',
+    label: 'Màu hình ảnh',
     kind: 'imageColor',
     value: `${preview.imageColor.label} (${preview.imageColor.hex})`,
     contentHtml: `
@@ -502,31 +503,31 @@ function renderBodySection({ title, meta, copyKind, copyIndex, body, className =
 
 function renderBodySections(preview) {
   const fullBody = renderBodySection({
-    title: '全文表示',
-    meta: `${charLength(preview.body)}字`,
+    title: 'Xem toàn văn',
+    meta: `${charLength(preview.body)} ký tự`,
     copyKind: 'body',
     body: preview.body,
   });
   const chapters = preview.chapters?.length
     ? `
-      <div class="kakuyomu-chapter-visible-list" aria-label="章ごとの本文表示">
+      <div class="kakuyomu-chapter-visible-list" aria-label="Hiển thị nội dung theo chương">
         ${preview.chapters.map((chapter, index) => renderBodySection({
           title: chapter.label,
-          meta: `${charLength(chapter.body)}字`,
+          meta: `${charLength(chapter.body)} ký tự`,
           copyKind: 'chapterBody',
           copyIndex: index,
           body: chapter.body,
           className: 'kakuyomu-chapter-block',
           actionHtml: [
             renderCopyButton('chapterTitle', {
-              label: '章タイトルコピー',
-              title: `${chapter.label}をコピー`,
+              label: 'Sao chép tiêu đề chương',
+              title: `Sao chép ${chapter.label}`,
               index,
               className: 'kakuyomu-chapter-title-copy',
             }),
             renderCopyButton('chapterBody', {
-              label: '本文コピー',
-              title: `${chapter.label}の本文だけをコピー`,
+              label: 'Sao chép nội dung',
+              title: `Sao chép riêng nội dung ${chapter.label}`,
               index,
               className: 'kakuyomu-chapter-copy',
             }),
@@ -542,28 +543,28 @@ export function renderKakuyomuPreview(preview) {
   return `
     <div class="kakuyomu-preview-titlebar">
       <div>
-        <div class="kakuyomu-preview-kicker">Kakuyomu Form Preview</div>
+        <div class="kakuyomu-preview-kicker">Xem trước biểu mẫu Kakuyomu</div>
         <div class="kakuyomu-preview-name">${Ce(preview.title)}</div>
       </div>
-      <span class="kakuyomu-preview-count">${charLength(preview.catchCopy)} / ${MAX_CATCH_COPY_CHARS}字</span>
+      <span class="kakuyomu-preview-count">${charLength(preview.catchCopy)} / ${MAX_CATCH_COPY_CHARS} ký tự</span>
     </div>
-    ${renderRow({ label: '小説タイトル', value: preview.title, kind: 'title' })}
-    ${renderRow({ label: '連載状態', value: preview.workStatus, kind: 'workStatus' })}
-    ${renderRow({ label: '種類', value: preview.workType, kind: 'workType' })}
-    ${renderRow({ label: 'ジャンル', value: preview.genre, kind: 'genre' })}
-    ${renderRow({ label: 'キャッチコピー', value: preview.catchCopy, kind: 'catchCopy', note: '35文字以内' })}
-    ${renderRow({ label: '紹介文', value: preview.introduction, kind: 'introduction', multiline: true })}
+    ${renderRow({ label: 'Tiêu đề truyện', value: preview.title, kind: 'title' })}
+    ${renderRow({ label: 'Trạng thái đăng nhiều kỳ', value: preview.workStatus, kind: 'workStatus' })}
+    ${renderRow({ label: 'Loại', value: preview.workType, kind: 'workType' })}
+    ${renderRow({ label: 'Thể loại', value: preview.genre, kind: 'genre' })}
+    ${renderRow({ label: 'Câu giới thiệu', value: preview.catchCopy, kind: 'catchCopy', note: 'Tối đa 35 ký tự' })}
+    ${renderRow({ label: 'Giới thiệu', value: preview.introduction, kind: 'introduction', multiline: true })}
     ${renderSelfRatings(preview)}
     ${renderTags(preview)}
-    ${renderRow({ label: 'コンテスト', value: preview.contest, kind: 'contest' })}
-    ${renderRow({ label: '自主企画', value: preview.userEvent, kind: 'userEvent' })}
-    ${renderRow({ label: 'コレクション', value: preview.collection, kind: 'collection' })}
+    ${renderRow({ label: 'Cuộc thi', value: preview.contest, kind: 'contest' })}
+    ${renderRow({ label: 'Dự án cá nhân', value: preview.userEvent, kind: 'userEvent' })}
+    ${renderRow({ label: 'Bộ sưu tập', value: preview.collection, kind: 'collection' })}
     ${renderImageColor(preview)}
-    ${renderRow({ label: '広告表示', value: preview.adDisplay, kind: 'adDisplay' })}
-    ${renderRow({ label: '予約投稿の公開日時', value: preview.reservedPublish, kind: 'reservedPublish' })}
-    ${renderRow({ label: '更新スケジュール', value: preview.updateSchedule, kind: 'updateSchedule' })}
+    ${renderRow({ label: 'Hiển thị quảng cáo', value: preview.adDisplay, kind: 'adDisplay' })}
+    ${renderRow({ label: 'Thời gian công khai bài đã hẹn', value: preview.reservedPublish, kind: 'reservedPublish' })}
+    ${renderRow({ label: 'Lịch cập nhật', value: preview.updateSchedule, kind: 'updateSchedule' })}
     ${renderRow({
-      label: '投稿本文',
+      label: 'Nội dung đăng bài',
       kind: 'body',
       multiline: true,
       hideAction: true,
@@ -632,7 +633,7 @@ async function copyText(value, button) {
     document.execCommand('copy');
     textarea.remove();
   }
-  button.textContent = 'コピー済み';
+  button.textContent = 'Đã sao chép';
   button.classList.add('is-copied');
   restoreButtonText(button, originalText);
 }
@@ -655,7 +656,7 @@ function saveTextFile(value, filename, button) {
   anchor.click();
   anchor.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  button.textContent = '保存済み';
+  button.textContent = 'Đã lưu';
   button.classList.add('is-copied');
   restoreButtonText(button, originalText);
 }
@@ -703,7 +704,7 @@ export function installKakuyomuAssist() {
     });
   };
 
-  const applyLockedUi = (value, message = '処理完了後に最新内容へ更新') => {
+  const applyLockedUi = (value, message = 'Cập nhật nội dung mới nhất sau khi xử lý xong') => {
     const locked = Boolean(value);
     rootEl?.classList.toggle('is-busy', locked);
     rootEl?.setAttribute('aria-busy', locked ? 'true' : 'false');
@@ -723,7 +724,7 @@ export function installKakuyomuAssist() {
     queued = false;
     const generationActive = isStoryGenerationActive();
     if (busy || generationActive) {
-      applyLockedUi(true, generationActive ? '生成完了後に最新内容へ更新' : '処理完了後に最新内容へ更新');
+      applyLockedUi(true, generationActive ? 'Cập nhật nội dung mới nhất sau khi tạo xong' : 'Cập nhật nội dung mới nhất sau khi xử lý xong');
       return;
     }
     applyLockedUi(false);
@@ -733,7 +734,7 @@ export function installKakuyomuAssist() {
     bodyEl.classList.toggle('hidden', !enabled || !canPreview);
     if (!canPreview) {
       lastPreview = null;
-      statusEl.textContent = '出力後に表示';
+      statusEl.textContent = 'Hiển thị sau khi có kết quả';
       previewEl.innerHTML = '';
       setCopyControlsDisabled(true);
       return;
@@ -744,8 +745,8 @@ export function installKakuyomuAssist() {
       settings: readSettingsFromDom(),
     });
     statusEl.textContent = enabled
-      ? `表示中: ${lastPreview.tags.length}タグ候補`
-      : 'チェックで表示';
+      ? `Đang hiển thị: ${lastPreview.tags.length} thẻ đề xuất`
+      : 'Đánh dấu để hiển thị';
     if (enabled) previewEl.innerHTML = renderKakuyomuPreview(lastPreview);
     setCopyControlsDisabled(!enabled);
   };

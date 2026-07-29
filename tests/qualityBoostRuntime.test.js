@@ -66,6 +66,8 @@ globalThis.document = {
   },
 };
 
+globalThis.location = { hostname: 'localhost' };
+
 globalThis.window = {
   fetch: async (input, init = {}) => {
     const body = typeof init.body === 'string' ? JSON.parse(init.body) : {};
@@ -94,6 +96,8 @@ const response = await window.fetch('https://api.openai.com/v1/chat/completions'
 const streamed = await response.text();
 
 assert.ok(calls.length >= 2, 'expected initial stream request plus rewrite request');
+assert.equal(calls[0].input, 'http://localhost:20128/v1/chat/completions');
+assert.equal(calls[0].body.model, 'cx/gpt-5.5');
 assert.equal(calls[0].body.stream, true);
 assert.equal(calls.some(call => call.body.stream === false), true, 'expected semantic loop to trigger rewrite request');
 assert.match(streamed, /REWRITTEN_START/);
@@ -117,5 +121,30 @@ assert.ok(calls.filter(call => call.body.stream === false).length >= 3, 'expecte
 assert.match(shortStreamed, /TOO_SHORT_START/);
 assert.match(shortStreamed, /【完】/, 'under-length synthetic stream must still stop legacy continuation');
 assert.doesNotMatch(document.documentElement.dataset.smkQualityRewrite, /^medium:\d+$/);
+
+calls.length = 0;
+const structuredPrompt = 'Analyze the supplied writing style and return JSON only.';
+const structuredResponse = await window.fetch('https://api.openai.com/v1/chat/completions', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({
+    model: 'gpt-4.1',
+    stream: false,
+    response_format: { type: 'json_object' },
+    messages: [
+      { role: 'system', content: 'Return one valid JSON object.' },
+      { role: 'user', content: structuredPrompt },
+    ],
+  }),
+});
+await structuredResponse.text();
+
+assert.equal(calls.length, 1, 'structured JSON request must not trigger story rewrites');
+assert.equal(calls[0].input, 'http://localhost:20128/v1/chat/completions');
+assert.equal(calls[0].body.model, 'cx/gpt-5.5');
+assert.equal(calls[0].body.messages.length, 2);
+assert.equal(calls[0].body.messages[1].content, structuredPrompt);
+assert.doesNotMatch(JSON.stringify(calls[0].body), /\[SMK_OPENAI_PUBLIC_MODE_SYSTEM_V500\]/);
+assert.doesNotMatch(JSON.stringify(calls[0].body), /\[SMK_PUBLIC_MODE_QUALITY_BOOST_V500\]/);
 
 console.log('qualityBoost runtime rewrite test passed');

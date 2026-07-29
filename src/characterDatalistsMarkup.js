@@ -10,9 +10,12 @@ function defaultEscape(value) {
 }
 
 function createDatalistMarkup(id, values, escapeHtml = defaultEscape) {
-  return `<datalist id="${escapeHtml(id)}">${(Array.isArray(values) ? values : []).map((value) => (
-    `<option value="${escapeHtml(value)}"></option>`
-  )).join('')}</datalist>`;
+  return `<datalist id="${escapeHtml(id)}">${(Array.isArray(values) ? values : []).map((value) => {
+    const escapedValue = escapeHtml(value);
+    const translated = getVietnameseLabel(value);
+    const label = translated === String(value ?? '') ? '' : ` label="${escapeHtml(translated)}"`;
+    return `<option value="${escapedValue}"${label}></option>`;
+  }).join('')}</datalist>`;
 }
 
 function createCharacterDatalistsMarkup(
@@ -29,3 +32,4 @@ function createCharacterDatalistsMarkup(
 }
 
 export { DEFAULT_SEX_OPTIONS, createCharacterDatalistsMarkup, createDatalistMarkup };
+import { getVietnameseLabel } from './vietnameseLabels.js';

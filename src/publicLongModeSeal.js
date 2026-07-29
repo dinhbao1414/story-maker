@@ -50,12 +50,12 @@ export function createPublicLongModeSealController({
 
   function getDisabledMessage() {
     return enabled
-      ? '長編モードは有効です。'
-      : '長編モードは現在機能停止中です。短編・中編など公開モードを選択してください。';
+      ? 'Chế độ tiểu thuyết dài đang hoạt động.'
+      : 'Chế độ tiểu thuyết dài hiện đang tạm dừng. Hãy chọn truyện ngắn, truyện vừa hoặc chế độ công khai khác.';
   }
 
   function getLongOption() {
-    return { value: 'long', label: enabled ? '長編小説' : '長編小説（機能停止中）' };
+    return { value: 'long', label: enabled ? 'Tiểu thuyết dài' : 'Tiểu thuyết dài (đang tạm dừng)' };
   }
 
   function syncLongOption() {
@@ -126,7 +126,7 @@ export function createPublicLongModeSealController({
     if (currentState.longNovel?.active || currentState.longNovel?.isPaused) {
       callIfFunction(stopLongSession);
     }
-    const label = callIfFunction(getModeLabel, 'novel') || '短編小説（4500字～）';
+    const label = callIfFunction(getModeLabel, 'novel') || 'Truyện ngắn (từ 4.500 chữ)';
     const customInput = doc?.getElementById?.('mode-custom');
     const clearButton = doc?.getElementById?.('mode-custom-clear');
     const chips = doc?.getElementById?.('mode-chips');
@@ -148,19 +148,19 @@ export function createPublicLongModeSealController({
       if (enabled) {
         button.disabled = false;
         button.setAttribute('aria-disabled', 'false');
-        button.title = '長編モードを利用できます。';
+        button.title = 'Có thể sử dụng chế độ tiểu thuyết dài.';
         button.classList.remove('is-disabled');
-        button.textContent = '長編小説';
+        button.textContent = 'Tiểu thuyết dài';
         button.style.opacity = '';
         button.style.cursor = '';
         button.style.display = '';
       } else {
         button.disabled = true;
         button.setAttribute('aria-disabled', 'true');
-        button.title = '長編モードは公開UIから非表示です。';
+        button.title = 'Chế độ tiểu thuyết dài bị ẩn khỏi giao diện công khai.';
         button.classList.remove('active');
         button.classList.add('is-disabled');
-        button.textContent = '長編小説';
+        button.textContent = 'Tiểu thuyết dài';
         button.style.display = 'none';
       }
     });
@@ -225,12 +225,12 @@ export function createPublicLongModeSealController({
     return async function publicLongModeGenerateWrapper(...args) {
       if (enabled) return original.apply(this, args);
       callIfFunction(stopLongSession);
-      callIfFunction(logStatus, '[停止] 長編モードは現在機能停止中です。生成は開始しません。');
+      callIfFunction(logStatus, '[Dừng] Chế độ tiểu thuyết dài đang tạm dừng. Không bắt đầu tạo nội dung.');
       const button = args[1];
       const output = args[2];
       if (button) {
         button.disabled = false;
-        button.textContent = 'ストーリー生成';
+        button.textContent = 'Tạo truyện';
       }
       if (output) {
         output.className = 'output-box text-selectable';
@@ -246,7 +246,7 @@ export function createPublicLongModeSealController({
     return async function publicLongModeContinueWrapper(...args) {
       if (enabled) return original.apply(this, args);
       callIfFunction(stopLongSession);
-      callIfFunction(logStatus, '[停止] 長編モードは現在機能停止中です。次章生成は開始しません。');
+      callIfFunction(logStatus, '[Dừng] Chế độ tiểu thuyết dài đang tạm dừng. Không tạo chương tiếp theo.');
       callIfFunction(setIdle);
       syncSeal();
       return undefined;

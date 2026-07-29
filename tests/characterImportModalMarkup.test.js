@@ -17,7 +17,10 @@ const html = Cf(
 
 assert.match(html, /id="ci-modal"/);
 assert.match(html, /class="ci-modal-overlay"/);
-assert.match(html, /1 キャラクター検出/);
+assert.match(html, /Đã phát hiện 1 nhân vật/);
+assert.match(html, /Kết quả nhận diện nhân vật/);
+assert.match(html, /Đăng ký nhân vật đã chọn/);
+assert.match(html, /Hủy/);
 assert.match(html, /data:image\/png;base64,AAA/);
 assert.match(html, /class="ci-check"/);
 assert.match(html, /value="Akari"/);

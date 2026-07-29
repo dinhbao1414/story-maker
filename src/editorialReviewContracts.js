@@ -26,12 +26,12 @@ export function getEditorialReviewFamily(mode = '') {
 export function getEditorialScoreTier(score) {
   const numericScore = Number(score);
   if (Number.isFinite(numericScore) && numericScore >= EDITORIAL_PASS_SCORE) {
-    return { id: 'editorial_pass', label: '編集合格', autoBrushupRequired: false };
+    return { id: 'editorial_pass', label: 'Đạt chuẩn biên tập', autoBrushupRequired: false };
   }
   if (Number.isFinite(numericScore) && numericScore >= EDITORIAL_PUBLISHABLE_SCORE) {
-    return { id: 'publishable', label: '公開可能・任意ブラッシュアップ', autoBrushupRequired: false };
+    return { id: 'publishable', label: 'Có thể xuất bản · tinh chỉnh tùy chọn', autoBrushupRequired: false };
   }
-  return { id: 'needs_brushup', label: '要ブラッシュアップ', autoBrushupRequired: true };
+  return { id: 'needs_brushup', label: 'Cần tinh chỉnh', autoBrushupRequired: true };
 }
 
 export function buildCognitiveRhythmEditorialGuidance({ mode = '' } = {}) {

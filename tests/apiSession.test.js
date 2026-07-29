@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 
 import {
   API_SESSION_KEY,
+  clearPersistedApiSession,
   readApiSession,
   restoreApiSession,
   writeApiSession,
@@ -40,10 +41,19 @@ writeApiSession({
   openaiKey: 'sk-test-key-1234567890',
 });
 
-assert.equal(storage.getItem(API_SESSION_KEY), null, 'API keys must not persist in sessionStorage');
+const expectedSession = {
+  apiProvider: 'openai',
+  geminiKey: '',
+  openaiKey: 'sk-test-key-1234567890',
+  apiKey: 'sk-test-key-1234567890',
+};
+assert.ok(storage.getItem(API_SESSION_KEY), 'API keys must persist for reloads in the same tab');
 assert.equal(global.window.name, '', 'API keys must not persist in window.name');
-assert.deepEqual(readApiSession(), {}, 'a reload must not recover an API key');
-assert.equal(restoreApiSession({}), false, 'API key restoration must be disabled');
+installWindow(storage);
+assert.deepEqual(readApiSession(), expectedSession, 'a reload must recover the API key from sessionStorage');
+const restoredState = {};
+assert.equal(restoreApiSession(restoredState), true, 'API key restoration must succeed after reload');
+assert.deepEqual(restoredState, expectedSession);
 
 assert.equal(isBlockedThirdPartyUrlProxy('https://api.codetabs.com/v1/proxy/?quest=https%3A%2F%2Fexample.com'), true);
 assert.equal(isBlockedThirdPartyUrlProxy('https://api.allorigins.win/get?url=https%3A%2F%2Fexample.com'), true);
@@ -61,6 +71,7 @@ await assert.rejects(() => guardedWindow.fetch('https://api.codetabs.com/v1/prox
 await guardedWindow.fetch('https://api.openai.com/v1/responses');
 assert.deepEqual(requests, ['https://api.openai.com/v1/responses']);
 
+clearPersistedApiSession();
 assert.equal(storage.getItem(API_SESSION_KEY), null);
 assert.equal(global.window.name, '');
 

@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import { createModeChipMarkup } from '../src/modeChipMarkup.js';
 
 const html = createModeChipMarkup([
-  { value: '4koma', label: '4コマ漫画風' },
-  { value: 'novel', label: '短編小説' },
+  { value: '4koma', label: 'Truyện tranh 4 khung' },
+  { value: 'novel', label: 'Truyện ngắn' },
 ], 'novel');
 
 assert.equal(
   html,
-  '<button class="chip" data-v="4koma">4コマ漫画風</button><button class="chip active" data-v="novel">短編小説</button>',
+  '<button class="chip" data-v="4koma">Truyện tranh 4 khung</button><button class="chip active" data-v="novel">Truyện ngắn</button>',
 );
 
 assert.equal(createModeChipMarkup(null, 'novel'), '');

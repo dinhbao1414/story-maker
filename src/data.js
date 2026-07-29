@@ -12,8 +12,22 @@ export const GEMINI_MODELS = [
 ];
 
 export const GEMINI_MODEL_VALUES = GEMINI_MODELS.map(model => model.value);
-export const OPENAI_TEXT_MODELS = ['gpt-4.1', 'gpt-4.1-mini', 'gpt-4.1-nano', 'gpt-4o'];
-export const OPENAI_VISION_MODELS = ['gpt-4.1', 'gpt-4o', 'gpt-4.1-mini'];
+// ponytail: One requested local endpoint only; add runtime configuration when multiple servers are needed.
+export const OPENAI_LOCAL_RUNTIME = ['localhost', '127.0.0.1'].includes(
+  String(globalThis.location?.hostname || '').toLowerCase(),
+);
+export const OPENAI_API_BASE_URL = OPENAI_LOCAL_RUNTIME
+  ? 'http://localhost:20128/v1'
+  : 'https://api.openai.com/v1';
+export const OPENAI_CHAT_COMPLETIONS_URL = `${OPENAI_API_BASE_URL}/chat/completions`;
+export const OPENAI_RESPONSES_URL = `${OPENAI_API_BASE_URL}/responses`;
+export const OPENAI_RESPONSES_SUPPORTED = !OPENAI_LOCAL_RUNTIME;
+export const OPENAI_TEXT_MODELS = OPENAI_LOCAL_RUNTIME
+  ? ['cx/gpt-5.5', 'cx/gpt-5.4', 'cx/gpt-5.4-mini']
+  : ['gpt-4.1', 'gpt-4.1-mini', 'gpt-4.1-nano', 'gpt-4o'];
+export const OPENAI_VISION_MODELS = OPENAI_LOCAL_RUNTIME
+  ? ['cx/gpt-5.5', 'cx/gpt-5.4', 'cx/gpt-5.4-mini']
+  : ['gpt-4.1', 'gpt-4o', 'gpt-4.1-mini'];
 
 const ALL_MODES = [
   { value: '4koma', label: '4コマ漫画風' },

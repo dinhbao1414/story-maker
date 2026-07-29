@@ -1,3 +1,5 @@
+import { getVietnameseLabel } from './vietnameseLabels.js';
+
 function defaultEscape(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -10,7 +12,7 @@ function defaultEscape(value) {
 function createModeChipMarkup(modes, activeMode, escapeHtml = defaultEscape) {
   return (Array.isArray(modes) ? modes : []).map((mode) => {
     const value = String(mode?.value ?? '');
-    const label = String(mode?.label ?? value);
+    const label = getVietnameseLabel(mode?.label ?? value);
     const activeClass = activeMode === value ? ' active' : '';
     return `<button class="chip${activeClass}" data-v="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
   }).join('');

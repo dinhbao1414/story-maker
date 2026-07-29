@@ -5,10 +5,10 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const runtime = fs.readFileSync(new URL('../src/publicRuntime.js', import.meta.url), 'utf8');
 const style = fs.readFileSync(new URL('../src/style.css', import.meta.url), 'utf8');
 
-assert.match(html, /この小説をブラッシュアップ/);
-assert.match(html, /高得点を目指して自動ブラッシュアップ（最大3回）/);
-assert.match(html, /100点を目標に、85点以上でも最大3回まで改善を継続/);
-assert.match(html, /85〜89点は公開可能、90点以上は編集合格/);
+assert.match(html, /Tinh chỉnh truyện này/);
+assert.match(html, /Tự động tinh chỉnh để đạt điểm cao \(tối đa 3 lần\)/);
+assert.match(html, /Mục tiêu 100 điểm; tiếp tục cải thiện tối đa 3 lần/);
+assert.match(html, /85–89: có thể xuất bản; từ 90: đạt chuẩn biên tập/);
 assert.doesNotMatch(html, /id="longify-target-chars"/);
 assert.doesNotMatch(html, />この小説を長編化</);
 assert.match(runtime, /installEditorialBrushupRuntime/);

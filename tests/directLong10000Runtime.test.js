@@ -40,7 +40,7 @@ assert.equal(failedUi.ok, false);
 assert.equal(root.dataset.directLongResult, 'failed');
 assert.equal(root.dataset.directLongChars, '9999');
 assert.match(root.dataset.directLongIssues, /target_length/);
-assert.match(status.textContent, /失敗/);
+assert.match(status.textContent, /Thất bại/);
 
 const passedUi = applyDirectLong10000UiResult({
   mode: 'long_10000',
@@ -52,6 +52,6 @@ assert.equal(passedUi.ok, true);
 assert.equal(root.dataset.directLongResult, 'passed');
 assert.equal(root.dataset.directLongChars, '10001');
 assert.equal(root.dataset.directLongIssues, '');
-assert.match(status.textContent, /完了/);
+assert.match(status.textContent, /Hoàn tất/);
 
 console.log('direct long 10000 runtime tests passed');
