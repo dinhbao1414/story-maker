@@ -82,4 +82,9 @@ assert.match(runtimeSources, /Đang tinh chỉnh/);
 assert.match(runtimeSources, /lỗi phân tích phong cách/i);
 assert.match(runtimeSources, /Đã sao chép/);
 
+assert.match(html, /workspace-tab-projects/);
+assert.match(html, /data-workspace-panel="projects"/);
+assert.match(html, /Dự án Story/);
+assert.equal((html.match(/id="story-projects-panel"/g) || []).length, 1);
+
 console.log('Vietnamese UI tests passed');

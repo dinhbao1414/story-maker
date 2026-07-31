@@ -66,6 +66,12 @@
         <span class="workspace-tab-icon" aria-hidden="true">▣</span>
         <span>Dashboard</span>
       </button>
+      <button type="button" class="workspace-tab" id="workspace-tab-projects"
+        role="tab" data-workspace-tab="projects" aria-controls="story-projects-panel"
+        aria-selected="false" tabindex="-1">
+        <span class="workspace-tab-icon" aria-hidden="true">◦</span>
+        <span>Dự án Story</span>
+      </button>
       <button type="button" class="workspace-tab" id="workspace-tab-settings"
         role="tab" data-workspace-tab="settings" aria-controls="settings"
         aria-selected="false" tabindex="-1">
@@ -334,6 +340,12 @@
       <!-- 生成ボタンは上部に移動済み -->
       </div><!-- /.panel-scroll -->
     </aside>
+
+    <section class="story-projects-panel" id="story-projects-panel"
+      data-workspace-panel="projects" role="tabpanel"
+      aria-labelledby="workspace-tab-projects" aria-hidden="true" hidden>
+      <div id="story-projects-root"></div>
+    </section>
 
     <!-- 📺 Output Display -->
     <article class="output-panel" id="output-panel" data-workspace-panel="dashboard" role="tabpanel"

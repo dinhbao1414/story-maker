@@ -32,6 +32,7 @@ function createElement(dataset = {}) {
 }
 
 assert.equal(resolveWorkspaceTab('dashboard'), 'dashboard');
+assert.equal(resolveWorkspaceTab('projects'), 'projects');
 assert.equal(resolveWorkspaceTab('settings'), 'settings');
 assert.equal(resolveWorkspaceTab('unknown'), 'dashboard');
 assert.equal(resolveWorkspaceTab(''), 'dashboard');
@@ -39,8 +40,10 @@ assert.equal(isProgressActive('Tiến độ và nhật ký AI: Đang chờ'), fa
 assert.equal(isProgressActive('Tiến độ và nhật ký AI: Đang tạo truyện'), true);
 
 const dashboardTab = createElement({ workspaceTab: 'dashboard' });
+const projectsTab = createElement({ workspaceTab: 'projects' });
 const settingsTab = createElement({ workspaceTab: 'settings' });
 const dashboardPanel = createElement({ workspacePanel: 'dashboard' });
+const projectsPanel = createElement({ workspacePanel: 'projects' });
 const settingsPanel = createElement({ workspacePanel: 'settings' });
 const dashboardAction = createElement({ workspaceAction: 'dashboard' });
 const progressDisclosure = createElement();
@@ -55,8 +58,8 @@ const elementsById = new Map([
 const doc = {
   documentElement: { dataset: {} },
   querySelectorAll(selector) {
-    if (selector === '[data-workspace-tab]') return [dashboardTab, settingsTab];
-    if (selector === '[data-workspace-panel]') return [dashboardPanel, settingsPanel];
+    if (selector === '[data-workspace-tab]') return [dashboardTab, projectsTab, settingsTab];
+    if (selector === '[data-workspace-panel]') return [dashboardPanel, projectsPanel, settingsPanel];
     if (selector === '[data-workspace-action]') return [dashboardAction];
     return [];
   },
@@ -80,6 +83,7 @@ const win = {
 const runtime = installWorkspaceTabs({ doc, win });
 assert.equal(runtime.getActiveTab(), 'dashboard');
 assert.equal(dashboardPanel.hidden, false);
+assert.equal(projectsPanel.hidden, true);
 assert.equal(settingsPanel.hidden, true);
 assert.equal(dashboardTab.getAttribute('aria-selected'), 'true');
 assert.equal(settingsTab.getAttribute('aria-selected'), 'false');
@@ -90,6 +94,11 @@ settingsTab.listeners.click();
 assert.equal(runtime.getActiveTab(), 'settings');
 assert.equal(dashboardPanel.hidden, true);
 assert.equal(settingsPanel.hidden, false);
+
+projectsTab.listeners.click();
+assert.equal(runtime.getActiveTab(), 'projects');
+assert.equal(projectsPanel.hidden, false);
+assert.equal(settingsPanel.hidden, true);
 
 let prevented = false;
 settingsTab.listeners.keydown({
@@ -105,6 +114,9 @@ assert.equal(runtime.getActiveTab(), 'dashboard');
 
 win.listeners['story-maker:settings-imported']();
 assert.equal(runtime.getActiveTab(), 'settings');
+
+win.listeners['story-maker:open-projects']();
+assert.equal(runtime.getActiveTab(), 'projects');
 
 progressTitle.textContent = 'Tiến độ và nhật ký AI: Đang phân tích';
 win.progressObserver.callback();

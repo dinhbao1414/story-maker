@@ -1,4 +1,4 @@
-export const WORKSPACE_TABS = Object.freeze(['dashboard', 'settings']);
+export const WORKSPACE_TABS = Object.freeze(['dashboard', 'projects', 'settings']);
 
 export function resolveWorkspaceTab(value) {
   return WORKSPACE_TABS.includes(value) ? value : 'dashboard';
@@ -76,6 +76,7 @@ export function installWorkspaceTabs({
     action.addEventListener('click', () => setActiveTab(action.dataset.workspaceAction));
   });
   win?.addEventListener?.('story-maker:settings-imported', () => setActiveTab('settings'));
+  win?.addEventListener?.('story-maker:open-projects', () => setActiveTab('projects'));
   installProgressDisclosure(doc, win);
   setActiveTab(doc.documentElement.dataset.workspaceTab);
   return { setActiveTab, getActiveTab };
