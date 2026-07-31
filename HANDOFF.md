@@ -2132,3 +2132,15 @@ These local checks were insufficient; the real Gemini browser run still failed a
 - Fresh real browser proof on the short mode: initial review 85 with concrete 7/4/3-point deductions; attempt 1 candidate 92 adopted; attempt 2 candidate 86 rejected; attempt 3 candidate 88 rejected; final retained manuscript 92/editorial pass, 3 attempts, 3,330 displayed characters, and one Story Maker footer.
 - Fresh verification passed: full tests 82/82, focused editorial/OpenAI/UI tests, syntax checks, generic-rule guard, Nano 4koma contract, `git diff --check`, and production build. The build retains only the existing large-chunk warning.
 - No commit, staging, push, deploy, release, tag, version bump, distribution sync, backup, or server shutdown was performed.
+
+## 2026-07-31 Story Project Management Dashboard
+
+- Added the `Dự án Story` workspace between Dashboard and Settings. Projects persist in IndexedDB, exclude secret-looking fields, support Dashboard snapshots or TXT style-analysis snapshots, and keep Dashboard as the default tab after reload.
+- Added Card Grid search/filter/sort, three-step preview-before-save creation, project detail, editable controlled-variation preview, single or sequential batch generation, pause/resume/retry, story persistence, rename/download/delete, project import/export/duplicate/update/delete, and apply-to-Dashboard actions.
+- Existing generation remains authoritative: the bridge applies settings and clicks `#btn-all-random` / `#btn-generate`; it does not call provider APIs directly or use parallel requests. Each successful story is saved before the next request starts.
+- Implementation commits: `a62c048`, `87bc4ff`, `4a8ff5c`, `ad4cbee`, `596c499`, `026f6e6`, `0e87541`.
+- Verification passed: seven focused Story Project/tab/UI commands; full Node suite `91/91`; generic-rule guard; Nano 4koma contract command; lint-if-present; `git diff --check`; production build with 92 transformed modules.
+- Build retained the existing large-chunk warning. Nano 4koma cross-project comparison was skipped because the sibling Nano Banana Pro prompt source was unavailable; no Story Maker contract failure was reported.
+- Browser acceptance on `http://127.0.0.1:5179/`: Projects tab/runtime rendered without `.sp-error`; a Dashboard project was created through the native dialog; its card appeared; reload preserved it through IndexedDB.
+- Remaining live checks: TXT analysis creation and real single/batch AI generation require the user's configured API/provider and were not invoked during this verification to avoid unintended API usage. Controller/bridge persistence and sequential behavior are covered by automated tests.
+- Local-only implementation. No deploy, push, tag, release, backup, version bump, or API credential change was performed.
