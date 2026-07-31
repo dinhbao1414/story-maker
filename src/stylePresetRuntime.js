@@ -28,6 +28,21 @@ function installStyleAnalysisCapture(win) {
   win.__storyMakerStylePresetFetch = true;
 }
 
+export function waitForStyleAnalysis(win = globalThis.window, timeoutMs = 180000) {
+  return new Promise((resolve, reject) => {
+    const timeoutId = win.setTimeout(() => {
+      cleanup();
+      reject(new Error('Phân tích phong cách quá thời gian chờ.'));
+    }, timeoutMs);
+    const onReady = event => { cleanup(); resolve(event.detail); };
+    const cleanup = () => {
+      win.clearTimeout(timeoutId);
+      win.removeEventListener('story-maker:style-analysis-ready', onReady);
+    };
+    win.addEventListener('story-maker:style-analysis-ready', onReady, { once: true });
+  });
+}
+
 export function installStylePresetRuntime({
   doc = globalThis.document,
   win = globalThis.window,

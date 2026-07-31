@@ -1349,6 +1349,19 @@ function clearAll() {
   $('sa-reflect-result-wrap')?.classList.add('hidden');
 }
 
+export async function replaceStyleAnalyzerFiles(fileList) {
+  clearAll();
+  await handleFiles(fileList);
+  return {
+    fileNames: droppedTexts.map(item => item.name),
+    totalChars: droppedTexts.reduce((sum, item) => sum + item.charCount, 0),
+  };
+}
+
+export function startStyleAnalysis() {
+  return runAnalysis();
+}
+
 function addDirectText() {
   const directTextEl = $('sa-direct-text');
   if (!directTextEl) return;

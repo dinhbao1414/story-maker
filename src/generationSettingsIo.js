@@ -130,8 +130,12 @@ function buildCurrentSettingsExport() {
   });
 }
 
+export function captureCurrentGenerationSettings() {
+  return buildCurrentSettingsExport();
+}
+
 function exportGenerationSettings() {
-  const payload = buildCurrentSettingsExport();
+  const payload = captureCurrentGenerationSettings();
   const blob = new Blob([JSON.stringify(payload, null, 2)], {
     type: 'application/json;charset=utf-8',
   });
@@ -304,8 +308,10 @@ function installGenerationSettingsIo() {
   installOutputTxtSaveNameOverride();
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', installGenerationSettingsIo);
-} else {
-  installGenerationSettingsIo();
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', installGenerationSettingsIo);
+  } else {
+    installGenerationSettingsIo();
+  }
 }
