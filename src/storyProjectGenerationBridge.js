@@ -84,13 +84,14 @@ export async function runSequentialStoryBatch({
   let failureCount = 0;
   for (let index = 0; index < total; index += 1) {
     if (shouldPause()) return { successCount, failureCount, paused: true };
+    let prepared;
     try {
-      const prepared = await prepare(index);
+      prepared = await prepare(index);
       const generated = await generate(prepared, index);
       await saveSuccess(generated, prepared, index);
       successCount += 1;
     } catch (error) {
-      await saveFailure(error, index);
+      await saveFailure(error, index, prepared);
       failureCount += 1;
     }
   }

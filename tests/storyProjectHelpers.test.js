@@ -80,4 +80,15 @@ assert.equal(imported.stories[0].text, 'Nội dung');
 assert.throws(() => parseStoryProjectImport('{"schema":"wrong"}'), /Dự án Story/);
 assert.throws(() => createStoryProject({ name: '   ', settingsPayload }), /tên dự án/i);
 
+const unsafeImported = parseStoryProjectImport({
+  ...exported,
+  project: { ...exported.project, credentials: { apiKey: 'x', token: 'y' } },
+  stories: [{ id: 'unsafe', projectId: project.id, secret: 'z', metadata: { authorization: 'a' } }],
+});
+const unsafeJson = JSON.stringify(unsafeImported);
+assert.equal(unsafeJson.includes('apiKey'), false);
+assert.equal(unsafeJson.includes('token'), false);
+assert.equal(unsafeJson.includes('secret'), false);
+assert.equal(unsafeJson.includes('authorization'), false);
+
 console.log('storyProjectHelpers tests passed');
