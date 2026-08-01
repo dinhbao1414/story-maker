@@ -28,6 +28,7 @@ assert.match(css, /\.sp-dialog\s*\{[^}]*margin:\s*auto/);
 assert.match(css, /\.sp-dialog::backdrop\s*\{[^}]*background:/);
 assert.match(css, /\.sp-dialog\s*>\s*form\s*\{[^}]*display:\s*flex/);
 assert.match(css, /\.sp-dialog\s+header\s*\{[^}]*display:\s*flex/);
+assert.match(css, /\.sp-dialog\s+section\[hidden\]\s*\{[^}]*display:\s*none/);
 assert.match(css, /\.sp-dialog-actions\s*\{[^}]*justify-content:\s*flex-end/);
 assert.match(css, /#story-projects-root\s*\{[^}]*max-width:/);
 assert.match(css, /\.sp-summary-card\s*\{[^}]*background:/);
