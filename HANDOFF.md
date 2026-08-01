@@ -2153,3 +2153,15 @@ These local checks were insufficient; the real Gemini browser run still failed a
 - Regression coverage: watchdog duration, activity renewal, timeout error code, and fatal batch stop are covered in `tests/storyProjectGenerationBridge.test.js`.
 - Verification passed on August 1, 2026: focused bridge/runtime tests, full Node suite `91/91`, generic-rule guard, Nano contract command, lint-if-present, `git diff --check`, production build, HTTP 200, and Chrome headless module/runtime smoke.
 - No deploy, push, release, tag, backup, version bump, provider routing change, or API credential change was performed.
+
+## 2026-08-01 Story Project UI consistency correction
+
+- Centered the native Create Project dialog with explicit fixed inset and auto margins because the global reset removed browser dialog centering.
+- Unified Story Project summary cards, toolbar, project cards, status/progress, empty state, detail sections, story rows, actions, and responsive layouts using the existing dark-purple tokens.
+- Browser review found and corrected a CSS regression where `.sp-dialog section { display:flex; }` overrode wizard-step `hidden` state. Regression coverage now requires hidden sections to remain `display:none`.
+- Preserved runtime markup, IDs, data actions, IndexedDB, analysis, generation, retry, timeout, provider, API, and version behavior.
+- Verification on August 1, 2026: focused UI tests; full Node suite `91/91`; generic-rule guard; Nano contract command; lint-if-present; `git diff --check`; production build with 92 transformed modules; HTTP 200.
+- Chrome headless acceptance: modal center delta `0px` on 1920x1080 and 390x844; compact 764x485 center delta `0px` within the 759px content viewport, with the remaining `2.5px` physical offset caused solely by the existing 5px page scrollbar. Header/footer are flex, one wizard step is visible, no horizontal overflow, `.sp-error`, console warning, or console error.
+- Escape, close-button, three-step creation, temporary Dashboard project creation, Card rendering, compact primary actions, and responsive one-column mobile layout passed without calling an AI API.
+- Local verification URL: `http://127.0.0.1:5179/`.
+- Local-only implementation. No deploy, push, release, tag, backup, version bump, provider routing change, or API credential change was performed.
