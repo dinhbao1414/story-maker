@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .vite/
+.worktrees/
 *.local
 
 # Local verification artifacts
