@@ -2144,3 +2144,12 @@ These local checks were insufficient; the real Gemini browser run still failed a
 - Browser acceptance on `http://127.0.0.1:5179/`: Projects tab/runtime rendered without `.sp-error`; a Dashboard project was created through the native dialog; its card appeared; reload preserved it through IndexedDB.
 - Remaining live checks: TXT analysis creation and real single/batch AI generation require the user's configured API/provider and were not invoked during this verification to avoid unintended API usage. Controller/bridge persistence and sequential behavior are covered by automated tests.
 - Local-only implementation. No deploy, push, tag, release, backup, version bump, or API credential change was performed.
+
+## 2026-08-01 Story Project batch timeout correction
+
+- User report: requesting three stories could save only one; history showed repeated `Tạo truyện quá thời gian chờ.` entries at 10-minute intervals.
+- Root cause: the bridge timeout was shorter than the complete legacy generation pipeline. The sequential runner then continued while the previous request was still active, allowing ignored clicks or misattributed completion.
+- Local fix: generation timeout is now a 30-minute inactivity watchdog renewed by visible generation activity. A timeout marks the error as fatal and stops the remaining batch, preserving the no-parallel-request contract.
+- Regression coverage: watchdog duration, activity renewal, timeout error code, and fatal batch stop are covered in `tests/storyProjectGenerationBridge.test.js`.
+- Verification passed on August 1, 2026: focused bridge/runtime tests, full Node suite `91/91`, generic-rule guard, Nano contract command, lint-if-present, `git diff --check`, production build, HTTP 200, and Chrome headless module/runtime smoke.
+- No deploy, push, release, tag, backup, version bump, provider routing change, or API credential change was performed.

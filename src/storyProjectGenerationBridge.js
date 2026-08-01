@@ -1,21 +1,43 @@
+export const STORY_PROJECT_GENERATION_TIMEOUT_MS = 30 * 60 * 1000;
+
 export function waitForExistingGeneration({
   button,
   output,
+  activityElements = [],
   timers = globalThis,
-  timeoutMs = 600000,
+  timeoutMs = STORY_PROJECT_GENERATION_TIMEOUT_MS,
 }) {
   if (!button || !output) return Promise.reject(new Error('Không tìm thấy giao diện tạo truyện.'));
   return new Promise((resolve, reject) => {
     let sawBusy = Boolean(button.disabled);
+    let settled = false;
+    let timeoutId;
+    let lastActivity = readActivity(button, output, activityElements);
     const cleanup = () => {
       timers.clearInterval(intervalId);
       timers.clearTimeout(timeoutId);
     };
     const finish = (callback, value) => {
+      if (settled) return;
+      settled = true;
       cleanup();
       callback(value);
     };
+    const armTimeout = () => {
+      timers.clearTimeout(timeoutId);
+      timeoutId = timers.setTimeout(() => {
+        const error = new Error('Tạo truyện quá thời gian chờ.');
+        error.code = 'STORY_PROJECT_GENERATION_TIMEOUT';
+        error.stopBatch = true;
+        finish(reject, error);
+      }, timeoutMs);
+    };
     const poll = () => {
+      const activity = readActivity(button, output, activityElements);
+      if (activity !== lastActivity) {
+        lastActivity = activity;
+        armTimeout();
+      }
       if (button.disabled) {
         sawBusy = true;
         return;
@@ -33,10 +55,12 @@ export function waitForExistingGeneration({
       finish(resolve, { text });
     };
     const intervalId = timers.setInterval(poll, 200);
-    const timeoutId = timers.setTimeout(() => {
-      finish(reject, new Error('Tạo truyện quá thời gian chờ.'));
-    }, timeoutMs);
+    armTimeout();
   });
+}
+
+function readActivity(button, output, activityElements) {
+  return [button?.disabled ? '1' : '0', output?.textContent || '', ...activityElements.map(element => element?.textContent || '')].join('\n');
 }
 
 export function createStoryProjectGenerationBridge({
@@ -45,7 +69,7 @@ export function createStoryProjectGenerationBridge({
   captureSettings,
   buildVariationSettings,
   timers = globalThis,
-  timeoutMs = 600000,
+  timeoutMs = STORY_PROJECT_GENERATION_TIMEOUT_MS,
 } = {}) {
   const getRequiredElement = id => {
     const element = doc?.getElementById?.(id);
@@ -64,7 +88,10 @@ export function createStoryProjectGenerationBridge({
       await applySettings(previewPayload, { announce: false });
       const button = getRequiredElement('btn-generate');
       const output = getRequiredElement('output');
-      const pending = waitForExistingGeneration({ button, output, timers, timeoutMs });
+      const activityElements = ['progress-log', 'progress-title-text', 'char-counter', 'global-alert']
+        .map(id => doc?.getElementById?.(id))
+        .filter(Boolean);
+      const pending = waitForExistingGeneration({ button, output, activityElements, timers, timeoutMs });
       button.click();
       return pending;
     },
@@ -93,6 +120,7 @@ export async function runSequentialStoryBatch({
     } catch (error) {
       await saveFailure(error, index, prepared);
       failureCount += 1;
+      if (error?.stopBatch) return { successCount, failureCount, paused: false, stopped: true };
     }
   }
   return { successCount, failureCount, paused: false };
