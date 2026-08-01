@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {
   createStoryProjectController,
   renderCreateProjectDialogMarkup,
   renderProjectCardMarkup,
   renderProjectsDashboardMarkup,
 } from '../src/storyProjectRuntime.js';
+
+const css = fs.readFileSync(new URL('../src/style.css', import.meta.url), 'utf8');
 
 const project = {
   id: 'p1', name: 'Tổng tài bị khinh thường', status: 'running',
@@ -21,6 +24,17 @@ assert.match(card, /aria-label="Mở menu dự án/);
 assert.match(renderProjectsDashboardMarkup([]), /Tạo dự án đầu tiên/);
 assert.match(renderCreateProjectDialogMarkup(), /sp-create-dialog/);
 assert.match(renderCreateProjectDialogMarkup(), /multiple/);
+assert.match(css, /\.sp-dialog\s*\{[^}]*margin:\s*auto/);
+assert.match(css, /\.sp-dialog::backdrop\s*\{[^}]*background:/);
+assert.match(css, /\.sp-dialog\s*>\s*form\s*\{[^}]*display:\s*flex/);
+assert.match(css, /\.sp-dialog\s+header\s*\{[^}]*display:\s*flex/);
+assert.match(css, /\.sp-dialog-actions\s*\{[^}]*justify-content:\s*flex-end/);
+assert.match(css, /#story-projects-root\s*\{[^}]*max-width:/);
+assert.match(css, /\.sp-summary-card\s*\{[^}]*background:/);
+assert.match(css, /\.sp-toolbar\s*\{[^}]*background:/);
+assert.match(css, /\.sp-grid\s*\{[^}]*auto-fit/);
+assert.match(css, /\.sp-card-actions\s+\.btn-generate\s*\{[^}]*width:\s*auto/);
+assert.match(css, /\.sp-detail-section\s*\{[^}]*background:/);
 
 const calls = [];
 const controller = createStoryProjectController({
