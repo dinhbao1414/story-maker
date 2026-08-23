@@ -169,13 +169,18 @@ function createDefaultStructuredCaller({ getApiSession, getModel } = {}) {
   };
 }
 
-function createDefaultGenerationCaller({ getApiSession, getModel } = {}) {
+export function createChannelFormulaGenerationCaller({
+  getApiSession,
+  getModel,
+  callProvider = Gt,
+  runLongify = null,
+} = {}) {
   return async ({ formula, prompt, randomizedPremise, targetTotalNumber, chapterCount }) => {
     const session = await getApiSession?.();
     const key = resolveSessionKey(session);
     if (!key) throw new Error('APIキーを入力してから生成を開始してください。');
     const model = getModel?.(key) || 'gemini-3.5-flash';
-    const seedResult = await Gt(key, model, [
+    const seedResult = await callProvider(key, model, [
       prompt,
       'まず長編化の土台になる、固有名詞を新規に作った短い日本語の種文を800〜1,200字で出力する。',
       '種文だけを出力し、分析・JSON・見出し・CTAは出力しない。',
@@ -183,8 +188,17 @@ function createDefaultGenerationCaller({ getApiSession, getModel } = {}) {
       maxTokens: 3000,
       disableGoogleSearch: true,
     });
-    const { runLongifyBeta } = await import('./longifyBeta.js');
-    return runLongifyBeta({
+    const longify = runLongify || (await import('./longifyBeta.js')).runLongifyBeta;
+    const callText = async (longifyPrompt, context = {}) => callProvider(
+      key,
+      model,
+      longifyPrompt,
+      {
+        ...(context.options || {}),
+        disableGoogleSearch: true,
+      },
+    );
+    return longify({
       storyText: seedResult?.text || seedResult,
       apiKey: key,
       model,
@@ -193,9 +207,12 @@ function createDefaultGenerationCaller({ getApiSession, getModel } = {}) {
       channelFormulaName: formula.name,
       channelFormulaPrompt: formula.reproductionPrompt,
       channelFormulaPolicy: formula.generationPolicy,
+      callText,
     });
   };
 }
+
+const createDefaultGenerationCaller = createChannelFormulaGenerationCaller;
 
 function makeFormulaId(name) {
   return `formula-analysis-${fingerprintSource(text(name, 120))}`;

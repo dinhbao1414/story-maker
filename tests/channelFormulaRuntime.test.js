@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  createChannelFormulaGenerationCaller,
   createChannelFormulaRuntimeController,
   filterChannelFormulaTextFiles,
   generateFormulaStory,
@@ -125,4 +126,39 @@ test('builds one randomized 20k generation request and validates the returned st
   assert.ok(request.targetTotalNumber >= 22000);
   assert.match(request.prompt, /コピー禁止/);
   assert.doesNotMatch(request.prompt, /ご視聴ありがとうございました|チャンネル登録お願いします/);
+});
+
+test('formula longify caller supplies a non-streaming provider bridge for ledger and chapters', async () => {
+  const providerCalls = [];
+  const longifyCalls = [];
+  const caller = createChannelFormulaGenerationCaller({
+    getApiSession: () => ({ apiKey: 'test-key' }),
+    getModel: () => 'test-model',
+    callProvider: async (apiKey, model, prompt, options) => {
+      providerCalls.push({ apiKey, model, prompt, options });
+      return { text: 'seed '.repeat(80) };
+    },
+    runLongify: async options => {
+      longifyCalls.push(options);
+      return { text: `${'あ'.repeat(20000)}。` };
+    },
+  });
+  const formula = createChannelFormula({ name: 'Formula', reproductionPrompt: 'rules' });
+  await caller({
+    formula,
+    prompt: 'seed prompt',
+    randomizedPremise: 'premise',
+    targetTotalNumber: 22000,
+    chapterCount: 4,
+  });
+
+  assert.equal(longifyCalls.length, 1);
+  assert.equal(typeof longifyCalls[0].callText, 'function');
+  const response = await longifyCalls[0].callText('ledger prompt', {
+    options: { maxTokens: 1234, timeoutMs: 45000 },
+  });
+  assert.equal(response.text, 'seed '.repeat(80));
+  assert.equal(providerCalls.length, 2);
+  assert.equal(providerCalls[1].options.maxTokens, 1234);
+  assert.equal(providerCalls[1].options.timeoutMs, 45000);
 });
