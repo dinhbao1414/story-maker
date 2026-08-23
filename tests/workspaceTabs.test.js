@@ -33,6 +33,7 @@ function createElement(dataset = {}) {
 
 assert.equal(resolveWorkspaceTab('dashboard'), 'dashboard');
 assert.equal(resolveWorkspaceTab('projects'), 'projects');
+assert.equal(resolveWorkspaceTab('formulas'), 'formulas');
 assert.equal(resolveWorkspaceTab('settings'), 'settings');
 assert.equal(resolveWorkspaceTab('unknown'), 'dashboard');
 assert.equal(resolveWorkspaceTab(''), 'dashboard');
@@ -41,9 +42,11 @@ assert.equal(isProgressActive('Tiến độ và nhật ký AI: Đang tạo truy�
 
 const dashboardTab = createElement({ workspaceTab: 'dashboard' });
 const projectsTab = createElement({ workspaceTab: 'projects' });
+const formulasTab = createElement({ workspaceTab: 'formulas' });
 const settingsTab = createElement({ workspaceTab: 'settings' });
 const dashboardPanel = createElement({ workspacePanel: 'dashboard' });
 const projectsPanel = createElement({ workspacePanel: 'projects' });
+const formulasPanel = createElement({ workspacePanel: 'formulas' });
 const settingsPanel = createElement({ workspacePanel: 'settings' });
 const dashboardAction = createElement({ workspaceAction: 'dashboard' });
 const progressDisclosure = createElement();
@@ -58,8 +61,8 @@ const elementsById = new Map([
 const doc = {
   documentElement: { dataset: {} },
   querySelectorAll(selector) {
-    if (selector === '[data-workspace-tab]') return [dashboardTab, projectsTab, settingsTab];
-    if (selector === '[data-workspace-panel]') return [dashboardPanel, projectsPanel, settingsPanel];
+    if (selector === '[data-workspace-tab]') return [dashboardTab, projectsTab, formulasTab, settingsTab];
+    if (selector === '[data-workspace-panel]') return [dashboardPanel, projectsPanel, formulasPanel, settingsPanel];
     if (selector === '[data-workspace-action]') return [dashboardAction];
     return [];
   },
@@ -100,6 +103,11 @@ assert.equal(runtime.getActiveTab(), 'projects');
 assert.equal(projectsPanel.hidden, false);
 assert.equal(settingsPanel.hidden, true);
 
+formulasTab.listeners.click();
+assert.equal(runtime.getActiveTab(), 'formulas');
+assert.equal(formulasPanel.hidden, false);
+assert.equal(projectsPanel.hidden, true);
+
 let prevented = false;
 settingsTab.listeners.keydown({
   key: 'Home',
@@ -123,9 +131,17 @@ win.progressObserver.callback();
 assert.equal(progressDisclosure.open, true);
 
 const css = fs.readFileSync(new URL('../src/style.css', import.meta.url), 'utf8');
+const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 assert.match(css, /\.workspace-tabs\s*\{/);
 assert.match(css, /\.workspace-tab\s*\{/);
 assert.match(css, /\[data-workspace-panel\]\[hidden\]/);
 assert.match(css, /\.settings-panel\.disabled-panel \.workspace-back-dashboard\s*\{[^}]*pointer-events:\s*auto/);
+assert.match(html, /data-workspace-tab="formulas"/);
+assert.match(html, /data-workspace-panel="formulas"/);
+assert.match(html, /id="cf-folder-input"[^>]*webkitdirectory/);
+assert.match(html, /id="cf-formula-name"/);
+assert.match(html, /id="cf-analyze"/);
+assert.match(html, /id="cf-generate"/);
+assert.match(html, /id="cf-selected-formula"/);
 
 console.log('workspaceTabs tests passed');

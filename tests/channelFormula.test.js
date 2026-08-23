@@ -11,6 +11,7 @@ import {
   sanitizeChannelFormula,
   validateChannelFormulaStory,
 } from '../src/channelFormula.js';
+import { BUILTIN_CHANNEL_FORMULAS } from '../src/channelFormulaCatalog.js';
 
 test('creates the Japanese 20k formula defaults', () => {
   const formula = createChannelFormula({
@@ -119,4 +120,16 @@ test('validates the 20k minimum and complete ending', () => {
   assert.equal(validateChannelFormulaStory(`${'あ'.repeat(19998)}。`).ok, false);
   assert.match(validateChannelFormulaStory(`${'あ'.repeat(20000)}`).issues.join(','), /unclosed_ending/);
   assert.match(validateChannelFormulaStory('').issues.join(','), /empty_output/);
+});
+
+test('ships one sanitized built-in Daily Scat formula', () => {
+  assert.equal(BUILTIN_CHANNEL_FORMULAS.length, 1);
+  const formula = BUILTIN_CHANNEL_FORMULAS[0];
+  assert.equal(formula.name, 'Daily Scat – Drama gia đình Nhật');
+  assert.equal(formula.language, 'ja');
+  assert.equal(formula.sourceCount, 40);
+  assert.equal(formula.builtIn, true);
+  assert.equal(formula.generationPolicy.minNonWhitespaceChars, 20000);
+  assert.equal(JSON.stringify(formula).includes('ja.auto.txt'), false);
+  assert.equal(JSON.stringify(formula).includes('apiKey'), false);
 });

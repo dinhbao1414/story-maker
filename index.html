@@ -72,6 +72,12 @@
         <span class="workspace-tab-icon" aria-hidden="true">◦</span>
         <span>Dự án Story</span>
       </button>
+      <button type="button" class="workspace-tab" id="workspace-tab-formulas"
+        role="tab" data-workspace-tab="formulas" aria-controls="channel-formula-panel"
+        aria-selected="false" tabindex="-1">
+        <span class="workspace-tab-icon" aria-hidden="true">✦</span>
+        <span>Công thức kênh</span>
+      </button>
       <button type="button" class="workspace-tab" id="workspace-tab-settings"
         role="tab" data-workspace-tab="settings" aria-controls="settings"
         aria-selected="false" tabindex="-1">
@@ -345,6 +351,66 @@
       data-workspace-panel="projects" role="tabpanel"
       aria-labelledby="workspace-tab-projects" aria-hidden="true" hidden>
       <div id="story-projects-root"></div>
+    </section>
+
+    <section class="channel-formula-panel" id="channel-formula-panel"
+      data-workspace-panel="formulas" role="tabpanel"
+      aria-labelledby="workspace-tab-formulas" aria-hidden="true" hidden>
+      <input id="cf-selected-formula" type="hidden" value="">
+      <header class="cf-header">
+        <div>
+          <h2>Công thức kênh</h2>
+          <p>Phân tích nhiều story TXT thành một công thức trừu tượng, sau đó tạo truyện Nhật mới theo công thức đó.</p>
+        </div>
+        <div class="cf-header-actions">
+          <button type="button" class="btn-secondary" id="cf-import">Nhập công thức</button>
+          <input id="cf-import-file" type="file" accept=".json,application/json" hidden>
+          <button type="button" class="btn-secondary" id="cf-export">Xuất công thức</button>
+        </div>
+      </header>
+      <div class="cf-grid">
+        <section class="cf-card">
+          <h3>Nguồn và công thức</h3>
+          <label class="cf-field">Tên công thức
+            <input id="cf-formula-name" type="text" maxlength="120" value="Daily Scat – Drama gia đình Nhật">
+          </label>
+          <label class="cf-field">Chọn folder TXT
+            <input id="cf-folder-input" type="file" webkitdirectory directory multiple accept=".txt,text/plain">
+          </label>
+          <div class="cf-actions">
+            <button type="button" class="btn-generate" id="cf-analyze">Phân tích folder</button>
+            <button type="button" class="btn-secondary" id="cf-cancel" disabled>Dừng</button>
+          </div>
+          <div class="cf-progress" id="cf-progress" role="status">Chưa có phiên phân tích.</div>
+          <div class="cf-error hidden" id="cf-error" role="alert"></div>
+        </section>
+        <section class="cf-card">
+          <h3>Công thức đã lưu</h3>
+          <label class="cf-field">Chọn công thức
+            <select id="cf-formula-select"></select>
+          </label>
+          <div class="cf-actions">
+            <button type="button" class="btn-secondary" id="cf-save">Lưu công thức</button>
+            <button type="button" class="btn-secondary" id="cf-delete">Xóa công thức</button>
+          </div>
+          <div class="cf-policy">
+            <span>Ngôn ngữ: <strong id="cf-language">日本語</strong></span>
+            <span>Tối thiểu: <strong id="cf-min-chars">20.000</strong> ký tự</span>
+            <span>Mục tiêu: <strong id="cf-target-chars">22.000</strong> ký tự</span>
+          </div>
+        </section>
+      </div>
+      <section class="cf-card cf-preview-card">
+        <div class="cf-preview-head">
+          <h3>Xem trước công thức</h3>
+          <button type="button" class="btn-generate" id="cf-generate" disabled>Random và tạo truyện 20k</button>
+        </div>
+        <pre id="cf-preview" class="cf-preview">Chọn hoặc phân tích một công thức để xem chi tiết.</pre>
+      </section>
+      <section class="cf-card cf-result-card hidden" id="cf-result-card">
+        <h3>Kết quả tạo truyện</h3>
+        <div id="cf-result" class="cf-result" role="status"></div>
+      </section>
     </section>
 
     <!-- 📺 Output Display -->

@@ -19,4 +19,5 @@ import './publicRuntime.js';
 import './generationSettingsIo.js';
 import './stylePresetRuntime.js';
 import './storyProjectRuntime.js';
+import './channelFormulaRuntime.js';
 import './workspaceTabs.js';

@@ -457,6 +457,35 @@ assert.match(chapterPrompt, /\u3064\u3065\u304f/);
 assert.ok(chapterPrompt.includes('Fixed ledger: Akari leaves the light on for her brother.'));
 assert.ok(chapterPrompt.includes('Bridge through chapter 2'));
 
+const formulaRunOptions = createLongifyRunOptions({
+  targetTotalChars: 20000,
+  channelFormulaName: 'Daily Scat – Drama gia đình Nhật',
+  channelFormulaPrompt: '抽象化された家族ドラマの規則。原文コピー禁止。',
+  channelFormulaPolicy: {
+    minNonWhitespaceChars: 20000,
+    targetNonWhitespaceChars: 22000,
+    chapterCount: 4,
+  },
+});
+assert.equal(formulaRunOptions.chapterCount, 4);
+assert.ok(formulaRunOptions.targetTotalNumber >= 22000);
+assert.equal(formulaRunOptions.channelFormulaName, 'Daily Scat – Drama gia đình Nhật');
+const formulaChapterPrompt = buildLongifyChapterPrompt({
+  seedText: seedStory,
+  ledgerText: 'Formula ledger',
+  chapterNumber: 1,
+  channelFormulaName: 'Daily Scat – Drama gia đình Nhật',
+  channelFormulaPrompt: '抽象化された家族ドラマの規則。原文コピー禁止。',
+  channelFormulaPolicy: {
+    minNonWhitespaceChars: 20000,
+    targetNonWhitespaceChars: 22000,
+    chapterCount: 4,
+  },
+});
+assert.match(formulaChapterPrompt, /Daily Scat/);
+assert.match(formulaChapterPrompt, /原文コピー禁止/);
+assert.match(formulaChapterPrompt, /22000|22,000/);
+
 const topupPrompt = buildLongifyTopupPrompt({
   seedText: seedStory,
   ledgerText: 'Fixed ledger',

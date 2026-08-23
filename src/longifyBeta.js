@@ -30,6 +30,7 @@ import {
   shouldAdoptLongifyBrushupBestCandidate,
   shouldPreserveOriginalLongifyChapter,
 } from './longifyRetryAudit.js';
+import { CHANNEL_FORMULA_DEFAULT_POLICY } from './channelFormula.js';
 
 const DEFAULT_MODEL = 'gemini-3.5-flash';
 const DEFAULT_CHAPTER_COUNT = 6;
@@ -54,6 +55,22 @@ export const LONGIFY_TARGET_POLICY = Object.freeze({
 const DEFAULT_TARGET_TOTAL_CHARS = LONGIFY_TARGET_POLICY.default;
 const LONGIFY_TARGET_MIN = LONGIFY_TARGET_POLICY.min;
 const LONGIFY_TARGET_MAX = LONGIFY_TARGET_POLICY.max;
+let ACTIVE_CHANNEL_FORMULA_CONTEXT = null;
+
+export function setChannelFormulaContext(formula = null) {
+  if (!formula || typeof formula !== 'object') {
+    ACTIVE_CHANNEL_FORMULA_CONTEXT = null;
+    return null;
+  }
+  ACTIVE_CHANNEL_FORMULA_CONTEXT = {
+    name: String(formula.name || '').trim().slice(0, 160),
+    reproductionPrompt: String(formula.reproductionPrompt || '').trim().slice(0, 12000),
+    generationPolicy: formula.generationPolicy && typeof formula.generationPolicy === 'object'
+      ? { ...formula.generationPolicy }
+      : null,
+  };
+  return ACTIVE_CHANNEL_FORMULA_CONTEXT;
+}
 const MIN_SEED_CHARS = 240;
 const MIN_BRUSHUP_LONG_CHARS = 8000;
 const LONGIFY_TYPEWRITER_BATCH_POLICY = Object.freeze({
@@ -604,11 +621,29 @@ export function createLongifyRunOptions({
   chapterCount = null,
   styleMode = 'preserve',
   endingMode = 'keep',
+  channelFormulaPrompt = '',
+  channelFormulaName = '',
+  channelFormulaPolicy = null,
 } = {}) {
-  const total = clampInt(targetTotalChars, DEFAULT_TARGET_TOTAL_CHARS, LONGIFY_TARGET_MIN, LONGIFY_TARGET_MAX);
+  const formulaPolicy = channelFormulaPolicy && typeof channelFormulaPolicy === 'object'
+    ? { ...CHANNEL_FORMULA_DEFAULT_POLICY, ...channelFormulaPolicy }
+    : null;
+  const formulaTarget = formulaPolicy
+    ? Math.max(
+      Number(formulaPolicy.minNonWhitespaceChars || CHANNEL_FORMULA_DEFAULT_POLICY.minNonWhitespaceChars),
+      Number(formulaPolicy.targetNonWhitespaceChars || CHANNEL_FORMULA_DEFAULT_POLICY.targetNonWhitespaceChars),
+      Number(targetTotalChars || 0),
+    )
+    : targetTotalChars;
+  const total = clampInt(
+    formulaTarget,
+    DEFAULT_TARGET_TOTAL_CHARS,
+    LONGIFY_TARGET_MIN,
+    LONGIFY_TARGET_MAX,
+  );
   const fallbackChapters = deriveChapterCountForTarget(total);
   const chapters = chapterCount === null || chapterCount === undefined
-    ? fallbackChapters
+    ? (formulaPolicy ? Math.max(4, Number(formulaPolicy.chapterCount || 4)) : fallbackChapters)
     : clampInt(chapterCount, fallbackChapters, 3, 10);
   const averagePerChapter = Math.max(1800, Math.ceil(total / chapters));
   const minPerChapter = Math.max(1600, Math.floor(averagePerChapter * LONGIFY_CHAPTER_MIN_RATIO));
@@ -620,7 +655,7 @@ export function createLongifyRunOptions({
     max: maxPerChapter,
   };
   const chapterRangeLabel = `${formatNumber(minPerChapter)}〜${formatNumber(maxPerChapter)}字（理想${formatNumber(recommendedPerChapter)}字 / 空白・改行除外）`;
-  return {
+  const result = {
     chapterCount: chapters,
     targetTotalChars: `最低${formatNumber(total)}字（空白・改行除外）`,
     targetTotalNumber: total,
@@ -635,6 +670,17 @@ export function createLongifyRunOptions({
     endingMode: ENDING_MODE_LABELS[endingMode] ? endingMode : 'keep',
     endingInstruction: ENDING_MODE_LABELS[endingMode] || ENDING_MODE_LABELS.keep,
   };
+  if (formulaPolicy) {
+    result.channelFormulaPrompt = String(channelFormulaPrompt || '').trim().slice(0, 12000);
+    result.channelFormulaName = String(channelFormulaName || '').trim().slice(0, 160);
+    result.channelFormulaPolicy = {
+      minNonWhitespaceChars: Math.max(20000, Number(formulaPolicy.minNonWhitespaceChars || 20000)),
+      targetNonWhitespaceChars: Math.max(22000, Number(formulaPolicy.targetNonWhitespaceChars || 22000)),
+      chapterCount: Math.max(4, Math.min(10, Number(formulaPolicy.chapterCount || 4))),
+      requireCompleteEnding: formulaPolicy.requireCompleteEnding !== false,
+    };
+  }
+  return result;
 }
 
 export function createLongifyChapterTargetRange(options = {}) {
@@ -774,6 +820,9 @@ function readLongifyRunOptionsFromUi() {
 
 export function buildLongifyLedgerPrompt(seedText, options = {}) {
   const runOptions = createLongifyRunOptions(options);
+  const channelFormulaBlock = runOptions.channelFormulaPrompt
+    ? `\n\n【チャンネル公式（抽象規則のみ）】\n公式名: ${runOptions.channelFormulaName || 'unnamed'}\n${runOptions.channelFormulaPrompt}\n原文の固有名詞・台詞・固有事件・CTAをコピーしないこと。`
+    : '';
   return `あなたは商業小説の編集者兼小説家です。
 次の短編を、芯を一切ブレさせずに長編へ拡張するための「固定台帳」を作成してください。
 
@@ -788,6 +837,7 @@ export function buildLongifyLedgerPrompt(seedText, options = {}) {
 - 結末方針: ${runOptions.endingInstruction}。
 - 出力は日本語。JSONではなく、見出し付きの編集台帳として書く。
 - 本文の再執筆はまだしない。
+${channelFormulaBlock}
 
 固定する項目:
 0. 作品タイトル案: 本文に明示タイトルがない場合でも、物語の核から短い日本語タイトルを必ず作る。「${UNTITLED_STORY_TITLE}」「無題」は禁止。
@@ -871,17 +921,26 @@ export function buildLongifyChapterPrompt({
   styleMode = 'preserve',
   endingMode = 'keep',
   invariants = null,
+  channelFormulaPrompt = '',
+  channelFormulaName = '',
+  channelFormulaPolicy = null,
 } = {}) {
   const runOptions = createLongifyRunOptions({
     targetTotalChars,
-    chapterCount,
+    chapterCount: channelFormulaPolicy?.chapterCount || chapterCount,
     styleMode,
     endingMode,
+    channelFormulaPrompt,
+    channelFormulaName,
+    channelFormulaPolicy,
   });
   const chapterRoleMap = buildLongifyChapterRoleMap(runOptions.chapterCount, runOptions.targetTotalNumber);
   const currentChapterRole = getLongifyChapterRole(chapterNumber, runOptions.chapterCount);
   const invariantBlock = formatInvariantBlock(invariants);
-  const sourceEventLine = extractLongifySourceEventLine(seedText);
+  const channelFormulaBlock = runOptions.channelFormulaPrompt
+    ? `\n[CHANNEL FORMULA - ABSTRACT RULES]\nFormula: ${runOptions.channelFormulaName || 'unnamed'}\n${runOptions.channelFormulaPrompt}\nMinimum non-whitespace chars: ${runOptions.channelFormulaPolicy?.minNonWhitespaceChars || 20000}; target: ${runOptions.channelFormulaPolicy?.targetNonWhitespaceChars || 22000}; chapters: ${runOptions.chapterCount}.\nDo not copy source names, quotes, unique incidents, or CTAs.`
+    : '';
+  const sourceEventLine = `${channelFormulaBlock}\n${extractLongifySourceEventLine(seedText)}`;
   return `あなたは人間の小説家として、短編を長編化しています。${invariantBlock}
 下の「短編原稿」と「固定台帳」を絶対に守り、第${chapterNumber}章だけを本文として執筆してください。
 
@@ -3314,6 +3373,9 @@ export async function runLongifyBeta({
   targetChars,
   styleMode = 'preserve',
   endingMode = 'keep',
+  channelFormulaPrompt = '',
+  channelFormulaName = '',
+  channelFormulaPolicy = null,
   signal,
   callText,
   onProgress,
@@ -3325,6 +3387,9 @@ export async function runLongifyBeta({
     chapterCount,
     styleMode,
     endingMode,
+    channelFormulaPrompt,
+    channelFormulaName,
+    channelFormulaPolicy,
   });
   const seedText = normalizeLongifySeed(storyText);
   if (!hasLongifySeed(seedText)) {
@@ -6035,6 +6100,9 @@ export function installLongifyBeta() {
     sealLongifyBetaPanel({ button, statusEl, stopButton, autoBrushupCheckbox });
     return;
   }
+  window.addEventListener('story-maker:channel-formula-context', event => {
+    setChannelFormulaContext(event.detail?.formula || event.detail || null);
+  });
   syncLongifyTargetSelect();
   document.getElementById('btn-generate')?.addEventListener('click', () => {
     if (outputEl.dataset) delete outputEl.dataset.longifyOutput;
@@ -6379,7 +6447,16 @@ export function installLongifyBeta() {
       }
       return;
     }
-    const options = readLongifyRunOptionsFromUi();
+    const options = ACTIVE_CHANNEL_FORMULA_CONTEXT
+      ? createLongifyRunOptions({
+        ...readLongifyRunOptionsFromUi(),
+        targetTotalChars: ACTIVE_CHANNEL_FORMULA_CONTEXT.generationPolicy?.targetNonWhitespaceChars || 22000,
+        chapterCount: ACTIVE_CHANNEL_FORMULA_CONTEXT.generationPolicy?.chapterCount || 4,
+        channelFormulaName: ACTIVE_CHANNEL_FORMULA_CONTEXT.name,
+        channelFormulaPrompt: ACTIVE_CHANNEL_FORMULA_CONTEXT.reproductionPrompt,
+        channelFormulaPolicy: ACTIVE_CHANNEL_FORMULA_CONTEXT.generationPolicy,
+      })
+      : readLongifyRunOptionsFromUi();
     const longifyProgressOptions = createLongifyProgressOptions(options);
     beginLongifyAutoBrushupChain();
     let pendingAutoBrushupReview = null;
@@ -6419,6 +6496,9 @@ export function installLongifyBeta() {
         targetTotalChars: options.targetTotalNumber,
         styleMode: options.styleMode,
         endingMode: options.endingMode,
+        channelFormulaName: options.channelFormulaName,
+        channelFormulaPrompt: options.channelFormulaPrompt,
+        channelFormulaPolicy: options.channelFormulaPolicy,
         signal: abortController.signal,
         onProgress(message) {
           setTextContent(statusEl, message);
