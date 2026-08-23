@@ -15,7 +15,6 @@ import {
 import { BUILTIN_CHANNEL_FORMULAS } from './channelFormulaCatalog.js';
 import { Gt } from './providerClients.js';
 import { readApiSession } from './apiSession.js';
-import { runLongifyBeta } from './longifyBeta.js';
 
 const MAX_FILE_CHARS = 1_200_000;
 const MAX_ANALYSIS_SUMMARIES = 30;
@@ -184,6 +183,7 @@ function createDefaultGenerationCaller({ getApiSession, getModel } = {}) {
       maxTokens: 3000,
       disableGoogleSearch: true,
     });
+    const { runLongifyBeta } = await import('./longifyBeta.js');
     return runLongifyBeta({
       storyText: seedResult?.text || seedResult,
       apiKey: key,
