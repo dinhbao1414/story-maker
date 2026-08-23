@@ -2,6 +2,17 @@
 
 This file is public-repository safe. Do not include API keys, private credentials, billing data, private tokens, personal local paths, or unreleased account details.
 
+## 2026-08-23 CTR–Retention–Comment Story System (local only)
+
+- Expanded channel-formula analysis and synthesis prompts with a sanitized `audienceGrowthSystem`: CTR promise, 30-second hook, linked curiosity ladder, five retention windows, comment payoff, and anti-drop rules.
+- Added the approved 40-file Daily Scat formula rules to the built-in Japanese formula without storing raw transcript text, exact source quotes, or private data.
+- `AI Random mô típ & điền thiết lập` now accepts and normalizes title promise, thumbnail concept, hook, 3–5 linked questions, retention beats, twist, and moral dilemma into the existing Dashboard `supplement`.
+- Local fallback motifs carry the same retention package, so API failure still produces usable settings. The existing Random → Dashboard → Tạo truyện flow and channel-formula lock remain unchanged.
+- The 20K generation prompt now enforces the 30-second shock opening, early CTR promise delivery, `Question → Answer → larger Question`, five timing beats, evidence-based payoff, and a natural comment dilemma without a forced CTA.
+- Verification on August 23, 2026: `node --test "tests/**/*.test.js"` passed 113/113; `npm run check:generic-rules` passed; `npm run check:nano-4koma-contract` skipped because the sibling Nano prompt source is unavailable; syntax checks passed; `npm run build` passed with the existing large-chunk warning; local HTTP returned 200.
+- Local-only implementation. No deploy, push, release, version bump, backup, or API credential change was performed.
+- Local verification URL: `http://localhost:5179`.
+
 ## 2026-07-12 Brush-up progress and quality-target fix (local only)
 
 - The public v5.3.2 brush-up click was accepted but disabled the button without visible running feedback. Live inspection of the same public tab later showed one completed pass and a score change from 78 to 89.

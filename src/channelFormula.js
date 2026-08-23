@@ -76,9 +76,44 @@ function normalizePolicy(policy = {}) {
   });
 }
 
+function normalizeAudienceGrowthSystem(value = {}) {
+  const source = sanitizeValue(value) || {};
+  const normalizeTextList = (items, maxItems = 8, maxLength = 500) => (
+    Array.isArray(items)
+      ? items.slice(0, maxItems).map(item => cleanText(item, maxLength)).filter(Boolean)
+      : []
+  );
+  const curiosityLadder = Array.isArray(source.curiosityLadder)
+    ? source.curiosityLadder.slice(0, 5).map(item => ({
+      question: cleanText(item?.question, 600),
+      answer: cleanText(item?.answer, 900),
+      nextQuestion: cleanText(item?.nextQuestion, 600),
+    })).filter(item => item.question || item.answer || item.nextQuestion)
+    : [];
+  const retentionBeats = Array.isArray(source.retentionBeats)
+    ? source.retentionBeats.slice(0, 5).map(item => ({
+      window: cleanText(item?.window, 80),
+      goal: cleanText(item?.goal, 500),
+      beat: cleanText(item?.beat, 900),
+    })).filter(item => item.window || item.goal || item.beat)
+    : [];
+  return {
+    ctrPromise: cleanText(source.ctrPromise, 1200),
+    hook30s: cleanText(source.hook30s, 1200),
+    curiosityLadder,
+    retentionBeats,
+    commentPayoff: cleanText(source.commentPayoff, 1200),
+    antiDropRules: normalizeTextList(source.antiDropRules, 8, 500),
+  };
+}
+
 export function sanitizeChannelFormula(value = {}) {
   const sanitized = sanitizeValue(value) || {};
   const policy = normalizePolicy(sanitized.generationPolicy || {});
+  const analysis = sanitizeValue(sanitized.analysis || {}) || {};
+  const audienceGrowthSystem = normalizeAudienceGrowthSystem(
+    sanitized.audienceGrowthSystem || analysis.audienceGrowthSystem,
+  );
   return {
     ...sanitized,
     schema: CHANNEL_FORMULA_SCHEMA,
@@ -87,7 +122,7 @@ export function sanitizeChannelFormula(value = {}) {
     language: 'ja',
     sourceCount: Math.max(0, Math.floor(Number(sanitized.sourceCount || 0))),
     sourceFingerprint: cleanText(sanitized.sourceFingerprint, 160),
-    analysis: sanitizeValue(sanitized.analysis || {}) || {},
+    analysis: { ...analysis, audienceGrowthSystem },
     reproductionPrompt: cleanText(sanitized.reproductionPrompt, 12000),
     generationPolicy: policy,
     createdAt: cleanText(sanitized.createdAt, 80),
@@ -180,6 +215,18 @@ export function buildFileAnalysisPrompt({
       pacing_rules: ['rule 1', 'rule 2'],
       recurring_motifs: ['motif 1'],
       forbidden_copying: ['exact names', 'exact quotes', 'unique plot details'],
+      audienceGrowthSystem: {
+        ctrPromise: 'abstract title and thumbnail promise',
+        hook30s: 'shock scene or dialogue that starts immediately',
+        curiosityLadder: [
+          { question: 'question A', answer: 'answer A', nextQuestion: 'larger question B' },
+        ],
+        retentionBeats: [
+          { window: '30s-3m', goal: 'curiosity', beat: 'new concrete pressure' },
+        ],
+        commentPayoff: 'resolved conflict with a debatable moral choice',
+        antiDropRules: ['answer active questions promptly'],
+      },
       confidence: 0.0,
     }),
   ].join('\n\n');
@@ -220,11 +267,20 @@ export function buildFormulaSynthesisPrompt({
         narrationRules: [],
         pacingRules: [],
         forbiddenPatterns: [],
+        audienceGrowthSystem: {
+          ctrPromise: '',
+          hook30s: '',
+          curiosityLadder: [],
+          retentionBeats: [],
+          commentPayoff: '',
+          antiDropRules: [],
+        },
       },
       reproductionPrompt: 'abstract reproduction rules only',
       confidence: 0,
     }),
     'The reproductionPrompt must instruct Japanese-only output, four progressive chapters, a complete ending, a minimum of 20,000 non-whitespace characters, and no source copying.',
+    'The audienceGrowthSystem must enforce a 30-second hook, answer each active question before creating a larger one, cover the five retention windows, and leave a natural moral dilemma for comments.',
   ].join('\n\n');
 }
 
@@ -245,6 +301,11 @@ export function buildFormulaGenerationPrompt({
     cleanText(safeFormula.reproductionPrompt, 12000),
     `新しいランダムな着想: ${cleanText(randomizedPremise, 2400)}`,
     `全${policy.chapterCount}章で構成し、各章に固有の事件、選択、発見、代償、関係変化、章末状態を置く。`,
+    'CTR promiseを序盤の具体的な不公平・秘密・関係や地位の衝突で提示し、タイトル/サムネイルが約束した反転を必ず本文で回収する。',
+    'hook30s / 30秒以内は、説明や挨拶ではなく、進行中の侮辱・異常な要求・裏切りの台詞または行動から始める。CTAはhookの後にだけ置く。',
+    'Question A → Answer A → Question B → Answer B → Question C の順で進める。各質問は同じ章または次章で答え、その答えからより大きく危険な次の質問を生む。一つの疑問を長時間放置しない。',
+    'Retention beats: 30s-3m=問題と好奇心、3-8m=最初の証拠、8-15m=反対者の一時的勝利、15-20m=意味の反転、20-25m=証拠による反撃と余韻。',
+    'twistは序盤の思い込みを反転させるが、title/thumbnail promiseから外れない。commentDilemmaは主な不正を解決した後に残る自然な道徳的選択として描き、機械的なCTAにしない。',
     `空白と改行を除く本文を最低${policy.minNonWhitespaceChars.toLocaleString('ja-JP')}字、理想${policy.targetNonWhitespaceChars.toLocaleString('ja-JP')}字以上にする。`,
     '同じ出来事、同じ心理説明、同じ慰め、同じ誓いを言い換えて水増ししない。',
     '本文は日本語だけで書き、プロンプト、分析、チェックリスト、文字数報告、Markdownコードフェンスを出力しない。',

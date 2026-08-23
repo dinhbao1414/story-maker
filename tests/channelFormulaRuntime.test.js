@@ -218,17 +218,40 @@ test('builds a JSON-only motif prompt without source copying', () => {
   assert.match(prompt, /日本語/);
   assert.match(prompt, /固有名詞|exact names/i);
   assert.match(prompt, /theme|characters|ending/i);
+  assert.match(prompt, /titlePromise|thumbnailConcept/);
+  assert.match(prompt, /hook30s|30.*秒/iu);
+  assert.match(prompt, /questionLadder|question.*answer/iu);
+  assert.match(prompt, /retentionBeats|30s-3m/iu);
+  assert.match(prompt, /twist/iu);
+  assert.match(prompt, /commentDilemma|道徳/iu);
 });
 
 test('normalizes motif settings and keeps the channel formula locked', () => {
   const settings = normalizeRandomizedFormulaSettings({
     theme: 'hidden inheritance',
     characters: [{ name: 'Mio', role: 'daughter' }],
+    titlePromise: 'A public accusation hides a family secret',
+    thumbnailConcept: 'shocked daughter beside an open envelope',
+    hook30s: 'The family orders her to apologize before she can speak.',
+    questionLadder: [
+      { question: 'A', answer: 'A answer', nextQuestion: 'B' },
+      { question: 'B', answer: 'B answer', nextQuestion: 'C' },
+      { question: 'C', answer: 'C answer', nextQuestion: '' },
+    ],
+    retentionBeats: [{ window: '30s-3m', goal: 'curiosity', beat: 'evidence appears' }],
+    twist: 'The witness changed the record.',
+    commentDilemma: 'Should the truth be public if it breaks the family?',
   }, motifFormula);
   assert.equal(settings.mode, 'novel');
   assert.equal(settings.channelFormula.id, motifFormula.id);
   assert.equal(settings.locked.channelFormula, true);
   assert.equal(settings.characters[0].name, 'Mio');
+  assert.match(settings.supplement, /titlePromise|CTR/iu);
+  assert.match(settings.supplement, /hook30s|30.*秒/iu);
+  assert.match(settings.supplement, /questionLadder|A answer/iu);
+  assert.match(settings.supplement, /retentionBeats|30s-3m/iu);
+  assert.match(settings.supplement, /twist/iu);
+  assert.match(settings.supplement, /commentDilemma|道徳/iu);
   assert.equal(JSON.stringify(settings).includes('rawSourceText'), false);
 });
 
@@ -238,6 +261,8 @@ test('fallback motif settings are bounded and retain the selected formula', () =
   assert.equal(settings.channelFormula.name, motifFormula.name);
   assert.ok(settings.theme);
   assert.ok(settings.characters.length >= 2);
+  assert.ok(settings.supplement.match(/質問/g)?.length >= 3);
+  assert.match(settings.supplement, /道徳|コメント/iu);
   assert.equal(settings.locked.channelFormula, true);
 });
 

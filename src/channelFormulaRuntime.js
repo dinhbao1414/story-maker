@@ -45,6 +45,23 @@ const FALLBACK_MOTIF_SETTINGS = Object.freeze([
     narr: '主人公に寄り添う近接三人称',
     antagonist: '家族内の評判を利用して責任を押し付ける親族',
     evidence: '契約書、メッセージ記録、第三者の証言',
+    titlePromise: '家族全員に責任を押し付けられた娘が、一枚の記録で立場を逆転させる',
+    thumbnailConcept: '公開の場で頭を下げる主人公と、開かれた封筒を指す手',
+    hook30s: '「あなたが全部払えばいい」と言われた直後、主人公の足元に見覚えのない封筒が落ちる。',
+    questionLadder: [
+      { question: 'なぜ主人公だけが責任を負うのか', answer: '家族会議の記録に不自然な欠落がある', nextQuestion: '誰がその記録を消したのか' },
+      { question: '誰がその記録を消したのか', answer: '味方のふりをした親族が鍵を持っていた', nextQuestion: 'その親族は何を守ろうとしているのか' },
+      { question: 'その親族は何を守ろうとしているのか', answer: '過去の決断で得た利益が明らかになる', nextQuestion: '主人公は真実を公開するのか' },
+    ],
+    retentionBeats: [
+      { window: '30s-3m', goal: '問題と約束', beat: '公開の侮辱と封筒を同時に提示し、原因は隠す' },
+      { window: '3-8m', goal: '最初の答え', beat: '記録の欠落と協力者の違和感を示す' },
+      { window: '8-15m', goal: '怒りと孤立', beat: '反対者が先に証人を囲い、主人公を追い出す' },
+      { window: '15-20m', goal: '大きな反転', beat: '封筒の意味が逆転し、協力者の秘密が出る' },
+      { window: '20-25m', goal: '反撃と余韻', beat: '証拠を公開し、関係を切るか救うかを選ばせる' },
+    ],
+    twist: '主人公を守っていたと思われた記録が、実は別の被害者を隠していた。',
+    commentDilemma: '真実を公開して家族を壊すべきか、それとも被害者だけを守るべきか。',
   },
   {
     theme: '介護を押し付けられた姉が家族の嘘を見抜く',
@@ -56,6 +73,23 @@ const FALLBACK_MOTIF_SETTINGS = Object.freeze([
     narr: '主人公の一人称回想',
     antagonist: '善意を装いながら周囲を味方につける家族',
     evidence: '領収書、録音、古い写真',
+    titlePromise: '介護を押し付けられた姉が、善人の仮面を一つずつ剥がす',
+    thumbnailConcept: '笑顔の親族と、画面に残る録音波形を見つめる姉',
+    hook30s: '「家族なら当然でしょ」と笑われた瞬間、姉の携帯に録音終了の通知が出る。',
+    questionLadder: [
+      { question: 'なぜ全員が同じ嘘をつくのか', answer: '介護費の領収書が一枚だけ別名義になっている', nextQuestion: '別名義は誰のためのものか' },
+      { question: '別名義は誰のためのものか', answer: '家族の人気者が費用を流用していた', nextQuestion: 'なぜ母親はそれを黙っていたのか' },
+      { question: 'なぜ母親はそれを黙っていたのか', answer: '昔の約束が今の支配を作っていた', nextQuestion: '姉は約束を破って告発するのか' },
+    ],
+    retentionBeats: [
+      { window: '30s-3m', goal: '不公平の提示', beat: '介護の押し付けと録音の存在を同時に見せる' },
+      { window: '3-8m', goal: '証拠の拡大', beat: '領収書の名義違いから別の利害を開く' },
+      { window: '8-15m', goal: '反対者の勝利', beat: '家族が主人公の信用を先に奪う' },
+      { window: '15-20m', goal: '過去の反転', beat: '母親の沈黙の理由を明かす' },
+      { window: '20-25m', goal: '選択の余韻', beat: '告発の代償と新しい境界線を示す' },
+    ],
+    twist: '沈黙していた人物は共犯ではなく、別の被害を止めようとしていた。',
+    commentDilemma: '家族の罪を公にすることは正義か、それとも新しい加害か。',
   },
   {
     theme: '再婚家庭に隠された身分と約束',
@@ -67,6 +101,23 @@ const FALLBACK_MOTIF_SETTINGS = Object.freeze([
     narr: '主人公に近い三人称',
     antagonist: '過去を隠して家族の選択を支配する人物',
     evidence: '手紙、写真、時系列の食い違い',
+    titlePromise: '再婚家庭で身分を隠された妻が、古い写真の裏側から真実に近づく',
+    thumbnailConcept: '幸せそうな家族写真と、裏返された日付の違う一枚',
+    hook30s: '「その人の名前を口にしないで」と言われた直後、写真立ての裏から別の家族写真が落ちる。',
+    questionLadder: [
+      { question: 'なぜ家族は一人の名前を禁じるのか', answer: '写真の日付が公式の記録と合わない', nextQuestion: '誰が日付を書き換えたのか' },
+      { question: '誰が日付を書き換えたのか', answer: '再婚前の約束を隠すためだった', nextQuestion: 'その約束は誰を守ったのか' },
+      { question: 'その約束は誰を守ったのか', answer: '守られた人物が現在の争いを始めていた', nextQuestion: '真実を知った主人公は家族を選ぶのか' },
+    ],
+    retentionBeats: [
+      { window: '30s-3m', goal: '禁じられた秘密', beat: '名前の禁止と写真を同時に出す' },
+      { window: '3-8m', goal: '最初の記録', beat: '日付の食い違いで過去を開く' },
+      { window: '8-15m', goal: '孤立', beat: '主人公が疑いを向けられ居場所を失う' },
+      { window: '15-20m', goal: '身分の反転', beat: '約束の本当の受益者を明かす' },
+      { window: '20-25m', goal: '選び直し', beat: '主人公が自分の居場所を自分で決める' },
+    ],
+    twist: '隠されていた身分は悪意ではなく、別の人物を守るための犠牲だった。',
+    commentDilemma: '過去の嘘を許すことと、今の被害を止めることをどう両立するか。',
   },
 ]);
 
@@ -299,6 +350,7 @@ export function buildFormulaSettingsRandomizationPrompt({
     `乱数シード: ${text(randomSeed, 120) || 'local-random'}`,
     '原文の固有名詞、台詞、固有事件、人物関係、チャンネル名、CTAを再利用しないでください。',
     '人物名、職業、地域、証拠物、敵対者の詳細は新規に作ってください。',
+    'CTR用のタイトル約束、サムネイル構図、最初の30秒のフック、3〜5段階の質問と回答、5つの保持ビート、中央の反転、最後の道徳的ジレンマも新規に作ってください。',
     '次のJSON形状を守ってください:',
     JSON.stringify({
       theme: 'new Japanese motif',
@@ -315,7 +367,25 @@ export function buildFormulaSettingsRandomizationPrompt({
       antagonist: 'abstract opponent detail',
       evidence: 'new evidence objects',
       escalation: ['beat 1', 'beat 2', 'beat 3'],
+      titlePromise: 'title and thumbnail promise for CTR',
+      thumbnailConcept: 'visual contrast and emotional focus',
+      hook30s: 'opening shock scene or dialogue within 30 seconds',
+      questionLadder: [
+        { question: 'question A', answer: 'answer A', nextQuestion: 'larger question B' },
+        { question: 'question B', answer: 'answer B', nextQuestion: 'dangerous question C' },
+        { question: 'question C', answer: 'answer C', nextQuestion: '' },
+      ],
+      retentionBeats: [
+        { window: '30s-3m', goal: 'curiosity', beat: 'concrete pressure' },
+        { window: '3-8m', goal: 'first reveal', beat: 'new evidence' },
+        { window: '8-15m', goal: 'anger', beat: 'opponent wins' },
+        { window: '15-20m', goal: 'twist', beat: 'meaning reverses' },
+        { window: '20-25m', goal: 'payoff', beat: 'evidence-based counterattack' },
+      ],
+      twist: 'central reversal and mistaken belief',
+      commentDilemma: 'natural moral question for viewers to debate',
     }, null, 2),
+    'questionLadderは質問を長時間放置せず、各回答の直後により大きな質問を作ってください。retentionBeatsは5つの時間窓をすべて埋めてください。',
     '4章の長編化に使える具体的な対立・証拠・選択を含め、元ソースの文章を引用しないでください。',
   ].join('\n\n');
 }
@@ -335,6 +405,57 @@ function normalizeAxisSetting(value) {
     customValue: text(value, 500),
     source: text(value, 500) ? 'formula-random' : '',
   };
+}
+
+function normalizeQuestionLadder(value) {
+  return (Array.isArray(value) ? value : [])
+    .slice(0, 5)
+    .map(item => ({
+      question: text(item?.question, 600),
+      answer: text(item?.answer, 900),
+      nextQuestion: text(item?.nextQuestion, 600),
+    }))
+    .filter(item => item.question || item.answer || item.nextQuestion);
+}
+
+function normalizeRetentionBeats(value) {
+  return (Array.isArray(value) ? value : [])
+    .slice(0, 5)
+    .map(item => ({
+      window: text(item?.window, 80),
+      goal: text(item?.goal, 500),
+      beat: text(item?.beat, 900),
+    }))
+    .filter(item => item.window || item.goal || item.beat);
+}
+
+function formatAudienceGrowthSupplement({
+  titlePromise = '',
+  thumbnailConcept = '',
+  hook30s = '',
+  questionLadder = [],
+  retentionBeats = [],
+  twist = '',
+  commentDilemma = '',
+} = {}) {
+  const lines = [
+    titlePromise ? `CTR promise / title: ${titlePromise}` : '',
+    thumbnailConcept ? `Thumbnail concept: ${thumbnailConcept}` : '',
+    hook30s ? `hook30s / Hook 30s: ${hook30s}` : '',
+    questionLadder.length
+      ? `質問の連鎖 / Question ladder:\n${questionLadder.map((item, index) => (
+        `質問${index + 1} / Q: ${item.question}\n   A: ${item.answer}${item.nextQuestion ? `\n   Next Q: ${item.nextQuestion}` : ''}`
+      )).join('\n')}`
+      : '',
+    retentionBeats.length
+      ? `Retention beats:\n${retentionBeats.map(item => (
+        `- ${item.window}: ${item.goal} — ${item.beat}`
+      )).join('\n')}`
+      : '',
+    twist ? `Twist: ${twist}` : '',
+    commentDilemma ? `コメント用の道徳的ジレンマ / Comment dilemma: ${commentDilemma}` : '',
+  ];
+  return lines.filter(Boolean).join('\n\n');
 }
 
 export function normalizeRandomizedFormulaSettings(value = {}, formula = {}) {
@@ -360,6 +481,18 @@ export function normalizeRandomizedFormulaSettings(value = {}, formula = {}) {
     ending: axisValue('ending'),
     narr: axisValue('narr'),
   };
+  const growthSource = source.audienceGrowthSystem || {};
+  const titlePromise = text(source.titlePromise || growthSource.titlePromise, 1200);
+  const thumbnailConcept = text(source.thumbnailConcept || growthSource.thumbnailConcept, 1200);
+  const hook30s = text(source.hook30s || growthSource.hook30s, 1200);
+  const questionLadder = normalizeQuestionLadder(
+    source.questionLadder || growthSource.curiosityLadder,
+  );
+  const retentionBeats = normalizeRetentionBeats(
+    source.retentionBeats || growthSource.retentionBeats,
+  );
+  const twist = text(source.twist || growthSource.twist, 1200);
+  const commentDilemma = text(source.commentDilemma || growthSource.commentDilemma, 1200);
   const motifNotes = [
     source.antagonist ? `対立者: ${text(source.antagonist, 700)}` : '',
     source.evidence ? `証拠: ${text(source.evidence, 700)}` : '',
@@ -367,10 +500,20 @@ export function normalizeRandomizedFormulaSettings(value = {}, formula = {}) {
       ? `段階: ${source.escalation.slice(0, 6).map(item => text(item, 300)).join(' → ')}`
       : '',
   ].filter(Boolean).join('\n');
+  const growthNotes = formatAudienceGrowthSupplement({
+    titlePromise,
+    thumbnailConcept,
+    hook30s,
+    questionLadder,
+    retentionBeats,
+    twist,
+    commentDilemma,
+  });
   const supplement = [
     `チャンネル公式「${safeFormula.name}」の抽象ルールを守る。`,
     safeFormula.reproductionPrompt,
     motifNotes,
+    growthNotes,
     'この設定の人物名・事件・証拠を新規に展開し、原文をコピーしない。',
   ].filter(Boolean).join('\n\n').slice(0, 5000);
   return {

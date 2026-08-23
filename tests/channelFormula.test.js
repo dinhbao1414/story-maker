@@ -80,6 +80,12 @@ test('builds structured analysis and synthesis prompts without raw-source copyin
     markers: ['毎日スカット', 'チャンネル登録'],
   });
   assert.match(analysisPrompt, /story-01\.txt/);
+  assert.match(analysisPrompt, /audienceGrowthSystem/);
+  assert.match(analysisPrompt, /ctrPromise/);
+  assert.match(analysisPrompt, /hook30s/);
+  assert.match(analysisPrompt, /curiosityLadder/);
+  assert.match(analysisPrompt, /retentionBeats/);
+  assert.match(analysisPrompt, /commentPayoff/);
   assert.match(analysisPrompt, /opening_hook/);
   assert.match(analysisPrompt, /do not reproduce|not reproduce/i);
   assert.match(analysisPrompt, /毎日スカット/);
@@ -93,6 +99,8 @@ test('builds structured analysis and synthesis prompts without raw-source copyin
   });
   assert.match(synthesisPrompt, /Daily Scat/);
   assert.match(synthesisPrompt, /reproductionPrompt/);
+  assert.match(synthesisPrompt, /audienceGrowthSystem/);
+  assert.match(synthesisPrompt, /question.*answer|answer.*question/i);
   assert.match(synthesisPrompt, /exact names|exact quotes/i);
 });
 
@@ -110,6 +118,11 @@ test('builds a Japanese generation prompt with the 20k contract', () => {
 
   assert.match(prompt, /日本語/);
   assert.match(prompt, /20,?000/);
+  assert.match(prompt, /30.*秒|30s/);
+  assert.match(prompt, /Question A|question.*answer|質問.*答え/iu);
+  assert.match(prompt, /30s-3m|3-8m|8-15m|15-20m|20-25m/);
+  assert.match(prompt, /commentDilemma|道徳|議論|コメント/iu);
+  assert.match(prompt, /CTA.*hook|hook.*CTA/iu);
   assert.match(prompt, /第1章|4章/);
   assert.match(prompt, /コピー|copy/i);
   assert.doesNotMatch(prompt, /毎日スカットをご覧いただきありがとうございます/);
@@ -130,6 +143,11 @@ test('ships one sanitized built-in Daily Scat formula', () => {
   assert.equal(formula.sourceCount, 40);
   assert.equal(formula.builtIn, true);
   assert.equal(formula.generationPolicy.minNonWhitespaceChars, 20000);
+  assert.equal(formula.analysis.audienceGrowthSystem.ctrPromise.length > 0, true);
+  assert.equal(formula.analysis.audienceGrowthSystem.hook30s.length > 0, true);
+  assert.equal(formula.analysis.audienceGrowthSystem.curiosityLadder.length >= 3, true);
+  assert.equal(formula.analysis.audienceGrowthSystem.retentionBeats.length >= 5, true);
+  assert.equal(formula.analysis.audienceGrowthSystem.commentPayoff.length > 0, true);
   assert.equal(JSON.stringify(formula).includes('ja.auto.txt'), false);
   assert.equal(JSON.stringify(formula).includes('apiKey'), false);
 });
