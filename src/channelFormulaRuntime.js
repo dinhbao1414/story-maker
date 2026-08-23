@@ -14,6 +14,8 @@ import {
 } from './channelFormulaStorage.js';
 import { BUILTIN_CHANNEL_FORMULAS } from './channelFormulaCatalog.js';
 import { Gt } from './providerClients.js';
+import { readApiSession } from './apiSession.js';
+import { runLongifyBeta } from './longifyBeta.js';
 
 const MAX_FILE_CHARS = 1_200_000;
 const MAX_ANALYSIS_SUMMARIES = 30;
@@ -165,6 +167,33 @@ function createDefaultStructuredCaller({ getApiSession, getModel } = {}) {
       disableGoogleSearch: true,
     });
     return result?.text ?? result;
+  };
+}
+
+function createDefaultGenerationCaller({ getApiSession, getModel } = {}) {
+  return async ({ formula, prompt, randomizedPremise, targetTotalNumber, chapterCount }) => {
+    const session = await getApiSession?.();
+    const key = resolveSessionKey(session);
+    if (!key) throw new Error('APIキーを入力してから生成を開始してください。');
+    const model = getModel?.(key) || 'gemini-3.5-flash';
+    const seedResult = await Gt(key, model, [
+      prompt,
+      'まず長編化の土台になる、固有名詞を新規に作った短い日本語の種文を800〜1,200字で出力する。',
+      '種文だけを出力し、分析・JSON・見出し・CTAは出力しない。',
+    ].join('\n\n'), {
+      maxTokens: 3000,
+      disableGoogleSearch: true,
+    });
+    return runLongifyBeta({
+      storyText: seedResult?.text || seedResult,
+      apiKey: key,
+      model,
+      targetTotalChars: targetTotalNumber,
+      chapterCount,
+      channelFormulaName: formula.name,
+      channelFormulaPrompt: formula.reproductionPrompt,
+      channelFormulaPolicy: formula.generationPolicy,
+    });
   };
 }
 
@@ -410,9 +439,11 @@ export function installChannelFormulaRuntime({
   const activeRepository = repository || createChannelFormulaRepository();
   const formulas = new Map(BUILTIN_CHANNEL_FORMULAS.map(formula => [formula.id, sanitizeChannelFormula(formula)]));
   let selected = null;
+  const getSession = getApiSession || (() => readApiSession());
+  const activeGeneration = callGeneration || createDefaultGenerationCaller({ getApiSession: getSession });
   let activeController = controller || createChannelFormulaRuntimeController({
     repository: activeRepository,
-    callStructuredAi: callStructuredAi || createDefaultStructuredCaller({ getApiSession }),
+    callStructuredAi: callStructuredAi || createDefaultStructuredCaller({ getApiSession: getSession }),
     onProgress: progress => {
       const status = doc.getElementById('cf-progress');
       if (!status) return;
@@ -500,9 +531,7 @@ export function installChannelFormulaRuntime({
     if (id === 'cf-generate' && selected) {
       try {
         win?.dispatchEvent?.(new win.CustomEvent('story-maker:channel-formula-context', { detail: { formula: selected } }));
-        const result = callGeneration
-          ? await generateFormulaStory({ formula: selected, callGeneration })
-          : (win?.dispatchEvent?.(new win.CustomEvent('story-maker:channel-formula-generate', { detail: { formula: selected } })), null);
+        const result = await generateFormulaStory({ formula: selected, callGeneration: activeGeneration });
         const resultCard = doc.getElementById('cf-result-card');
         const resultElement = doc.getElementById('cf-result');
         if (resultCard) resultCard.classList.remove('hidden');
