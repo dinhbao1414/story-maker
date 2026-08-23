@@ -1,7 +1,7 @@
 export const STORY_PROJECT_SCHEMA = 'story-maker-project-v1';
 export const STORY_PROJECT_STATUSES = Object.freeze(['ready', 'running', 'paused', 'completed', 'error']);
 
-const LOCKED_DNA_KEYS = ['mode', 'genre', 'target', 'narr', 'supplement', 'universal'];
+const LOCKED_DNA_KEYS = ['mode', 'genre', 'target', 'narr', 'supplement', 'universal', 'channelFormula'];
 const RANDOMIZED_KEYS = ['theme', 'worldview', 'era', 'ending', 'chars'];
 
 function cleanText(value, maxLength = 5000) {

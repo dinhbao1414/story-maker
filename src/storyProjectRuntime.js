@@ -44,6 +44,7 @@ export function renderProjectCardMarkup(project = {}) {
   const failed = Math.max(0, Number(project.failedStoryCount || 0));
   const target = Math.max(1, Number(project.targetStoryCount || 1));
   const name = escapeHtml(project.name || 'Dự án chưa đặt tên');
+  const formulaName = escapeHtml(project.settingsPayload?.settings?.channelFormula?.name || '');
   return `
     <article class="sp-card" data-project-id="${escapeHtml(project.id)}">
       <div class="sp-card-heading">
@@ -51,6 +52,7 @@ export function renderProjectCardMarkup(project = {}) {
         <button type="button" class="sp-menu-button" data-project-action="menu" aria-label="Mở menu dự án ${name}">•••</button>
       </div>
       <p class="sp-card-meta">Phong cách: ${escapeHtml(project.styleProfile?.name || 'Thiết lập Dashboard')}</p>
+      ${formulaName ? `<p class="sp-card-meta">Công thức: ${formulaName}</p>` : ''}
       <p class="sp-card-meta">TXT nguồn: ${(project.sourceFileNames || []).length}</p>
       <div class="sp-progress" role="progressbar" aria-label="Tiến độ ${name}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}"><span style="width:${progress}%"></span></div>
       <p class="sp-card-count"><strong>${successful}/${target}</strong> truyện hoàn thành${failed ? ` · ${failed} lỗi` : ''}</p>
@@ -107,6 +109,7 @@ export function renderCreateProjectDialogMarkup() {
 function renderProjectDetailMarkup(project, stories = []) {
   const status = resolveProjectStatus(project);
   const remaining = Math.max(0, Number(project.targetStoryCount || 0) - Number(project.successfulStoryCount || 0));
+  const formulaName = escapeHtml(project.settingsPayload?.settings?.channelFormula?.name || '');
   const storyMarkup = stories.length ? stories.map(story => `
     <article class="sp-story-item" data-story-id="${escapeHtml(story.id)}">
       <div><h4>${escapeHtml(story.title)}</h4><p>${Number(story.charCount || 0).toLocaleString('vi-VN')} ký tự · ${escapeHtml(formatUpdatedAt(story.createdAt))}</p></div>
@@ -118,7 +121,7 @@ function renderProjectDetailMarkup(project, stories = []) {
     <header class="sp-header"><div><button type="button" class="btn-secondary" data-project-action="back">← Danh sách dự án</button><h2>${escapeHtml(project.name)}</h2><p><span class="sp-status sp-status-${status}">${STATUS_LABELS[status]}</span> · Còn ${remaining} truyện theo mục tiêu</p></div><div class="sp-card-actions"><button type="button" class="btn-secondary" data-project-action="export">Xuất dự án</button><button type="button" class="btn-secondary" data-project-action="edit">Sửa tên</button><button type="button" class="btn-secondary" data-project-action="delete">Xóa dự án</button></div></header>
     <nav class="sp-detail-tabs" aria-label="Chi tiết dự án"><span>Tổng quan</span><span>Phong cách &amp; Thiết lập</span><span>Danh sách truyện</span><span>Lịch sử</span></nav>
     <section class="sp-detail-section"><h3>Tổng quan</h3><div class="sp-card-actions"><button type="button" class="btn-generate" data-project-action="generate">Tạo 1 truyện</button><label>Số lượng<input id="sp-batch-count" type="number" min="1" max="${remaining || 1}" value="${Math.min(5, remaining || 1)}"></label><button type="button" class="btn-generate" data-project-action="generate-batch"${remaining ? '' : ' disabled'}>Tạo hàng loạt</button><button type="button" class="btn-secondary" data-project-action="pause">Tạm dừng</button><button type="button" class="btn-secondary" data-project-action="resume">Tiếp tục</button><button type="button" class="btn-secondary" data-project-action="retry">Thử lại</button></div></section>
-    <section class="sp-detail-section"><h3>Phong cách &amp; Thiết lập</h3><p>${escapeHtml(project.styleProfile?.name || 'Thiết lập Dashboard')}</p><div class="sp-card-actions"><button type="button" class="btn-secondary" data-project-action="apply-settings">Áp dụng lên Dashboard</button><button type="button" class="btn-secondary" data-project-action="preview">Tạo lại biến tấu</button><button type="button" class="btn-generate" data-project-action="generate-preview">Tạo từ bản xem trước</button></div><textarea id="sp-variation-preview" rows="12" placeholder="Bấm Tạo lại biến tấu để xem và chỉnh JSON trước khi gọi AI"></textarea></section>
+    <section class="sp-detail-section"><h3>Phong cách &amp; Thiết lập</h3><p>${escapeHtml(project.styleProfile?.name || 'Thiết lập Dashboard')}</p>${formulaName ? `<p>Công thức kênh: ${formulaName}</p>` : ''}<div class="sp-card-actions"><button type="button" class="btn-secondary" data-project-action="apply-settings">Áp dụng lên Dashboard</button><button type="button" class="btn-secondary" data-project-action="preview">Tạo lại biến tấu</button><button type="button" class="btn-generate" data-project-action="generate-preview">Tạo từ bản xem trước</button></div><textarea id="sp-variation-preview" rows="12" placeholder="Bấm Tạo lại biến tấu để xem và chỉnh JSON trước khi gọi AI"></textarea></section>
     <section class="sp-detail-section"><h3>Danh sách truyện</h3><div class="sp-story-list">${storyMarkup}</div></section>
     <section class="sp-detail-section"><h3>Lịch sử</h3><ul>${history}</ul></section>`;
 }

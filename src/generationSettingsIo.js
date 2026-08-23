@@ -113,6 +113,16 @@ function collectLockedSections() {
   }));
 }
 
+function collectSelectedChannelFormula() {
+  const input = byId('cf-selected-formula');
+  if (!input?.value) return null;
+  try {
+    return JSON.parse(input.value);
+  } catch {
+    return null;
+  }
+}
+
 function buildCurrentSettingsExport() {
   const axesDetailed = Object.fromEntries(AXIS_CONFIGS.map(config => [config.key, getAxisState(config)]));
   const state = {
@@ -127,6 +137,7 @@ function buildCurrentSettingsExport() {
     modeCustom: normalizeText(byId('mode-custom')?.value),
     supplement: normalizeText(byId('supplement')?.value),
     axesDetailed,
+    channelFormula: collectSelectedChannelFormula(),
   });
 }
 
@@ -256,6 +267,9 @@ export async function applyGenerationSettings(payload, { announce = true } = {})
   applyCharacters(settings.characters || []);
   applySupplement(settings.supplement || '');
   await applyUniversalAssets(settings.universalAssets || []);
+  window.dispatchEvent(new CustomEvent('story-maker:channel-formula-imported', {
+    detail: settings.channelFormula || null,
+  }));
   restoreLocks(settings.locked || {});
   window.dispatchEvent(new CustomEvent('story-maker:settings-imported'));
   if (announce) alert('Generation settings imported.');

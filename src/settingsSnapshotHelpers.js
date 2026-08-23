@@ -1,3 +1,5 @@
+import { sanitizeChannelFormula } from './channelFormula.js';
+
 export function formatAxisDetail({ category = '', value = '', customValue = '' } = {}) {
   const selected = value || customValue;
   if (category && selected && selected !== category) {
@@ -100,6 +102,20 @@ function sanitizeAxisSettings(axes = {}) {
   }));
 }
 
+function sanitizeChannelFormulaSnapshot(value) {
+  if (!value || typeof value !== 'object') return null;
+  const safe = sanitizeChannelFormula(value);
+  return {
+    id: safe.id,
+    name: safe.name,
+    language: safe.language,
+    sourceCount: safe.sourceCount,
+    sourceFingerprint: safe.sourceFingerprint,
+    reproductionPrompt: safe.reproductionPrompt,
+    generationPolicy: safe.generationPolicy,
+  };
+}
+
 export function buildGenerationSettingsExport(state, values = {}, date = new Date()) {
   const locked = cleanPlainObject(state?.locked || {}, LOCK_KEYS);
   return {
@@ -114,6 +130,7 @@ export function buildGenerationSettingsExport(state, values = {}, date = new Dat
       axes: sanitizeAxisSettings(values.axesDetailed || {}),
       characters: sanitizeCharacters(state?.characters || []),
       supplement: cleanText(values.supplement, 5000),
+      channelFormula: sanitizeChannelFormulaSnapshot(values.channelFormula),
       locked,
       universalAssets: sanitizeUniversalAssets(state?.universalAssets || []),
     },
@@ -134,6 +151,7 @@ export function parseGenerationSettingsExport(input) {
       axes: sanitizeAxisSettings(payload.settings.axes || {}),
       characters: sanitizeCharacters(payload.settings.characters || []),
       supplement: cleanText(payload.settings.supplement, 5000),
+      channelFormula: sanitizeChannelFormulaSnapshot(payload.settings.channelFormula),
       locked: cleanPlainObject(payload.settings.locked || {}, LOCK_KEYS),
       universalAssets: sanitizeUniversalAssets(payload.settings.universalAssets || []),
     },

@@ -17,6 +17,12 @@ const settingsPayload = {
     axes: {},
     characters: [],
     supplement: 'DNA phong cách',
+    channelFormula: {
+      id: 'formula-1',
+      name: 'Daily Scat – Drama gia đình Nhật',
+      reproductionPrompt: 'abstract rules',
+      generationPolicy: { minNonWhitespaceChars: 20000, targetNonWhitespaceChars: 22000 },
+    },
     locked: {},
     universalAssets: [],
   },
@@ -45,6 +51,8 @@ assert.equal(variation.settings.locked.genre, true);
 assert.equal(variation.settings.locked.target, true);
 assert.equal(variation.settings.locked.narr, true);
 assert.equal(variation.settings.locked.supplement, true);
+assert.equal(variation.settings.locked.channelFormula, true);
+assert.equal(variation.settings.channelFormula.name, 'Daily Scat – Drama gia đình Nhật');
 assert.equal(variation.settings.locked.theme, false);
 assert.equal(variation.settings.locked.worldview, false);
 assert.equal(variation.settings.locked.era, false);
