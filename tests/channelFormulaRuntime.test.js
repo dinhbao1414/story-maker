@@ -7,6 +7,7 @@ import {
   filterChannelFormulaTextFiles,
   generateFormulaStory,
   parseStructuredFormulaAnalysis,
+  setFormulaGenerationBusyUi,
 } from '../src/channelFormulaRuntime.js';
 import { createChannelFormula } from '../src/channelFormula.js';
 
@@ -161,4 +162,39 @@ test('formula longify caller supplies a non-streaming provider bridge for ledger
   assert.equal(providerCalls.length, 2);
   assert.equal(providerCalls[1].options.maxTokens, 1234);
   assert.equal(providerCalls[1].options.timeoutMs, 45000);
+});
+
+test('generation UI immediately exposes busy state and restores the action label', () => {
+  const classes = new Set(['hidden']);
+  const button = {
+    disabled: false,
+    textContent: 'Random và tạo truyện 20K',
+    dataset: {},
+    setAttribute(name, value) { this[name] = value; },
+    classList: {
+      toggle(name, on) { if (on) classes.add(name); else classes.delete(name); },
+    },
+  };
+  const progress = { textContent: '' };
+  const error = { classList: { add(name) { classes.add(name); }, remove(name) { classes.delete(name); } } };
+  const doc = {
+    getElementById(id) {
+      return {
+        'cf-generate': button,
+        'cf-progress': progress,
+        'cf-error': error,
+      }[id] || null;
+    },
+  };
+
+  setFormulaGenerationBusyUi({ doc, busy: true });
+  assert.equal(button.disabled, true);
+  assert.equal(button['aria-busy'], 'true');
+  assert.match(progress.textContent, /Đang tạo/);
+  assert.match(button.textContent, /Đang tạo/);
+
+  setFormulaGenerationBusyUi({ doc, busy: false });
+  assert.equal(button.disabled, false);
+  assert.equal(button['aria-busy'], 'false');
+  assert.equal(button.textContent, 'Random và tạo truyện 20K');
 });

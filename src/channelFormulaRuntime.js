@@ -48,6 +48,32 @@ function escapeHtml(value) {
   }[character]));
 }
 
+export function setFormulaGenerationBusyUi({
+  doc = globalThis.document,
+  busy = false,
+  message = '',
+} = {}) {
+  const button = doc?.getElementById?.('cf-generate');
+  const progress = doc?.getElementById?.('cf-progress');
+  const error = doc?.getElementById?.('cf-error');
+  if (button) {
+    if (!button.dataset.formulaIdleLabel) {
+      button.dataset.formulaIdleLabel = button.textContent || 'Random và tạo truyện 20K';
+    }
+    button.disabled = Boolean(busy);
+    button.setAttribute('aria-busy', busy ? 'true' : 'false');
+    button.classList?.toggle?.('is-busy', Boolean(busy));
+    button.textContent = busy
+      ? '⏳ Đang tạo truyện 20K…'
+      : button.dataset.formulaIdleLabel;
+  }
+  if (progress && (message || busy)) {
+    progress.textContent = message || '⏳ Đang tạo seed → ledger → 4 chương…';
+  }
+  if (busy) error?.classList?.add?.('hidden');
+  return { busy: Boolean(busy), message: progress?.textContent || '' };
+}
+
 function nonWhitespaceLength(value) {
   return Array.from(String(value || '').replace(/\s/gu, '')).length;
 }
@@ -511,7 +537,8 @@ export function installChannelFormulaRuntime({
     }
   });
   panel.addEventListener('click', async event => {
-    const id = event.target?.id;
+    const actionTarget = event.target?.closest?.('[id]') || event.target;
+    const id = actionTarget?.id;
     if (id === 'cf-analyze') {
       const files = filterChannelFormulaTextFiles(doc.getElementById('cf-folder-input')?.files);
       if (!files.length) return error('Hãy chọn folder có file TXT.');
@@ -546,6 +573,7 @@ export function installChannelFormulaRuntime({
     }
     if (id === 'cf-import') doc.getElementById('cf-import-file')?.click();
     if (id === 'cf-generate' && selected) {
+      setFormulaGenerationBusyUi({ doc, busy: true });
       try {
         win?.dispatchEvent?.(new win.CustomEvent('story-maker:channel-formula-context', { detail: { formula: selected } }));
         const result = await generateFormulaStory({ formula: selected, callGeneration: activeGeneration });
@@ -553,7 +581,14 @@ export function installChannelFormulaRuntime({
         const resultElement = doc.getElementById('cf-result');
         if (resultCard) resultCard.classList.remove('hidden');
         if (resultElement) resultElement.textContent = result?.text ? `Đã tạo ${Array.from(result.text).length.toLocaleString('vi-VN')} ký tự.` : 'Đã gửi yêu cầu tạo truyện.';
-      } catch (cause) { error(cause?.message || cause); }
+        const validationMessage = result?.validation?.ok
+          ? `Đã tạo xong ${result.validation.charCount.toLocaleString('vi-VN')} ký tự, đạt tối thiểu 20.000.`
+          : 'Đã nhận bản nháp nhưng chưa đạt quality gate 20K.';
+        setFormulaGenerationBusyUi({ doc, busy: false, message: validationMessage });
+      } catch (cause) {
+        setFormulaGenerationBusyUi({ doc, busy: false, message: 'Tạo truyện thất bại — xem chi tiết lỗi bên dưới.' });
+        error(cause?.message || cause);
+      }
     }
   });
   doc.getElementById('cf-import-file')?.addEventListener('change', async event => {
@@ -565,9 +600,13 @@ export function installChannelFormulaRuntime({
     } catch (cause) { error(cause?.message || cause); }
     event.target.value = '';
   });
+  const firstBuiltIn = formulas.values().next().value;
+  if (firstBuiltIn) choose(firstBuiltIn);
   renderSelect().then(() => {
-    const first = formulas.values().next().value;
-    if (first) choose(first);
+    if (!selected) {
+      const first = formulas.values().next().value;
+      if (first) choose(first);
+    }
   }).catch(cause => error(cause?.message || cause));
   return {
     controller: activeController,
