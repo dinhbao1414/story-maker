@@ -126,6 +126,10 @@ assert.equal(runtime.getActiveTab(), 'settings');
 win.listeners['story-maker:open-projects']();
 assert.equal(runtime.getActiveTab(), 'projects');
 
+win.listeners['story-maker:open-dashboard']();
+assert.equal(runtime.getActiveTab(), 'dashboard');
+assert.equal(dashboardPanel.hidden, false);
+
 progressTitle.textContent = 'Tiến độ và nhật ký AI: Đang phân tích';
 win.progressObserver.callback();
 assert.equal(progressDisclosure.open, true);
@@ -143,5 +147,6 @@ assert.match(html, /id="cf-formula-name"/);
 assert.match(html, /id="cf-analyze"/);
 assert.match(html, /id="cf-generate"/);
 assert.match(html, /id="cf-selected-formula"/);
+assert.match(html, /AI Random mô típ &amp; điền thiết lập|AI Random mô típ & điền thiết lập/);
 
 console.log('workspaceTabs tests passed');

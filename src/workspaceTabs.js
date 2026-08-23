@@ -78,6 +78,7 @@ export function installWorkspaceTabs({
   win?.addEventListener?.('story-maker:settings-imported', () => setActiveTab('settings'));
   win?.addEventListener?.('story-maker:open-projects', () => setActiveTab('projects'));
   win?.addEventListener?.('story-maker:open-formulas', () => setActiveTab('formulas'));
+  win?.addEventListener?.('story-maker:open-dashboard', () => setActiveTab('dashboard'));
   installProgressDisclosure(doc, win);
   setActiveTab(doc.documentElement.dataset.workspaceTab);
   return { setActiveTab, getActiveTab };

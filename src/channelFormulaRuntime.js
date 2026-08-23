@@ -15,6 +15,7 @@ import {
 import { BUILTIN_CHANNEL_FORMULAS } from './channelFormulaCatalog.js';
 import { Gt } from './providerClients.js';
 import { readApiSession } from './apiSession.js';
+import { applyGenerationSettings } from './generationSettingsIo.js';
 
 const MAX_FILE_CHARS = 1_200_000;
 const MAX_ANALYSIS_SUMMARIES = 30;
@@ -32,6 +33,41 @@ const PREMISE_SETTINGS = Object.freeze([
   '海辺の住宅地',
   '郊外の集合住宅',
   '雪解け前の山間の町',
+]);
+const FALLBACK_MOTIF_SETTINGS = Object.freeze([
+  {
+    theme: '相続をめぐる家族内の責任転嫁',
+    genre: '家族因果応報ドラマ',
+    worldview: '雨の続く地方都市の古い住宅街',
+    target: '秘密と証拠を軸にした長編人間ドラマ',
+    era: '現代日本',
+    ending: '主人公が自分の境界線を選び直し、生活を再建する結末',
+    narr: '主人公に寄り添う近接三人称',
+    antagonist: '家族内の評判を利用して責任を押し付ける親族',
+    evidence: '契約書、メッセージ記録、第三者の証言',
+  },
+  {
+    theme: '介護を押し付けられた姉が家族の嘘を見抜く',
+    genre: '社会派家族ドラマ',
+    worldview: '駅前商店街と郊外の集合住宅',
+    target: '静かな違和感が公開の場で反転する物語',
+    era: '現代日本',
+    ending: '証拠を公開し、無理な関係を終えて新しい日常へ進む結末',
+    narr: '主人公の一人称回想',
+    antagonist: '善意を装いながら周囲を味方につける家族',
+    evidence: '領収書、録音、古い写真',
+  },
+  {
+    theme: '再婚家庭に隠された身分と約束',
+    genre: '家族ミステリー・ドラマ',
+    worldview: '海辺の町の小さな店と共同住宅',
+    target: '過去の記録が現在の関係を反転させる物語',
+    era: '平成末期から現代',
+    ending: '過去を認めたうえで、主人公が自分の居場所を決める結末',
+    narr: '主人公に近い三人称',
+    antagonist: '過去を隠して家族の選択を支配する人物',
+    evidence: '手紙、写真、時系列の食い違い',
+  },
 ]);
 
 function text(value, maxLength = 12000) {
@@ -52,6 +88,7 @@ export function setFormulaGenerationBusyUi({
   doc = globalThis.document,
   busy = false,
   message = '',
+  busyLabel = '⏳ Đang tạo truyện 20K…',
 } = {}) {
   const button = doc?.getElementById?.('cf-generate');
   const progress = doc?.getElementById?.('cf-progress');
@@ -64,7 +101,7 @@ export function setFormulaGenerationBusyUi({
     button.setAttribute('aria-busy', busy ? 'true' : 'false');
     button.classList?.toggle?.('is-busy', Boolean(busy));
     button.textContent = busy
-      ? '⏳ Đang tạo truyện 20K…'
+      ? busyLabel
       : button.dataset.formulaIdleLabel;
   }
   if (progress && (message || busy)) {
@@ -247,6 +284,170 @@ function makeFormulaId(name) {
 export function buildRandomizedFormulaPremise({ random = Math.random } = {}) {
   const pick = list => list[Math.min(list.length - 1, Math.max(0, Math.floor(Number(random()) * list.length)))];
   return `${pick(PREMISE_SETTINGS)}で、${pick(PREMISE_THEMES)}を抱えた主人公が、隠されていた記録と一人の協力者を手がかりに、家族内の力関係を問い直す。`;
+}
+
+export function buildFormulaSettingsRandomizationPrompt({
+  formula,
+  randomSeed = '',
+} = {}) {
+  const safeFormula = sanitizeChannelFormula(formula);
+  return [
+    'あなたは日本語の家族ドラマ用の設定編集者です。',
+    'チャンネル公式の抽象ルールだけを使い、新しい設定を1組だけ作ってください。',
+    'JSONのみを返し、説明文・Markdown・分析メモは返さないでください。',
+    `公式名: ${safeFormula.name}`,
+    `乱数シード: ${text(randomSeed, 120) || 'local-random'}`,
+    '原文の固有名詞、台詞、固有事件、人物関係、チャンネル名、CTAを再利用しないでください。',
+    '人物名、職業、地域、証拠物、敵対者の詳細は新規に作ってください。',
+    '次のJSON形状を守ってください:',
+    JSON.stringify({
+      theme: 'new Japanese motif',
+      genre: 'genre',
+      worldview: 'setting',
+      target: 'story target',
+      era: 'era',
+      ending: 'complete ending direction',
+      narr: 'narration',
+      characters: [
+        { name: 'new name', sex: '女性', role: '主人公', personality: 'personality', note: 'secret or want' },
+        { name: 'new name', sex: '男性', role: 'opponent', personality: 'personality', note: 'pressure method' },
+      ],
+      antagonist: 'abstract opponent detail',
+      evidence: 'new evidence objects',
+      escalation: ['beat 1', 'beat 2', 'beat 3'],
+    }, null, 2),
+    '4章の長編化に使える具体的な対立・証拠・選択を含め、元ソースの文章を引用しないでください。',
+  ].join('\n\n');
+}
+
+function normalizeAxisSetting(value) {
+  if (value && typeof value === 'object') {
+    return {
+      category: text(value.category, 160),
+      value: text(value.value, 240),
+      customValue: text(value.customValue || value.text || value.label, 500),
+      source: text(value.source, 80) || 'formula-random',
+    };
+  }
+  return {
+    category: '',
+    value: '',
+    customValue: text(value, 500),
+    source: text(value, 500) ? 'formula-random' : '',
+  };
+}
+
+export function normalizeRandomizedFormulaSettings(value = {}, formula = {}) {
+  const safeFormula = sanitizeChannelFormula(formula);
+  const source = sanitizeAnalysis(value) || {};
+  const rawAxes = source.axes && typeof source.axes === 'object' ? source.axes : {};
+  const axisValue = key => normalizeAxisSetting(source[key] ?? rawAxes[key]);
+  const characters = (Array.isArray(source.characters) ? source.characters : [])
+    .slice(0, 8)
+    .map((character, index) => ({
+      name: text(character?.name, 120) || `登場人物${index + 1}`,
+      sex: text(character?.sex, 80),
+      role: text(character?.role, 160),
+      personality: text(character?.personality, 220),
+      note: text(character?.note, 500),
+    }));
+  const axes = {
+    theme: axisValue('theme'),
+    genre: axisValue('genre'),
+    worldview: axisValue('worldview'),
+    target: axisValue('target'),
+    era: axisValue('era'),
+    ending: axisValue('ending'),
+    narr: axisValue('narr'),
+  };
+  const motifNotes = [
+    source.antagonist ? `対立者: ${text(source.antagonist, 700)}` : '',
+    source.evidence ? `証拠: ${text(source.evidence, 700)}` : '',
+    Array.isArray(source.escalation) && source.escalation.length
+      ? `段階: ${source.escalation.slice(0, 6).map(item => text(item, 300)).join(' → ')}`
+      : '',
+  ].filter(Boolean).join('\n');
+  const supplement = [
+    `チャンネル公式「${safeFormula.name}」の抽象ルールを守る。`,
+    safeFormula.reproductionPrompt,
+    motifNotes,
+    'この設定の人物名・事件・証拠を新規に展開し、原文をコピーしない。',
+  ].filter(Boolean).join('\n\n').slice(0, 5000);
+  return {
+    mode: 'novel',
+    modeCustom: '短編小説',
+    theme: axes.theme.customValue || axes.theme.value || axes.theme.category,
+    genre: axes.genre.customValue || axes.genre.value || axes.genre.category,
+    worldview: axes.worldview.customValue || axes.worldview.value || axes.worldview.category,
+    target: axes.target.customValue || axes.target.value || axes.target.category,
+    era: axes.era.customValue || axes.era.value || axes.era.category,
+    ending: axes.ending.customValue || axes.ending.value || axes.ending.category,
+    narration: axes.narr.customValue || axes.narr.value || axes.narr.category,
+    axes,
+    characters,
+    supplement,
+    channelFormula: safeFormula,
+    locked: { channelFormula: true },
+    universalAssets: [],
+  };
+}
+
+export function buildFallbackFormulaSettings(formula, { random = Math.random } = {}) {
+  const pick = list => list[Math.min(list.length - 1, Math.max(0, Math.floor(Number(random()) * list.length)))];
+  const motif = pick(FALLBACK_MOTIF_SETTINGS);
+  const names = Number(random()) < 0.5
+    ? [['美緒', '女性', '主人公'], ['直人', '男性', '対立者'], ['澄江', '女性', '協力者']]
+    : [['紗季', '女性', '主人公'], ['和也', '男性', '対立者'], ['千鶴', '女性', '協力者']];
+  return normalizeRandomizedFormulaSettings({
+    ...motif,
+    characters: names.map(([name, sex, role]) => ({ name, sex, role, personality: '言葉にできない願いを抱えている', note: '新しい選択を迫られる' })),
+    escalation: ['小さな違和感', '否認と孤立', '証拠の反転', '公開の決断'],
+  }, formula);
+}
+
+export async function randomizeAndApplyFormulaSettings({
+  formula,
+  callStructuredAi,
+  applySettings,
+  dispatchDashboardOpen,
+  random = Math.random,
+  randomSeed = `${Date.now()}-${Math.floor(Number(random()) * 1000000)}`,
+  onStatus = () => {},
+} = {}) {
+  const safeFormula = sanitizeChannelFormula(formula);
+  let settings;
+  let usedFallback = false;
+  try {
+    if (typeof callStructuredAi !== 'function') throw new Error('structured_ai_unavailable');
+    onStatus({ phase: 'ai', message: 'AI đang random mô típ và thiết lập…' });
+    const response = await callStructuredAi(buildFormulaSettingsRandomizationPrompt({
+      formula: safeFormula,
+      randomSeed,
+    }));
+    settings = normalizeRandomizedFormulaSettings(parseStructuredFormulaAnalysis(response), safeFormula);
+  } catch {
+    usedFallback = true;
+    onStatus({ phase: 'fallback', message: 'AI không phản hồi; đang dùng bộ mô típ dự phòng…' });
+    settings = buildFallbackFormulaSettings(safeFormula, { random });
+  }
+  const payload = {
+    schema: 'story-maker-generation-settings-v1',
+    app: 'Story Maker',
+    exportedAt: new Date().toISOString(),
+    settings,
+  };
+  if (typeof applySettings === 'function') {
+    await applySettings(payload, { announce: false });
+  }
+  dispatchDashboardOpen?.();
+  onStatus({
+    phase: 'applied',
+    usedFallback,
+    message: usedFallback
+      ? 'Đã điền thiết lập bằng mô típ dự phòng. Dashboard đã sẵn sàng.'
+      : 'Đã random mô típ và điền thiết lập. Dashboard đã sẵn sàng.',
+  });
+  return { settings, payload, usedFallback };
 }
 
 export async function generateFormulaStory({
@@ -483,7 +684,6 @@ export function installChannelFormulaRuntime({
   const formulas = new Map(BUILTIN_CHANNEL_FORMULAS.map(formula => [formula.id, sanitizeChannelFormula(formula)]));
   let selected = null;
   const getSession = getApiSession || (() => readApiSession());
-  const activeGeneration = callGeneration || createDefaultGenerationCaller({ getApiSession: getSession });
   let activeController = controller || createChannelFormulaRuntimeController({
     repository: activeRepository,
     callStructuredAi: callStructuredAi || createDefaultStructuredCaller({ getApiSession: getSession }),
@@ -573,20 +773,40 @@ export function installChannelFormulaRuntime({
     }
     if (id === 'cf-import') doc.getElementById('cf-import-file')?.click();
     if (id === 'cf-generate' && selected) {
-      setFormulaGenerationBusyUi({ doc, busy: true });
+      setFormulaGenerationBusyUi({
+        doc,
+        busy: true,
+        busyLabel: '⏳ AI đang random mô típ…',
+        message: 'AI đang random mô típ và điền thiết lập Dashboard…',
+      });
       try {
-        win?.dispatchEvent?.(new win.CustomEvent('story-maker:channel-formula-context', { detail: { formula: selected } }));
-        const result = await generateFormulaStory({ formula: selected, callGeneration: activeGeneration });
+        const result = await randomizeAndApplyFormulaSettings({
+          formula: selected,
+          callStructuredAi: callStructuredAi || createDefaultStructuredCaller({ getApiSession: getSession }),
+          applySettings: applyGenerationSettings,
+          dispatchDashboardOpen: () => win?.dispatchEvent?.(new win.CustomEvent('story-maker:open-dashboard')),
+          onStatus: status => {
+            const progress = doc.getElementById('cf-progress');
+            if (progress && status.message) progress.textContent = status.message;
+          },
+        });
         const resultCard = doc.getElementById('cf-result-card');
         const resultElement = doc.getElementById('cf-result');
         if (resultCard) resultCard.classList.remove('hidden');
-        if (resultElement) resultElement.textContent = result?.text ? `Đã tạo ${Array.from(result.text).length.toLocaleString('vi-VN')} ký tự.` : 'Đã gửi yêu cầu tạo truyện.';
-        const validationMessage = result?.validation?.ok
-          ? `Đã tạo xong ${result.validation.charCount.toLocaleString('vi-VN')} ký tự, đạt tối thiểu 20.000.`
-          : 'Đã nhận bản nháp nhưng chưa đạt quality gate 20K.';
-        setFormulaGenerationBusyUi({ doc, busy: false, message: validationMessage });
+        if (resultElement) {
+          resultElement.textContent = result.usedFallback
+            ? 'Đã điền thiết lập bằng mô típ dự phòng. Hãy kiểm tra Dashboard rồi bấm Tạo truyện.'
+            : 'Đã điền thiết lập bằng AI. Hãy kiểm tra Dashboard rồi bấm Tạo truyện.';
+        }
+        setFormulaGenerationBusyUi({
+          doc,
+          busy: false,
+          message: result.usedFallback
+            ? 'Hoàn tất fallback: Dashboard đã sẵn sàng.'
+            : 'Hoàn tất: Dashboard đã sẵn sàng.',
+        });
       } catch (cause) {
-        setFormulaGenerationBusyUi({ doc, busy: false, message: 'Tạo truyện thất bại — xem chi tiết lỗi bên dưới.' });
+        setFormulaGenerationBusyUi({ doc, busy: false, message: 'Random mô típ thất bại — xem chi tiết lỗi bên dưới.' });
         error(cause?.message || cause);
       }
     }

@@ -5,8 +5,12 @@ import {
   createChannelFormulaGenerationCaller,
   createChannelFormulaRuntimeController,
   filterChannelFormulaTextFiles,
+  buildFallbackFormulaSettings,
+  buildFormulaSettingsRandomizationPrompt,
   generateFormulaStory,
+  normalizeRandomizedFormulaSettings,
   parseStructuredFormulaAnalysis,
+  randomizeAndApplyFormulaSettings,
   setFormulaGenerationBusyUi,
 } from '../src/channelFormulaRuntime.js';
 import { createChannelFormula } from '../src/channelFormula.js';
@@ -197,4 +201,73 @@ test('generation UI immediately exposes busy state and restores the action label
   assert.equal(button.disabled, false);
   assert.equal(button['aria-busy'], 'false');
   assert.equal(button.textContent, 'Random và tạo truyện 20K');
+});
+
+const motifFormula = createChannelFormula({
+  id: 'formula-motif-1',
+  name: 'Daily Scat – Drama gia đình Nhật',
+  reproductionPrompt: '抽象化された家族ドラマ。原文の固有名詞と事件は禁止。',
+});
+
+test('builds a JSON-only motif prompt without source copying', () => {
+  const prompt = buildFormulaSettingsRandomizationPrompt({
+    formula: motifFormula,
+    randomSeed: 'seed-1',
+  });
+  assert.match(prompt, /JSON/i);
+  assert.match(prompt, /日本語/);
+  assert.match(prompt, /固有名詞|exact names/i);
+  assert.match(prompt, /theme|characters|ending/i);
+});
+
+test('normalizes motif settings and keeps the channel formula locked', () => {
+  const settings = normalizeRandomizedFormulaSettings({
+    theme: 'hidden inheritance',
+    characters: [{ name: 'Mio', role: 'daughter' }],
+  }, motifFormula);
+  assert.equal(settings.mode, 'novel');
+  assert.equal(settings.channelFormula.id, motifFormula.id);
+  assert.equal(settings.locked.channelFormula, true);
+  assert.equal(settings.characters[0].name, 'Mio');
+  assert.equal(JSON.stringify(settings).includes('rawSourceText'), false);
+});
+
+test('fallback motif settings are bounded and retain the selected formula', () => {
+  const settings = buildFallbackFormulaSettings(motifFormula, { random: () => 0 });
+  assert.equal(settings.mode, 'novel');
+  assert.equal(settings.channelFormula.name, motifFormula.name);
+  assert.ok(settings.theme);
+  assert.ok(settings.characters.length >= 2);
+  assert.equal(settings.locked.channelFormula, true);
+});
+
+test('randomizes settings with AI, applies them, and opens Dashboard without generating a story', async () => {
+  const applied = [];
+  const events = [];
+  const result = await randomizeAndApplyFormulaSettings({
+    formula: motifFormula,
+    callStructuredAi: async () => JSON.stringify({
+      theme: '記録を隠した家族会議',
+      characters: [{ name: 'Mio', role: '主人公' }],
+      ending: '自分の生活を選び直す',
+    }),
+    applySettings: async payload => applied.push(payload),
+    dispatchDashboardOpen: () => events.push('dashboard'),
+  });
+  assert.equal(result.usedFallback, false);
+  assert.equal(applied.length, 1);
+  assert.equal(applied[0].settings.channelFormula.id, motifFormula.id);
+  assert.equal(applied[0].settings.theme, '記録を隠した家族会議');
+  assert.deepEqual(events, ['dashboard']);
+});
+
+test('falls back to local motif settings when structured AI fails', async () => {
+  const result = await randomizeAndApplyFormulaSettings({
+    formula: motifFormula,
+    callStructuredAi: async () => { throw new Error('429'); },
+    random: () => 0,
+  });
+  assert.equal(result.usedFallback, true);
+  assert.equal(result.settings.channelFormula.id, motifFormula.id);
+  assert.ok(result.settings.characters.length >= 2);
 });
