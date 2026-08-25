@@ -22,3 +22,10 @@ import './storyProjectRuntime.js';
 import './channelFormulaRuntime.js';
 import './storyDnaMatrixRuntime.js';
 import './workspaceTabs.js';
+import { installStoryDnaMatrixGenerationBridge } from './storyDnaMatrixGenerationBridge.js';
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  const installMatrixBridge = () => installStoryDnaMatrixGenerationBridge({ doc: document, win: window });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installMatrixBridge, { once: true });
+  else installMatrixBridge();
+}

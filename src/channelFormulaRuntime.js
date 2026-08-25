@@ -895,7 +895,16 @@ export function installChannelFormulaRuntime({
   if (!panel || panel.dataset.channelFormulaReady) return null;
   panel.dataset.channelFormulaReady = 'true';
   const activeRepository = repository || createChannelFormulaRepository();
-  const matrixRepository = createStoryDnaMatrixRepository();
+  let matrixRepository = null;
+  const getMatrixRepository = () => {
+    if (matrixRepository) return matrixRepository;
+    try {
+      matrixRepository = createStoryDnaMatrixRepository();
+    } catch {
+      matrixRepository = null;
+    }
+    return matrixRepository;
+  };
   const formulas = new Map(BUILTIN_CHANNEL_FORMULAS.map(formula => [formula.id, sanitizeChannelFormula(formula)]));
   let selected = null;
   const getSession = getApiSession || (() => readApiSession());
@@ -995,7 +1004,7 @@ export function installChannelFormulaRuntime({
         message: 'AI đang random mô típ và điền thiết lập Dashboard…',
       });
       try {
-        const matrices = await matrixRepository.listMatrices(selected.id);
+        const matrices = await getMatrixRepository()?.listMatrices(selected.id) || [];
         const result = await randomizeAndApplyFormulaSettings({
           formula: selected,
           matrix: matrices[0] || null,
