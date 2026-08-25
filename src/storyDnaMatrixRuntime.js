@@ -4,6 +4,9 @@ import {
   compareStoryDnaRows,
   normalizeStoryDnaRow,
 } from './storyDnaMatrix.js';
+import { createStoryDnaMatrixRepository } from './storyDnaMatrixStorage.js';
+import { Gt } from './providerClients.js';
+import { readApiSession } from './apiSession.js';
 
 function text(value, maxLength = 1200) {
   return String(value ?? '').replace(/\r\n?/g, '\n').trim().slice(0, maxLength);
@@ -200,6 +203,212 @@ export async function generateStoryDnaMatrix({
     errors: [],
     targetCount: count,
   };
+}
+
+function escapeHtml(value) {
+  return text(value, 2000).replace(/[&<>"']/gu, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[character]));
+}
+
+export function renderStoryDnaMatrixPanel(matrix = null) {
+  if (!matrix) {
+    return '<div class="cf-matrix-empty">Chưa có Story DNA Matrix. Chọn 30, 40 hoặc 50 story rồi bấm tạo.</div>';
+  }
+  const rows = Array.isArray(matrix.rows) ? matrix.rows : [];
+  const counts = rows.reduce((result, row) => {
+    result[row.status] = (result[row.status] || 0) + 1;
+    return result;
+  }, {});
+  const rowMarkup = rows.map(row => `
+    <tr data-matrix-row-id="${escapeHtml(row.id)}">
+      <td>${escapeHtml(row.id)}</td>
+      <td>${escapeHtml(row.status)}</td>
+      <td>${escapeHtml(row.hook)}</td>
+      <td>${escapeHtml(row.evidence)}</td>
+      <td>${escapeHtml(row.midpointTwist)}</td>
+      <td><code>${escapeHtml(row.noveltyFingerprint)}</code></td>
+      <td class="cf-matrix-row-actions">
+        <button type="button" class="btn-secondary" data-matrix-row-action="lock">${row.locked ? 'Mở khóa' : 'Khóa'}</button>
+        <button type="button" class="btn-secondary" data-matrix-row-action="skip">Bỏ qua</button>
+        <button type="button" class="btn-secondary" data-matrix-row-action="regenerate">Tạo lại</button>
+      </td>
+    </tr>
+  `).join('');
+  return `
+    <div class="cf-matrix-summary">
+      <span>${escapeHtml(matrix.id)}</span>
+      <span>Mục tiêu: ${matrix.targetCount}</span>
+      <span>Planned: ${counts.planned || 0}</span>
+      <span>Used: ${counts.used || 0}</span>
+      <span>Skipped: ${counts.skipped || 0}</span>
+      <button type="button" class="btn-secondary" data-matrix-row-action="export">Xuất Matrix</button>
+    </div>
+    <div class="cf-matrix-table-wrap">
+      <table id="cf-matrix-table-content">
+        <thead><tr><th>ID</th><th>Status</th><th>Hook</th><th>Vật chứng</th><th>Midpoint twist</th><th>Fingerprint</th><th>Actions</th></tr></thead>
+        <tbody>${rowMarkup}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function resolveSessionKey(session) {
+  if (typeof session === 'string') return session;
+  return session?.apiKey || session?.key || session?.geminiKey || session?.openaiKey || '';
+}
+
+function createDefaultMatrixCaller() {
+  return async prompt => {
+    const key = resolveSessionKey(readApiSession());
+    if (!key) throw new Error('API key chưa được nhập.');
+    const result = await Gt(key, 'gemini-3.5-flash', prompt, {
+      responseMimeType: 'application/json',
+      maxTokens: 12000,
+      disableGoogleSearch: true,
+    });
+    return result?.text ?? result;
+  };
+}
+
+export function installStoryDnaMatrixRuntime({
+  doc = globalThis.document,
+  win = globalThis.window,
+  repository = null,
+  callStructuredAi = null,
+} = {}) {
+  const root = doc?.getElementById?.('cf-matrix-root');
+  if (!root || root.dataset.storyDnaMatrixReady) return null;
+  root.dataset.storyDnaMatrixReady = 'true';
+  const activeRepository = repository || createStoryDnaMatrixRepository();
+  const caller = callStructuredAi || createDefaultMatrixCaller();
+  let selectedMatrix = null;
+  const getFormula = () => {
+    try {
+      return JSON.parse(doc.getElementById('cf-selected-formula')?.value || 'null');
+    } catch {
+      return null;
+    }
+  };
+  const select = doc.getElementById('cf-matrix-select');
+  const status = doc.getElementById('cf-matrix-progress');
+  const error = message => {
+    const element = doc.getElementById('cf-matrix-error');
+    if (element) {
+      element.textContent = text(message, 1000);
+      element.classList.remove('hidden');
+    }
+  };
+  const render = () => {
+    const target = doc.getElementById('cf-matrix-table');
+    if (target) target.innerHTML = renderStoryDnaMatrixPanel(selectedMatrix);
+  };
+  const load = async () => {
+    const formula = getFormula();
+    if (!formula?.id) {
+      selectedMatrix = null;
+      if (select) select.innerHTML = '<option value="">Chọn công thức trước</option>';
+      render();
+      return;
+    }
+    const matrices = await activeRepository.listMatrices(formula.id);
+    if (select) {
+      select.innerHTML = matrices.length
+        ? matrices.map(matrix => `<option value="${escapeHtml(matrix.id)}">${escapeHtml(matrix.name)} (${matrix.rows.length}/${matrix.targetCount})</option>`).join('')
+        : '<option value="">Chưa có Matrix</option>';
+    }
+    selectedMatrix = matrices[0] || null;
+    render();
+  };
+  root.addEventListener('change', async event => {
+    if (event.target?.id === 'cf-matrix-select' && event.target.value) {
+      selectedMatrix = await activeRepository.getMatrix(event.target.value);
+      render();
+    }
+  });
+  root.addEventListener('click', async event => {
+    const target = event.target?.closest?.('[data-matrix-row-action], #cf-matrix-create');
+    if (!target) return;
+    if (target.id === 'cf-matrix-create') {
+      const formula = getFormula();
+      if (!formula?.id) return error('Hãy chọn công thức kênh trước.');
+      const targetCount = Number(doc.getElementById('cf-matrix-count')?.value) || 30;
+      target.disabled = true;
+      if (status) status.textContent = `Đang tạo Matrix ${targetCount} story card…`;
+      try {
+        const result = await generateStoryDnaMatrix({
+          formula,
+          targetCount,
+          callStructuredAi: caller,
+          onStatus: update => { if (status && update.message) status.textContent = update.message; },
+        });
+        selectedMatrix = await activeRepository.saveMatrix({
+          formulaId: formula.id,
+          name: `${formula.name} – Story DNA Matrix`,
+          targetCount,
+          rows: result.rows,
+        });
+        await load();
+        if (status) status.textContent = result.usedFallback
+          ? 'Đã tạo Matrix bằng fallback local.'
+          : 'Đã tạo Story DNA Matrix.';
+      } catch (cause) {
+        error(cause?.message || cause);
+      } finally {
+        target.disabled = false;
+      }
+      return;
+    }
+    const rowElement = target.closest('[data-matrix-row-id]');
+    if (!selectedMatrix || !rowElement) {
+      if (target.dataset.matrixRowAction === 'export' && selectedMatrix) {
+        const blob = new Blob([JSON.stringify(activeRepository.exportMatrix(selectedMatrix), null, 2)], { type: 'application/json' });
+        const anchor = doc.createElement('a');
+        anchor.href = URL.createObjectURL(blob);
+        anchor.download = `${selectedMatrix.name}.json`;
+        anchor.click();
+        URL.revokeObjectURL(anchor.href);
+      }
+      return;
+    }
+    const rowId = rowElement.dataset.matrixRowId;
+    const row = selectedMatrix.rows.find(item => item.id === rowId);
+    if (!row) return;
+    if (target.dataset.matrixRowAction === 'lock') {
+      selectedMatrix = await activeRepository.updateRow(selectedMatrix.id, rowId, { locked: !row.locked });
+    } else if (target.dataset.matrixRowAction === 'skip') {
+      selectedMatrix = await activeRepository.updateRow(selectedMatrix.id, rowId, { status: 'skipped' });
+    } else if (target.dataset.matrixRowAction === 'regenerate') {
+      selectedMatrix = await activeRepository.updateRow(selectedMatrix.id, rowId, {
+        status: 'planned',
+        usedAt: null,
+        storyId: null,
+      });
+    }
+    render();
+  });
+  doc.addEventListener('change', event => {
+    if (event.target?.id === 'cf-formula-select') load().catch(cause => error(cause?.message || cause));
+  });
+  win?.addEventListener?.('story-maker:open-formulas', () => load().catch(cause => error(cause?.message || cause)));
+  load().catch(cause => error(cause?.message || cause));
+  return {
+    load,
+    getSelectedMatrix: () => selectedMatrix,
+    repository: activeRepository,
+  };
+}
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => installStoryDnaMatrixRuntime());
+  } else {
+    installStoryDnaMatrixRuntime();
+  }
 }
 
 export { text, extractJsonArray };

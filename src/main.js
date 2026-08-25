@@ -20,4 +20,5 @@ import './generationSettingsIo.js';
 import './stylePresetRuntime.js';
 import './storyProjectRuntime.js';
 import './channelFormulaRuntime.js';
+import './storyDnaMatrixRuntime.js';
 import './workspaceTabs.js';
