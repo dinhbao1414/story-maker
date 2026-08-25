@@ -2,6 +2,19 @@
 
 This file is public-repository safe. Do not include API keys, private credentials, billing data, private tokens, personal local paths, or unreleased account details.
 
+## 2026-08-25 Story DNA Matrix & Novelty Checker (local only)
+
+- Added a separate per-formula Story DNA Matrix with 30/40/50 story-card targets. Each card stores title promise, hook, victim, antagonist, false accusation, location, evidence, secret, midpoint twist, final twist, villain consequence, ending, and moral dilemma.
+- Added local novelty checking with deterministic fingerprints, hard duplicate rules, weighted similarity scoring, safe/warning/reject decisions, unused-row selection, and diversity checks for locations, evidence, antagonists, and twists.
+- Added a dedicated IndexedDB repository and sanitized Matrix export/import. Raw TXT, exact source text, API keys, tokens, and authorization-like fields are excluded.
+- Added Matrix generation prompts, JSON parsing, duplicate removal, supplemental batch generation, and bounded local fallback rows.
+- Added Formula-tab Matrix controls for creating/selecting/exporting Matrices and locking/skipping/regenerating rows.
+- `AI Random mô típ & điền thiết lập` now selects an unused safe Matrix row when available and carries `matrixId`, `matrixRowId`, and sanitized `storyDna` metadata into Dashboard settings. Without a Matrix, the previous AI/fallback flow remains available.
+- Added a generation bridge that marks a row `used` only after a non-empty 20K-quality output; failed/incomplete output leaves the row `planned`. The bridge listens for generated-output events and a one-shot DOM completion fallback.
+- Verification on August 25, 2026: focused Matrix/settings tests passed 35/35; full Node suite passed 136/136; `npm run check:generic-rules` passed; `npm run check:nano-4koma-contract` skipped because the sibling Nano prompt source is unavailable; syntax checks passed; `npm run build` passed with the existing large-chunk warning; local HTTP returned 200 and the Matrix control was present.
+- Local-only implementation. No deploy, push, release, version bump, backup, or API credential change was performed.
+- Local verification URL: `http://localhost:5179`.
+
 ## 2026-08-23 CTR–Retention–Comment Story System (local only)
 
 - Expanded channel-formula analysis and synthesis prompts with a sanitized `audienceGrowthSystem`: CTR promise, 30-second hook, linked curiosity ladder, five retention windows, comment payoff, and anti-drop rules.
