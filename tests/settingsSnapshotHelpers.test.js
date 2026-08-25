@@ -56,6 +56,9 @@ const exported = buildGenerationSettingsExport(
     version: 'v5.0.8',
     modeCustom: '中編小説',
     supplement: '最後に余韻を残す',
+    matrixId: 'matrix-1',
+    matrixRowId: 'story-001',
+    storyDna: { id: 'story-001', hook: 'hook', apiKey: 'remove' },
     axesDetailed: {
       theme: { category: '日常', value: 'コンビニ', customValue: '', source: 'selectedDetail' },
       genre: { category: 'ミステリー', value: '', customValue: '日常ミステリー', source: 'manual' },
@@ -70,12 +73,17 @@ assert.equal(exported.settings.modeCustom, '中編小説');
 assert.equal(exported.settings.axes.theme.value, 'コンビニ');
 assert.equal(exported.settings.characters[0].name, '陽子');
 assert.equal(exported.settings.locked.mode, true);
+assert.equal(exported.settings.matrixId, 'matrix-1');
+assert.equal(exported.settings.matrixRowId, 'story-001');
+assert.equal(exported.settings.storyDna.id, 'story-001');
 assert.equal(Object.prototype.hasOwnProperty.call(exported.settings.locked, 'apiKey'), false);
 assert.equal(JSON.stringify(exported).includes('secret-key'), false);
 assert.equal(JSON.stringify(exported).includes('secret-openai'), false);
 
 const parsed = parseGenerationSettingsExport(JSON.stringify(exported));
 assert.deepEqual(parsed.settings.axes.theme, exported.settings.axes.theme);
+assert.equal(parsed.settings.matrixRowId, 'story-001');
+assert.equal(JSON.stringify(parsed).includes('apiKey'), false);
 assert.equal(parsed.settings.universalAssets[0].name, '参考メモ');
 assert.throws(() => parseGenerationSettingsExport('{"schema":"wrong"}'), /Story Maker/);
 

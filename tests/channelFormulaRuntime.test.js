@@ -296,3 +296,64 @@ test('falls back to local motif settings when structured AI fails', async () => 
   assert.equal(result.settings.channelFormula.id, motifFormula.id);
   assert.ok(result.settings.characters.length >= 2);
 });
+
+test('random settings selects an unused safe Matrix row and carries its DNA metadata', async () => {
+  const applied = [];
+  const matrix = {
+    id: 'matrix-1',
+    formulaId: motifFormula.id,
+    rows: [
+      {
+        id: 'story-used',
+        formulaId: motifFormula.id,
+        status: 'used',
+        titlePromise: 'old promise',
+        hook: 'old hook',
+        victim: 'old victim',
+        antagonist: 'old antagonist',
+        falseAccusation: 'old accusation',
+        location: 'old location',
+        evidence: 'old evidence',
+        secret: 'old secret',
+        midpointTwist: 'old midpoint',
+        finalTwist: 'old final',
+        villainConsequence: 'old consequence',
+        ending: 'old ending',
+        moralDilemma: 'old dilemma',
+      },
+      {
+        id: 'story-safe',
+        formulaId: motifFormula.id,
+        status: 'planned',
+        titlePromise: 'A public accusation hides a railway secret',
+        hook: 'A daughter is ordered to apologize before a train arrives.',
+        victim: 'an exhausted daughter',
+        antagonist: 'a respected station manager',
+        falseAccusation: 'a missing donation box',
+        location: 'a remote railway station',
+        evidence: 'a station camera file',
+        secret: 'the timetable was changed',
+        midpointTwist: 'the witness protected a stranger',
+        finalTwist: 'the stranger was the true victim',
+        villainConsequence: 'the manager loses public authority',
+        ending: 'the daughter opens a new community office',
+        moralDilemma: 'Should the truth be public if it closes the station?',
+      },
+    ],
+  };
+  const result = await randomizeAndApplyFormulaSettings({
+    formula: motifFormula,
+    matrix,
+    callStructuredAi: async () => JSON.stringify({
+      titlePromise: 'should not replace Matrix row',
+    }),
+    applySettings: async payload => applied.push(payload),
+  });
+  assert.equal(result.usedFallback, false);
+  assert.equal(result.matrixRow.id, 'story-safe');
+  assert.equal(result.settings.matrixId, 'matrix-1');
+  assert.equal(result.settings.matrixRowId, 'story-safe');
+  assert.equal(result.settings.storyDna.id, 'story-safe');
+  assert.equal(applied[0].settings.matrixRowId, 'story-safe');
+  assert.match(applied[0].settings.supplement, /railway|station camera|midpoint/iu);
+});

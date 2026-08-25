@@ -1,4 +1,5 @@
 import { sanitizeChannelFormula } from './channelFormula.js';
+import { normalizeStoryDnaRow } from './storyDnaMatrix.js';
 
 export function formatAxisDetail({ category = '', value = '', customValue = '' } = {}) {
   const selected = value || customValue;
@@ -116,6 +117,11 @@ function sanitizeChannelFormulaSnapshot(value) {
   };
 }
 
+function sanitizeStoryDnaSnapshot(value) {
+  if (!value || typeof value !== 'object') return null;
+  return normalizeStoryDnaRow(value);
+}
+
 export function buildGenerationSettingsExport(state, values = {}, date = new Date()) {
   const locked = cleanPlainObject(state?.locked || {}, LOCK_KEYS);
   return {
@@ -131,6 +137,9 @@ export function buildGenerationSettingsExport(state, values = {}, date = new Dat
       characters: sanitizeCharacters(state?.characters || []),
       supplement: cleanText(values.supplement, 5000),
       channelFormula: sanitizeChannelFormulaSnapshot(values.channelFormula),
+      matrixId: cleanText(values.matrixId, 160) || null,
+      matrixRowId: cleanText(values.matrixRowId, 160) || null,
+      storyDna: sanitizeStoryDnaSnapshot(values.storyDna),
       locked,
       universalAssets: sanitizeUniversalAssets(state?.universalAssets || []),
     },
@@ -152,6 +161,9 @@ export function parseGenerationSettingsExport(input) {
       characters: sanitizeCharacters(payload.settings.characters || []),
       supplement: cleanText(payload.settings.supplement, 5000),
       channelFormula: sanitizeChannelFormulaSnapshot(payload.settings.channelFormula),
+      matrixId: cleanText(payload.settings.matrixId, 160) || null,
+      matrixRowId: cleanText(payload.settings.matrixRowId, 160) || null,
+      storyDna: sanitizeStoryDnaSnapshot(payload.settings.storyDna),
       locked: cleanPlainObject(payload.settings.locked || {}, LOCK_KEYS),
       universalAssets: sanitizeUniversalAssets(payload.settings.universalAssets || []),
     },

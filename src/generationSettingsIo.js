@@ -123,8 +123,23 @@ function collectSelectedChannelFormula() {
   }
 }
 
+function collectMatrixSelection() {
+  const matrixId = normalizeText(byId('cf-selected-matrix-id')?.value);
+  const matrixRowId = normalizeText(byId('cf-selected-matrix-row-id')?.value);
+  let storyDna = null;
+  try {
+    storyDna = byId('cf-selected-story-dna')?.value
+      ? JSON.parse(byId('cf-selected-story-dna').value)
+      : null;
+  } catch {
+    storyDna = null;
+  }
+  return { matrixId, matrixRowId, storyDna };
+}
+
 function buildCurrentSettingsExport() {
   const axesDetailed = Object.fromEntries(AXIS_CONFIGS.map(config => [config.key, getAxisState(config)]));
+  const matrix = collectMatrixSelection();
   const state = {
     mode: getActiveModeValue(),
     modeSource: 'screen',
@@ -138,6 +153,9 @@ function buildCurrentSettingsExport() {
     supplement: normalizeText(byId('supplement')?.value),
     axesDetailed,
     channelFormula: collectSelectedChannelFormula(),
+    matrixId: matrix.matrixId,
+    matrixRowId: matrix.matrixRowId,
+    storyDna: matrix.storyDna,
   });
 }
 
@@ -270,6 +288,13 @@ export async function applyGenerationSettings(payload, { announce = true } = {})
   window.dispatchEvent(new CustomEvent('story-maker:channel-formula-imported', {
     detail: settings.channelFormula || null,
   }));
+  window.dispatchEvent(new CustomEvent('story-maker:matrix-selection-imported', {
+    detail: {
+      matrixId: settings.matrixId || '',
+      matrixRowId: settings.matrixRowId || '',
+      storyDna: settings.storyDna || null,
+    },
+  }));
   restoreLocks(settings.locked || {});
   window.dispatchEvent(new CustomEvent('story-maker:settings-imported'));
   if (announce) alert('Generation settings imported.');
@@ -318,6 +343,15 @@ function installGenerationSettingsIo() {
     const file = event.target?.files?.[0];
     importGenerationSettingsFromFile(file);
     event.target.value = '';
+  });
+  window.addEventListener('story-maker:matrix-selection-imported', event => {
+    const detail = event.detail || {};
+    const matrixId = byId('cf-selected-matrix-id');
+    const matrixRowId = byId('cf-selected-matrix-row-id');
+    const storyDna = byId('cf-selected-story-dna');
+    if (matrixId) matrixId.value = normalizeText(detail.matrixId);
+    if (matrixRowId) matrixRowId.value = normalizeText(detail.matrixRowId);
+    if (storyDna) storyDna.value = detail.storyDna ? JSON.stringify(detail.storyDna) : '';
   });
   installOutputTxtSaveNameOverride();
 }

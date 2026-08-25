@@ -12,10 +12,15 @@ import {
   createChannelFormulaRepository,
   parseChannelFormulaImport,
 } from './channelFormulaStorage.js';
+import { createStoryDnaMatrixRepository } from './storyDnaMatrixStorage.js';
 import { BUILTIN_CHANNEL_FORMULAS } from './channelFormulaCatalog.js';
 import { Gt } from './providerClients.js';
 import { readApiSession } from './apiSession.js';
 import { applyGenerationSettings } from './generationSettingsIo.js';
+import {
+  chooseUnusedStoryDnaRow,
+  normalizeStoryDnaRow,
+} from './storyDnaMatrix.js';
 
 const MAX_FILE_CHARS = 1_200_000;
 const MAX_ANALYSIS_SUMMARIES = 30;
@@ -548,8 +553,51 @@ export function buildFallbackFormulaSettings(formula, { random = Math.random } =
   }, formula);
 }
 
+function buildMatrixSettingsSeed(row, formula) {
+  const safeRow = normalizeStoryDnaRow(row, { formulaId: formula.id });
+  return {
+    theme: safeRow.titlePromise || safeRow.falseAccusation,
+    genre: formula.analysis?.genre || '家族因果応報ドラマ',
+    worldview: safeRow.location,
+    target: `${safeRow.hook}から始まり、${safeRow.moralDilemma}へ着地する長編人間ドラマ`,
+    era: '現代日本',
+    ending: safeRow.ending,
+    narr: '主人公に寄り添う近接三人称',
+    characters: [
+      { name: '主人公', sex: '女性', role: safeRow.victim, personality: '耐えてきたが記録を集める', note: safeRow.secret },
+      { name: '対立者', sex: '男性', role: safeRow.antagonist, personality: '評判と立場で責任を押し付ける', note: safeRow.falseAccusation },
+    ],
+    antagonist: safeRow.antagonist,
+    evidence: safeRow.evidence,
+    escalation: [
+      safeRow.falseAccusation,
+      safeRow.secret,
+      safeRow.midpointTwist,
+      safeRow.finalTwist,
+    ],
+    titlePromise: safeRow.titlePromise,
+    thumbnailConcept: `${safeRow.victim}と${safeRow.evidence}を対比する`,
+    hook30s: safeRow.hook,
+    questionLadder: [
+      { question: `なぜ${safeRow.victim}は${safeRow.falseAccusation}を負わされたのか`, answer: safeRow.secret, nextQuestion: safeRow.midpointTwist },
+      { question: safeRow.midpointTwist, answer: safeRow.finalTwist, nextQuestion: safeRow.moralDilemma },
+      { question: safeRow.moralDilemma, answer: safeRow.ending, nextQuestion: '' },
+    ],
+    retentionBeats: [
+      { window: '30s-3m', goal: '問題と約束', beat: safeRow.hook },
+      { window: '3-8m', goal: '最初の証拠', beat: safeRow.evidence },
+      { window: '8-15m', goal: '反対者の勝利', beat: safeRow.falseAccusation },
+      { window: '15-20m', goal: '意味の反転', beat: safeRow.midpointTwist },
+      { window: '20-25m', goal: '反撃と余韻', beat: safeRow.finalTwist },
+    ],
+    twist: safeRow.finalTwist,
+    commentDilemma: safeRow.moralDilemma,
+  };
+}
+
 export async function randomizeAndApplyFormulaSettings({
   formula,
+  matrix = null,
   callStructuredAi,
   applySettings,
   dispatchDashboardOpen,
@@ -560,18 +608,41 @@ export async function randomizeAndApplyFormulaSettings({
   const safeFormula = sanitizeChannelFormula(formula);
   let settings;
   let usedFallback = false;
+  let matrixRow = null;
+  const matrixRows = Array.isArray(matrix) ? matrix : matrix?.rows;
+  if (Array.isArray(matrixRows) && matrixRows.length) {
+    const selected = chooseUnusedStoryDnaRow(matrixRows);
+    if (selected?.row) {
+      matrixRow = normalizeStoryDnaRow(selected.row, { formulaId: safeFormula.id });
+      onStatus({ phase: 'matrix', message: `Đã chọn story card ${matrixRow.id} từ Story DNA Matrix.` });
+    } else {
+      onStatus({ phase: 'matrix-empty', message: 'Matrix không còn story card an toàn; đang dùng fallback motif.' });
+    }
+  }
   try {
-    if (typeof callStructuredAi !== 'function') throw new Error('structured_ai_unavailable');
+    if (matrixRow) {
+      settings = normalizeRandomizedFormulaSettings(buildMatrixSettingsSeed(matrixRow, safeFormula), safeFormula);
+    } else {
+      if (typeof callStructuredAi !== 'function') throw new Error('structured_ai_unavailable');
     onStatus({ phase: 'ai', message: 'AI đang random mô típ và thiết lập…' });
     const response = await callStructuredAi(buildFormulaSettingsRandomizationPrompt({
       formula: safeFormula,
       randomSeed,
     }));
-    settings = normalizeRandomizedFormulaSettings(parseStructuredFormulaAnalysis(response), safeFormula);
+      settings = normalizeRandomizedFormulaSettings(parseStructuredFormulaAnalysis(response), safeFormula);
+    }
   } catch {
     usedFallback = true;
     onStatus({ phase: 'fallback', message: 'AI không phản hồi; đang dùng bộ mô típ dự phòng…' });
     settings = buildFallbackFormulaSettings(safeFormula, { random });
+  }
+  if (matrixRow) {
+    settings = {
+      ...settings,
+      matrixId: text(matrix?.id, 160) || null,
+      matrixRowId: matrixRow.id,
+      storyDna: matrixRow,
+    };
   }
   const payload = {
     schema: 'story-maker-generation-settings-v1',
@@ -590,7 +661,7 @@ export async function randomizeAndApplyFormulaSettings({
       ? 'Đã điền thiết lập bằng mô típ dự phòng. Dashboard đã sẵn sàng.'
       : 'Đã random mô típ và điền thiết lập. Dashboard đã sẵn sàng.',
   });
-  return { settings, payload, usedFallback };
+  return { settings, payload, usedFallback, matrixRow };
 }
 
 export async function generateFormulaStory({
@@ -824,6 +895,7 @@ export function installChannelFormulaRuntime({
   if (!panel || panel.dataset.channelFormulaReady) return null;
   panel.dataset.channelFormulaReady = 'true';
   const activeRepository = repository || createChannelFormulaRepository();
+  const matrixRepository = createStoryDnaMatrixRepository();
   const formulas = new Map(BUILTIN_CHANNEL_FORMULAS.map(formula => [formula.id, sanitizeChannelFormula(formula)]));
   let selected = null;
   const getSession = getApiSession || (() => readApiSession());
@@ -923,8 +995,10 @@ export function installChannelFormulaRuntime({
         message: 'AI đang random mô típ và điền thiết lập Dashboard…',
       });
       try {
+        const matrices = await matrixRepository.listMatrices(selected.id);
         const result = await randomizeAndApplyFormulaSettings({
           formula: selected,
+          matrix: matrices[0] || null,
           callStructuredAi: callStructuredAi || createDefaultStructuredCaller({ getApiSession: getSession }),
           applySettings: applyGenerationSettings,
           dispatchDashboardOpen: () => win?.dispatchEvent?.(new win.CustomEvent('story-maker:open-dashboard')),
