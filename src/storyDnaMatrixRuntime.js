@@ -215,6 +215,34 @@ function escapeHtml(value) {
   }[character]));
 }
 
+export function syncStoryDnaMatrixGenerationButton({
+  button,
+  matrix = null,
+  hasFormula = false,
+} = {}) {
+  const ready = Boolean(hasFormula && Array.isArray(matrix?.rows) && matrix.rows.length > 0);
+  if (button) {
+    button.classList?.toggle?.('hidden', !ready);
+    button.disabled = !ready;
+  }
+  return ready;
+}
+
+export async function deleteSelectedStoryDnaMatrix({
+  repository,
+  matrix = null,
+  confirm = globalThis.confirm,
+} = {}) {
+  if (!repository?.deleteMatrix || !matrix?.id) {
+    return { deleted: false, reason: 'missing_matrix' };
+  }
+  if (typeof confirm === 'function' && !confirm(`Xóa Matrix "${matrix.name || matrix.id}"? Các story card trong Matrix sẽ bị xóa.`)) {
+    return { deleted: false, reason: 'cancelled' };
+  }
+  await repository.deleteMatrix(matrix.id);
+  return { deleted: true, id: matrix.id };
+}
+
 export function renderStoryDnaMatrixPanel(matrix = null) {
   if (!matrix) {
     return '<div class="cf-matrix-empty">Chưa có Story DNA Matrix. Chọn 30, 40 hoặc 50 story rồi bấm tạo.</div>';
@@ -247,6 +275,7 @@ export function renderStoryDnaMatrixPanel(matrix = null) {
       <span>Used: ${counts.used || 0}</span>
       <span>Skipped: ${counts.skipped || 0}</span>
       <button type="button" class="btn-secondary" data-matrix-row-action="export">Xuất Matrix</button>
+      <button type="button" class="btn-secondary" data-matrix-row-action="delete">Xóa Matrix</button>
     </div>
     <div class="cf-matrix-table-wrap">
       <table id="cf-matrix-table-content">
@@ -296,6 +325,7 @@ export function installStoryDnaMatrixRuntime({
   };
   const select = doc.getElementById('cf-matrix-select');
   const status = doc.getElementById('cf-matrix-progress');
+  const generateButton = doc.getElementById('cf-generate');
   const error = message => {
     const element = doc.getElementById('cf-matrix-error');
     if (element) {
@@ -307,11 +337,17 @@ export function installStoryDnaMatrixRuntime({
     const target = doc.getElementById('cf-matrix-table');
     if (target) target.innerHTML = renderStoryDnaMatrixPanel(selectedMatrix);
   };
+  const syncGenerateButton = () => syncStoryDnaMatrixGenerationButton({
+    button: generateButton,
+    matrix: selectedMatrix,
+    hasFormula: Boolean(getFormula()?.id),
+  });
   const load = async () => {
     const formula = getFormula();
     if (!formula?.id) {
       selectedMatrix = null;
       if (select) select.innerHTML = '<option value="">Chọn công thức trước</option>';
+      syncGenerateButton();
       render();
       return;
     }
@@ -322,11 +358,13 @@ export function installStoryDnaMatrixRuntime({
         : '<option value="">Chưa có Matrix</option>';
     }
     selectedMatrix = matrices[0] || null;
+    syncGenerateButton();
     render();
   };
   root.addEventListener('change', async event => {
     if (event.target?.id === 'cf-matrix-select' && event.target.value) {
       selectedMatrix = await activeRepository.getMatrix(event.target.value);
+      syncGenerateButton();
       render();
     }
   });
@@ -363,6 +401,19 @@ export function installStoryDnaMatrixRuntime({
       }
       return;
     }
+    if (target.dataset.matrixRowAction === 'delete') {
+      if (!selectedMatrix) return;
+      const result = await deleteSelectedStoryDnaMatrix({
+        repository: activeRepository,
+        matrix: selectedMatrix,
+        confirm: win?.confirm?.bind?.(win) || globalThis.confirm,
+      });
+      if (!result.deleted) return;
+      selectedMatrix = null;
+      await load();
+      if (status) status.textContent = 'Đã xóa Story DNA Matrix.';
+      return;
+    }
     const rowElement = target.closest('[data-matrix-row-id]');
     if (!selectedMatrix || !rowElement) {
       if (target.dataset.matrixRowAction === 'export' && selectedMatrix) {
@@ -393,6 +444,13 @@ export function installStoryDnaMatrixRuntime({
   });
   doc.addEventListener('change', event => {
     if (event.target?.id === 'cf-formula-select') load().catch(cause => error(cause?.message || cause));
+  });
+  win?.addEventListener?.('story-maker:matrix-updated', event => {
+    load().then(() => {
+      if (status && event?.detail?.status === 'used') {
+        status.textContent = `Đã đánh dấu ${event.detail.matrixRowId || 'story card'} là used.`;
+      }
+    }).catch(cause => error(cause?.message || cause));
   });
   win?.addEventListener?.('story-maker:open-formulas', () => load().catch(cause => error(cause?.message || cause)));
   load().catch(cause => error(cause?.message || cause));

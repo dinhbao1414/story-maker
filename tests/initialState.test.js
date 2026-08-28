@@ -5,7 +5,7 @@ const state = createInitialState();
 
 assert.equal(state.apiKey, '');
 assert.equal(state.apiProvider, 'gemini');
-assert.equal(state.mode, '4koma');
+assert.equal(state.mode, 'long_10000');
 assert.deepEqual(state.characters, []);
 assert.deepEqual(state.universalAssets, []);
 assert.equal(state.longNovel.active, false);

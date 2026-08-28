@@ -522,8 +522,8 @@ export function normalizeRandomizedFormulaSettings(value = {}, formula = {}) {
     'この設定の人物名・事件・証拠を新規に展開し、原文をコピーしない。',
   ].filter(Boolean).join('\n\n').slice(0, 5000);
   return {
-    mode: 'novel',
-    modeCustom: '短編小説',
+    mode: 'long_10000',
+    modeCustom: '長編（10000字～）',
     theme: axes.theme.customValue || axes.theme.value || axes.theme.category,
     genre: axes.genre.customValue || axes.genre.value || axes.genre.category,
     worldview: axes.worldview.customValue || axes.worldview.value || axes.worldview.category,
@@ -603,17 +603,23 @@ export async function randomizeAndApplyFormulaSettings({
   dispatchDashboardOpen,
   random = Math.random,
   randomSeed = `${Date.now()}-${Math.floor(Number(random()) * 1000000)}`,
+  lastMatrixSelections = null,
   onStatus = () => {},
 } = {}) {
   const safeFormula = sanitizeChannelFormula(formula);
   let settings;
   let usedFallback = false;
   let matrixRow = null;
+  const matrixId = text(matrix?.id, 160);
   const matrixRows = Array.isArray(matrix) ? matrix : matrix?.rows;
   if (Array.isArray(matrixRows) && matrixRows.length) {
-    const selected = chooseUnusedStoryDnaRow(matrixRows);
+    const selected = chooseUnusedStoryDnaRow(matrixRows, {
+      random,
+      excludeRowId: matrixId ? lastMatrixSelections?.get?.(matrixId) : null,
+    });
     if (selected?.row) {
       matrixRow = normalizeStoryDnaRow(selected.row, { formulaId: safeFormula.id });
+      if (matrixId) lastMatrixSelections?.set?.(matrixId, matrixRow.id);
       onStatus({ phase: 'matrix', message: `Đã chọn story card ${matrixRow.id} từ Story DNA Matrix.` });
     } else {
       onStatus({ phase: 'matrix-empty', message: 'Matrix không còn story card an toàn; đang dùng fallback motif.' });
@@ -639,7 +645,7 @@ export async function randomizeAndApplyFormulaSettings({
   if (matrixRow) {
     settings = {
       ...settings,
-      matrixId: text(matrix?.id, 160) || null,
+      matrixId: matrixId || null,
       matrixRowId: matrixRow.id,
       storyDna: matrixRow,
     };
@@ -896,6 +902,7 @@ export function installChannelFormulaRuntime({
   panel.dataset.channelFormulaReady = 'true';
   const activeRepository = repository || createChannelFormulaRepository();
   let matrixRepository = null;
+  const lastMatrixSelections = new Map();
   const getMatrixRepository = () => {
     if (matrixRepository) return matrixRepository;
     try {
@@ -1011,6 +1018,7 @@ export function installChannelFormulaRuntime({
           callStructuredAi: callStructuredAi || createDefaultStructuredCaller({ getApiSession: getSession }),
           applySettings: applyGenerationSettings,
           dispatchDashboardOpen: () => win?.dispatchEvent?.(new win.CustomEvent('story-maker:open-dashboard')),
+          lastMatrixSelections,
           onStatus: status => {
             const progress = doc.getElementById('cf-progress');
             if (progress && status.message) progress.textContent = status.message;

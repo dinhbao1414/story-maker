@@ -205,17 +205,24 @@ export function evaluateStoryDnaCandidate(candidate = {}, rows = [], options = {
   };
 }
 
-export function chooseUnusedStoryDnaRow(rows = [], options = {}) {
+export function chooseUnusedStoryDnaRow(rows = [], {
+  random = Math.random,
+  excludeRowId = null,
+  ...evaluationOptions
+} = {}) {
   const candidates = rows.filter(row => row?.status === 'planned' && !row.locked);
   const evaluated = candidates.map(row => ({
     row,
-    evaluation: evaluateStoryDnaCandidate(row, rows, options),
+    evaluation: evaluateStoryDnaCandidate(row, rows, evaluationOptions),
   })).filter(item => item.evaluation.decision !== 'reject');
-  evaluated.sort((left, right) => (
-    left.evaluation.maxScore - right.evaluation.maxScore
-    || String(left.row.id).localeCompare(String(right.row.id), undefined, { numeric: true })
-  ));
-  return evaluated[0] || null;
+  const withoutPrevious = evaluated.filter(item => item.row.id !== excludeRowId);
+  const pool = withoutPrevious.length ? withoutPrevious : evaluated;
+  if (!pool.length) return null;
+  const randomValue = Number(random());
+  const boundedRandom = Number.isFinite(randomValue)
+    ? Math.min(0.999999999, Math.max(0, randomValue))
+    : 0;
+  return pool[Math.floor(boundedRandom * pool.length)];
 }
 
 export function validateMatrixDiversity(rows = [], { targetCount = rows.length } = {}) {

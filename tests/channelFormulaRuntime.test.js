@@ -209,6 +209,27 @@ const motifFormula = createChannelFormula({
   reproductionPrompt: '抽象化された家族ドラマ。原文の固有名詞と事件は禁止。',
 });
 
+function makeMatrixRow(id, token) {
+  return {
+    id,
+    formulaId: motifFormula.id,
+    status: 'planned',
+    titlePromise: `promise ${token}`,
+    hook: `hook ${token}`,
+    victim: `victim ${token}`,
+    antagonist: `antagonist ${token}`,
+    falseAccusation: `accusation ${token}`,
+    location: `location ${token}`,
+    evidence: `evidence ${token}`,
+    secret: `secret ${token}`,
+    midpointTwist: `midpoint ${token}`,
+    finalTwist: `final ${token}`,
+    villainConsequence: `consequence ${token}`,
+    ending: `ending ${token}`,
+    moralDilemma: `dilemma ${token}`,
+  };
+}
+
 test('builds a JSON-only motif prompt without source copying', () => {
   const prompt = buildFormulaSettingsRandomizationPrompt({
     formula: motifFormula,
@@ -242,7 +263,6 @@ test('normalizes motif settings and keeps the channel formula locked', () => {
     twist: 'The witness changed the record.',
     commentDilemma: 'Should the truth be public if it breaks the family?',
   }, motifFormula);
-  assert.equal(settings.mode, 'novel');
   assert.equal(settings.channelFormula.id, motifFormula.id);
   assert.equal(settings.locked.channelFormula, true);
   assert.equal(settings.characters[0].name, 'Mio');
@@ -252,12 +272,15 @@ test('normalizes motif settings and keeps the channel formula locked', () => {
   assert.match(settings.supplement, /retentionBeats|30s-3m/iu);
   assert.match(settings.supplement, /twist/iu);
   assert.match(settings.supplement, /commentDilemma|道徳/iu);
+  assert.equal(settings.mode, 'long_10000');
+  assert.equal(settings.modeCustom, '長編（10000字～）');
   assert.equal(JSON.stringify(settings).includes('rawSourceText'), false);
 });
 
 test('fallback motif settings are bounded and retain the selected formula', () => {
   const settings = buildFallbackFormulaSettings(motifFormula, { random: () => 0 });
-  assert.equal(settings.mode, 'novel');
+  assert.equal(settings.mode, 'long_10000');
+  assert.equal(settings.modeCustom, '長編（10000字～）');
   assert.equal(settings.channelFormula.name, motifFormula.name);
   assert.ok(settings.theme);
   assert.ok(settings.characters.length >= 2);
@@ -356,4 +379,37 @@ test('random settings selects an unused safe Matrix row and carries its DNA meta
   assert.equal(result.settings.storyDna.id, 'story-safe');
   assert.equal(applied[0].settings.matrixRowId, 'story-safe');
   assert.match(applied[0].settings.supplement, /railway|station camera|midpoint/iu);
+});
+
+test('repeated Matrix randomization avoids the previous preview without consuming it', async () => {
+  const lastMatrixSelections = new Map();
+  const matrix = {
+    id: 'matrix-random',
+    formulaId: motifFormula.id,
+    rows: [
+      makeMatrixRow('story-a', 'alpha'),
+      makeMatrixRow('story-b', 'bravo'),
+    ],
+  };
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+  try {
+    const first = await randomizeAndApplyFormulaSettings({
+      formula: motifFormula,
+      matrix,
+      random: () => 0,
+      lastMatrixSelections,
+    });
+    const second = await randomizeAndApplyFormulaSettings({
+      formula: motifFormula,
+      matrix,
+      random: () => 0,
+      lastMatrixSelections,
+    });
+    assert.equal(first.matrixRow.id, 'story-a');
+    assert.equal(second.matrixRow.id, 'story-b');
+    assert.equal(matrix.rows.every(row => row.status === 'planned'), true);
+  } finally {
+    Math.random = originalRandom;
+  }
 });

@@ -403,17 +403,6 @@
           </div>
         </section>
       </div>
-      <section class="cf-card cf-preview-card">
-        <div class="cf-preview-head">
-          <h3>Xem trước công thức</h3>
-          <button type="button" class="btn-generate" id="cf-generate" disabled>AI Random mô típ &amp; điền thiết lập</button>
-        </div>
-        <pre id="cf-preview" class="cf-preview">Chọn hoặc phân tích một công thức để xem chi tiết.</pre>
-      </section>
-      <section class="cf-card cf-result-card hidden" id="cf-result-card">
-        <h3>Kết quả random thiết lập</h3>
-        <div id="cf-result" class="cf-result" role="status"></div>
-      </section>
       <section class="cf-card cf-matrix-card" id="cf-matrix-root">
         <div class="cf-preview-head">
           <div>
@@ -421,11 +410,13 @@
             <p>Lập trước 30–50 story card để AI Random không lặp concept trong cùng series.</p>
           </div>
           <div class="cf-actions cf-matrix-actions">
-            <select id="cf-matrix-count" aria-label="Số story trong Matrix">
-              <option value="30">30 story</option>
-              <option value="40">40 story</option>
-              <option value="50">50 story</option>
-            </select>
+            <label class="cf-matrix-count-label">Số story cho series
+              <select id="cf-matrix-count" aria-label="Số story trong Matrix">
+                <option value="30">30 story</option>
+                <option value="40">40 story</option>
+                <option value="50">50 story</option>
+              </select>
+            </label>
             <button type="button" class="btn-generate" id="cf-matrix-create">Tạo Story DNA Matrix</button>
           </div>
         </div>
@@ -436,9 +427,20 @@
         </label>
         <div class="cf-progress" id="cf-matrix-progress" role="status">Chưa có Story DNA Matrix.</div>
         <div class="cf-error hidden" id="cf-matrix-error" role="alert"></div>
+        <button type="button" class="btn-generate hidden" id="cf-generate" disabled>AI Random mô típ &amp; điền thiết lập</button>
         <div id="cf-matrix-table">
           <div class="cf-matrix-empty">Chọn công thức rồi tạo Matrix 30, 40 hoặc 50 story card.</div>
         </div>
+      </section>
+      <section class="cf-card cf-preview-card">
+        <div class="cf-preview-head">
+          <h3>Xem trước công thức</h3>
+        </div>
+        <pre id="cf-preview" class="cf-preview">Chọn hoặc phân tích một công thức để xem chi tiết.</pre>
+      </section>
+      <section class="cf-card cf-result-card hidden" id="cf-result-card">
+        <h3>Kết quả random thiết lập</h3>
+        <div id="cf-result" class="cf-result" role="status"></div>
       </section>
     </section>
 

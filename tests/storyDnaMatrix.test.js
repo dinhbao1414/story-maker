@@ -33,6 +33,26 @@ function makeRow(overrides = {}) {
   };
 }
 
+function makeDistinctRow(id, token) {
+  return makeRow({
+    id,
+    status: 'planned',
+    titlePromise: `promise ${token}`,
+    hook: `hook ${token}`,
+    victim: `victim ${token}`,
+    antagonist: `antagonist ${token}`,
+    falseAccusation: `accusation ${token}`,
+    location: `location ${token}`,
+    evidence: `evidence ${token}`,
+    secret: `secret ${token}`,
+    midpointTwist: `midpoint ${token}`,
+    finalTwist: `final ${token}`,
+    villainConsequence: `consequence ${token}`,
+    ending: `ending ${token}`,
+    moralDilemma: `dilemma ${token}`,
+  });
+}
+
 test('normalizes a Matrix row to the DNA fields and lifecycle metadata', () => {
   const row = normalizeStoryDnaRow({
     ...makeRow(),
@@ -161,7 +181,7 @@ test('evaluates a candidate against all existing rows and selects the closest ma
   assert.ok(Array.isArray(evaluation.comparisons));
 });
 
-test('chooses only unused planned rows and prefers the least similar candidate', () => {
+test('chooses only unused planned rows from novelty-safe candidates', () => {
   const rows = [
     makeRow({
       id: 'used',
@@ -212,9 +232,39 @@ test('chooses only unused planned rows and prefers the least similar candidate',
       moralDilemma: 'should the baker protect the donor from public attention',
     }),
   ];
-  const selected = chooseUnusedStoryDnaRow(rows);
+  const selected = chooseUnusedStoryDnaRow(rows, { random: () => 0.99 });
   assert.equal(selected.row.id, 'safe');
   assert.equal(selected.evaluation.decision, 'safe');
+});
+
+test('randomly chooses eligible planned rows and can reach more than the first row', () => {
+  const rows = [
+    makeDistinctRow('story-a', 'alpha'),
+    makeDistinctRow('story-b', 'bravo'),
+  ];
+  assert.equal(chooseUnusedStoryDnaRow(rows, { random: () => 0 }).row.id, 'story-a');
+  assert.equal(chooseUnusedStoryDnaRow(rows, { random: () => 0.99 }).row.id, 'story-b');
+});
+
+test('avoids the immediately previous row when another eligible row exists', () => {
+  const rows = [
+    makeDistinctRow('story-a', 'alpha'),
+    makeDistinctRow('story-b', 'bravo'),
+  ];
+  const selected = chooseUnusedStoryDnaRow(rows, {
+    excludeRowId: 'story-a',
+    random: () => 0,
+  });
+  assert.equal(selected.row.id, 'story-b');
+});
+
+test('keeps the only eligible row even when it matches the previous row', () => {
+  const rows = [makeDistinctRow('story-only', 'solo')];
+  const selected = chooseUnusedStoryDnaRow(rows, {
+    excludeRowId: 'story-only',
+    random: () => 0,
+  });
+  assert.equal(selected.row.id, 'story-only');
 });
 
 test('reports Matrix diversity gaps and adjacent evidence-twist repetition', () => {

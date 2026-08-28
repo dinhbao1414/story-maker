@@ -21,6 +21,7 @@ import './stylePresetRuntime.js';
 import './storyProjectRuntime.js';
 import './channelFormulaRuntime.js';
 import './storyDnaMatrixRuntime.js';
+import './defaultModeRuntime.js';
 import './workspaceTabs.js';
 import { installStoryDnaMatrixGenerationBridge } from './storyDnaMatrixGenerationBridge.js';
 

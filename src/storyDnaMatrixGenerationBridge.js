@@ -43,11 +43,25 @@ export function installStoryDnaMatrixGenerationBridge({
   win = globalThis.window,
   repository = createStoryDnaMatrixRepository(),
   onConsumed = () => {},
+  setTimeoutFn = globalThis.setTimeout,
+  clearTimeoutFn = globalThis.clearTimeout,
 } = {}) {
   if (!win?.addEventListener) return { dispose() {} };
   let disposed = false;
   let timer = null;
   let observer = null;
+  const notifyConsumed = result => {
+    onConsumed(result);
+    if (typeof win?.dispatchEvent === 'function' && typeof win?.CustomEvent === 'function') {
+      win.dispatchEvent(new win.CustomEvent('story-maker:matrix-updated', {
+        detail: {
+          matrixId: result.matrix?.id || '',
+          matrixRowId: result.row?.id || '',
+          status: result.status,
+        },
+      }));
+    }
+  };
   const consumeFromDom = () => {
     if (disposed || !doc) return;
     const settings = doc.getElementById?.('settings');
@@ -65,12 +79,12 @@ export function installStoryDnaMatrixGenerationBridge({
       settings: { matrixId, matrixRowId },
       repository,
     }).then(result => {
-      if (result.status === 'used') onConsumed(result);
+      if (result.status === 'used') notifyConsumed(result);
     }).catch(() => {});
   };
   const scheduleDomConsume = () => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
+    if (timer) clearTimeoutFn(timer);
+    timer = setTimeoutFn(() => {
       timer = null;
       consumeFromDom();
     }, 400);
@@ -86,7 +100,7 @@ export function installStoryDnaMatrixGenerationBridge({
       now: detail.now ? () => new Date(detail.now) : undefined,
       minNonWhitespaceChars: detail.minNonWhitespaceChars || DEFAULT_MIN_CHARS,
     }).then(result => {
-      if (result.status === 'used') onConsumed(result);
+      if (result.status === 'used') notifyConsumed(result);
     }).catch(() => {});
   };
   win.addEventListener('story-maker:story-generated', handler);
@@ -94,11 +108,18 @@ export function installStoryDnaMatrixGenerationBridge({
   if (doc?.defaultView?.MutationObserver && doc.getElementById?.('output')) {
     observer = new doc.defaultView.MutationObserver(scheduleDomConsume);
     observer.observe(doc.getElementById('output'), { childList: true, subtree: true, characterData: true });
+    if (doc.getElementById('settings')) {
+      observer.observe(doc.getElementById('settings'), { attributes: true, attributeFilter: ['class'] });
+    }
+    if (doc.getElementById('btn-generate')) {
+      observer.observe(doc.getElementById('btn-generate'), { attributes: true, attributeFilter: ['disabled', 'class'] });
+    }
   }
+  scheduleDomConsume();
   return {
     dispose() {
       disposed = true;
-      if (timer) clearTimeout(timer);
+      if (timer) clearTimeoutFn(timer);
       observer?.disconnect?.();
       win.removeEventListener?.('story-maker:story-generated', handler);
       win.removeEventListener?.('story-maker:output-updated', scheduleDomConsume);

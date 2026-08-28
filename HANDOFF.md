@@ -2,6 +2,35 @@
 
 This file is public-repository safe. Do not include API keys, private credentials, billing data, private tokens, personal local paths, or unreleased account details.
 
+## 2026-08-26 Instant standard-story live display (local only)
+
+- Standard story generation now displays the complete latest sanitized text received from the AI on every stream update instead of replaying it through a synthetic 35 ms typewriter interval.
+- The character counter is calculated from the same complete received text, so it no longer falls behind because background browser tabs throttle the typewriter timer.
+- Returning to a tab shows the latest received story state without waiting for a queued animation to catch up. Existing stream parsing, thought hiding, footer cleanup, continuation, contradiction audit, quality gates, cursor and final formatting remain unchanged.
+- The separate chapter-based legacy long-novel pipeline was not changed.
+- Verification on August 26, 2026: focused live-display tests passed 3/3; full Node suite passed 151/151; `node --check src/legacyMain.js` passed; `npm run build` passed with the existing large-chunk warning; the optional Nano contract check skipped because the sibling source is unavailable.
+- Local-only implementation. No deploy, push, release, version bump, backup, API change, prompt change, Matrix change, or storage migration was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-25 Story DNA true-random selection fix (local only)
+
+- `AI Random mô típ & điền thiết lập` now chooses uniformly from eligible `planned`, unlocked and novelty-safe Matrix rows instead of deterministically returning the first row.
+- The Formula runtime remembers the last previewed row separately for each Matrix during the current browser session. When another eligible row exists, the next click excludes the immediately previous row.
+- Previewing a concept does not change Matrix lifecycle state. Rows remain `planned` and are still marked `used` only by the existing generation bridge after a completed story passes the quality gate.
+- When only one eligible row remains, it can still be selected again. The no-Matrix AI/local fallback path remains unchanged.
+- Verification on August 25, 2026: focused selector/Formula tests passed 24/24; full Node suite passed 150/150; syntax checks passed; `npm run build` passed with the existing large-chunk warning; the optional Nano contract check skipped because the sibling source is unavailable.
+- Local-only implementation. No deploy, push, release, version bump, backup, Matrix schema change, or API credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-25 Default long-story mode correction (local only)
+
+- The default Dashboard mode remains `long_10000` (`Truyện dài (từ 10.000 chữ)`) on startup, after resetting the Mode section, and after resetting all settings.
+- `AI Random mô típ & điền thiết lập`, including the Matrix-row path and its local fallback, now preserves `long_10000` instead of overwriting the Dashboard with the short-story `novel` mode.
+- Root cause: the formula randomization normalizer still hardcoded `novel`, while the default-mode runtime did not reapply the long mode on startup or full reset.
+- Verification on August 25, 2026: focused tests passed 14/14; full Node suite passed 146/146; syntax checks passed; `npm run build` passed with the existing large-chunk warning; the optional Nano contract check skipped because the sibling source is unavailable; local HTTP returned 200.
+- Local-only implementation. No deploy, push, release, version bump, backup, or API credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
 ## 2026-08-25 Story DNA Matrix & Novelty Checker (local only)
 
 - Added a separate per-formula Story DNA Matrix with 30/40/50 story-card targets. Each card stores title promise, hook, victim, antagonist, false accusation, location, evidence, secret, midpoint twist, final twist, villain consequence, ending, and moral dilemma.
@@ -2189,3 +2218,51 @@ These local checks were insufficient; the real Gemini browser run still failed a
 - Escape, close-button, three-step creation, temporary Dashboard project creation, Card rendering, compact primary actions, and responsive one-column mobile layout passed without calling an AI API.
 - Local verification URL: `http://127.0.0.1:5179/`.
 - Local-only implementation. No deploy, push, release, tag, backup, version bump, provider routing change, or API credential change was performed.
+
+## 2026-08-25 Matrix selector visibility and long-mode default
+
+- Moved the Story DNA Matrix card above the formula preview so the series-size control is visible immediately in the Công thức workflow.
+- The selector is labeled `Số story cho series` and offers exactly `30 story`, `40 story`, and `50 story`.
+- Changed the fresh initial state default from `4koma` to `long_10000`; added a small reset bridge so clearing the mode section reselects the long 10,000-character chip after the legacy handler completes.
+- Regression coverage added for the initial mode, Matrix selector placement/options, and reset-mode reselection.
+- Verification: focused tests passed; full Node suite `138/138`; syntax checks passed; production build passed; `git diff --check` passed; current workspace HTTP `200` at `http://127.0.0.1:5199/`.
+- Port `5179` was occupied by a different `.worktrees\youtube-story-engine` Vite process, so the correct local URL for this workspace is `http://127.0.0.1:5199/`.
+- Local-only. No deploy, push, release, tag, version bump, or API credential change was performed.
+
+## 2026-08-25 Matrix-to-motif button visibility correction
+
+- Root cause: `AI Random mô típ & điền thiết lập` was inside the formula preview card after the entire Matrix table, so a 50-row Matrix pushed it below the visible workflow.
+- Moved the button into the Matrix card, before the rows table.
+- The button starts hidden/disabled and is revealed only when the selected formula has a saved Matrix containing at least one row.
+- Added regression coverage for button placement and ready-state synchronization.
+- Verification: full Node suite `140/140`; syntax check passed; production build passed; `git diff --check` passed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+- Local-only. No deploy, push, release, tag, version bump, or API credential change was performed.
+
+## 2026-08-25 Matrix used-state completion race fix
+
+- User reported a completed 32K-character story remained `planned`.
+- Root cause: the Matrix bridge observed Output mutations only. If the final Output arrived while generation/review controls were still locked, consumption was skipped; unlocking the settings/button did not retrigger the bridge.
+- The bridge now observes Output content, the settings `generating` class, and the generate button's disabled/class state. It also checks an already completed Output immediately at startup.
+- After a row is persisted as `used`, the bridge emits `story-maker:matrix-updated`; Matrix runtime reloads from IndexedDB and shows the used row/status without requiring a manual page reload.
+- Verification: focused race/startup/UI tests passed; full Node suite `145/145`; syntax checks passed; production build passed; `git diff --check` passed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+- Local-only. No deploy, push, release, tag, version bump, or API credential change was performed.
+
+## 2026-08-25 Formula tab scroll fix
+
+- Root cause: `.main-wrap` clips overflow, while `.channel-formula-panel` had no bounded vertical scroll area.
+- Added `min-height: 0`, `height: 100%`, and `overflow-y: auto` to the Công thức panel so long Matrix tables can scroll to the delete action.
+- Regression coverage checks the formula panel scroll contract.
+- Verification: full Node suite `142/142`; production build passed; `git diff --check` passed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+- Local-only. No deploy, push, release, tag, version bump, or API credential change was performed.
+
+## 2026-08-25 Story DNA Matrix deletion
+
+- Added `Xóa Matrix` beside `Xuất Matrix` in the selected Matrix summary.
+- Deletion requires browser confirmation, removes the Matrix from IndexedDB, reloads the formula's Matrix list, and hides/disables motif generation when no Matrix remains.
+- Storage deletion already existed; this change connects it to the UI/runtime.
+- Verification: full Node suite `141/141`; syntax check passed; production build passed; `git diff --check` passed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+- Local-only. No deploy, push, release, tag, version bump, or API credential change was performed.

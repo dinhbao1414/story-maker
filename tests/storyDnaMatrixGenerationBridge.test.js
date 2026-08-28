@@ -81,3 +81,106 @@ test('installs a one-shot generated-story listener', async () => {
   assert.equal(repository.matrix.rows[0].status, 'used');
   bridge.dispose();
 });
+
+test('retries Matrix consumption when generation controls unlock and notifies the Matrix UI', async () => {
+  const repository = createRepository();
+  const observed = [];
+  const dispatched = [];
+  let observerCallback;
+  class MutationObserver {
+    constructor(callback) {
+      observerCallback = callback;
+    }
+    observe(target, options) {
+      observed.push({ target, options });
+    }
+    disconnect() {}
+  }
+  const settings = {
+    classList: {
+      generating: true,
+      contains(name) {
+        return name === 'generating' && this.generating;
+      },
+    },
+  };
+  const button = { disabled: true };
+  const output = { textContent: `${'あ'.repeat(20000)}。` };
+  const elements = {
+    settings,
+    'btn-generate': button,
+    output,
+    'cf-selected-matrix-id': { value: 'matrix-1' },
+    'cf-selected-matrix-row-id': { value: 'story-001' },
+  };
+  const listeners = {};
+  const win = {
+    MutationObserver,
+    CustomEvent: class CustomEvent {
+      constructor(type, init) {
+        this.type = type;
+        this.detail = init?.detail;
+      }
+    },
+    addEventListener(name, handler) { listeners[name] = handler; },
+    removeEventListener() {},
+    dispatchEvent(event) { dispatched.push(event); },
+  };
+  const doc = {
+    defaultView: win,
+    getElementById(id) { return elements[id] || null; },
+  };
+
+  installStoryDnaMatrixGenerationBridge({
+    doc,
+    win,
+    repository,
+    setTimeoutFn: callback => {
+      callback();
+      return 1;
+    },
+    clearTimeoutFn() {},
+  });
+
+  assert.deepEqual(observed.map(item => item.target), [output, settings, button]);
+  settings.classList.generating = false;
+  button.disabled = false;
+  observerCallback();
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  assert.equal(repository.matrix.rows[0].status, 'used');
+  assert.equal(dispatched.some(event => event.type === 'story-maker:matrix-updated'), true);
+});
+
+test('consumes an already completed Matrix story when the bridge starts', async () => {
+  const repository = createRepository();
+  const elements = {
+    settings: { classList: { contains: () => false } },
+    'btn-generate': { disabled: false },
+    output: { textContent: `${'あ'.repeat(20000)}。` },
+    'cf-selected-matrix-id': { value: 'matrix-1' },
+    'cf-selected-matrix-row-id': { value: 'story-001' },
+  };
+  const win = {
+    addEventListener() {},
+    removeEventListener() {},
+  };
+  const doc = {
+    defaultView: win,
+    getElementById(id) { return elements[id] || null; },
+  };
+
+  installStoryDnaMatrixGenerationBridge({
+    doc,
+    win,
+    repository,
+    setTimeoutFn: callback => {
+      callback();
+      return 1;
+    },
+    clearTimeoutFn() {},
+  });
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  assert.equal(repository.matrix.rows[0].status, 'used');
+});
