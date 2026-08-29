@@ -17,8 +17,8 @@ if not exist node_modules (
 
 if not exist node_modules goto INSTALL_ERROR
 
-echo [INFO] Launching development server...
-call npm run dev -- --open --base ./
+echo [INFO] Launching development server at http://127.0.0.1:5199/...
+call npm run dev -- --host 127.0.0.1 --port 5199 --strictPort --open --base ./
 
 if errorlevel 1 goto RUN_ERROR
 
