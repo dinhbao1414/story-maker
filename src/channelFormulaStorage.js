@@ -1,4 +1,5 @@
 import {
+  CHANNEL_FORMULA_ANALYSIS_VERSION,
   CHANNEL_FORMULA_SCHEMA,
   createChannelFormula,
   sanitizeChannelFormula,
@@ -17,6 +18,10 @@ function sanitizeCheckpoint(checkpoint = {}) {
     fileFingerprint: String(checkpoint.fileFingerprint || '').trim().slice(0, 160),
     fileIndex: Math.max(0, Number(checkpoint.fileIndex || 0)),
     totalFiles: Math.max(0, Number(checkpoint.totalFiles || 0)),
+    analysisVersion: Math.max(0, Math.min(
+      CHANNEL_FORMULA_ANALYSIS_VERSION,
+      Math.floor(Number(checkpoint.analysisVersion || 0)),
+    )),
     status: ['pending', 'running', 'complete', 'error'].includes(checkpoint.status)
       ? checkpoint.status
       : 'pending',

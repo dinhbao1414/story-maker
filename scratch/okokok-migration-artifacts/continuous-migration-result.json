@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "id": "formula-analysis-fnv1a-54b21dc3",
+  "name": "okokok",
+  "sourceCount": 20,
+  "sourceCoverage": 1,
+  "analysisValidated": true,
+  "stripChapterHeaders": true,
+  "flowFormat": "continuous_audio_narration",
+  "narrationRulePresent": true,
+  "forbiddenPatternPresent": true,
+  "backupPath": "C:\\Users\\thedu\\Desktop\\CODE\\Story Maker\\story-maker\\scratch\\okokok-migration-artifacts\\okokok-before-continuous-2026-08-31T02-40-42-645Z.json",
+  "updatedPath": "C:\\Users\\thedu\\Desktop\\CODE\\Story Maker\\story-maker\\scratch\\okokok-migration-artifacts\\okokok-continuous-2026-08-31T02-40-42-645Z.json"
+}

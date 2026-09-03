@@ -2,6 +2,138 @@
 
 This file is public-repository safe. Do not include API keys, private credentials, billing data, private tokens, personal local paths, or unreleased account details.
 
+## 2026-08-31 Preserve the user-selected workspace tab during batch (local only)
+
+- Fixed long batch runs unexpectedly hiding the Formula job list by switching the parent workspace to Dashboard.
+- Batch start/end now emits a scoped `story-maker:batch-state` event.
+- While a batch is active, programmatic Dashboard/Settings/Projects/Formula navigation cannot override the tab most recently selected by the user.
+- Manual tab clicks and keyboard tab navigation remain available during generation and update the protected tab immediately.
+- Normal programmatic navigation resumes when the batch finishes, fails, or is cancelled.
+- Added regressions for late `open-dashboard` and `settings-imported` events during a batch, manual navigation during protection, protection release, and the batch-state event contract.
+- Verification passed: focused workspace/batch tests 12/12; full Node suite 182/182; syntax checks for 131 JavaScript files; generic-rule guard; `git diff --check`; production build with 109 transformed modules. The optional Nano contract check skipped because the sibling source was unavailable.
+- Local-only implementation. No deploy, push, release, tag, version bump, API credential change, generation prompt change, retry change, or output change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-31 Disable automatic three-pass brush-up in batch workers (local only)
+
+- `Bắt đầu tạo hàng loạt` now unchecks the automatic high-score brush-up option inside each hidden batch worker before clicking `Tạo truyện`.
+- Batch still waits for the normal initial editorial review, but no longer automatically performs up to three rewrite-and-rescore passes.
+- The visible Dashboard behavior is unchanged: its checkbox remains checked by default and users can continue using automatic refinement for individual stories.
+- Added focused regression coverage for the batch-only checkbox override.
+- Verification passed: focused batch tests 10/10; full Node suite 181/181; syntax checks for 131 JavaScript files; generic-rule guard; `git diff --check`; production build with 109 transformed modules. The optional Nano contract check skipped because the sibling source was unavailable.
+- Local-only implementation. No deploy, push, release, tag, version bump, API credential change, or Dashboard setting change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-31 DNA Matrix batch retry, continuation, and unique-ID correction (local only)
+
+- Story DNA Matrix synthesis now assigns one globally unique stable sequence after all five-card AI batches are combined: `story-001` through the selected 30/40/50 target. AI batch-local IDs are no longer trusted.
+- Safely migrated the existing saved `okokok` Matrix in IndexedDB from repeated five-card IDs to `story-001` through `story-030`.
+- Migration verification passed with 30 rows, 30 unique IDs, preserved content/fingerprints/metadata, and unchanged lifecycle counts: 26 `planned`, 4 `failed`.
+- Each batch story now receives at most four total attempts with bounded backoff. A row is marked `failed` only after the final attempt; cancellation restores it to `planned`.
+- A 10K–19,999-character output is continued from the same manuscript in the same worker instead of restarting. Continuation strips the terminal footer/end marker before appending, forbids title/opening repetition and visible chapter headings, and targets more than 20K non-whitespace characters.
+- Batch reruns select eligible `failed` rows before eligible `planned` rows, with randomization retained within each status group.
+- The batch job UI now shows `Lần x/4`, continuation/backoff status, live characters, and the full last error for each row.
+- Added a deterministic end-to-end regression for ten stories at concurrency two, including transient 429 failures and 14,200-character drafts. It verifies peak concurrency two, retry recovery, continuation beyond 20K, and ten successful results.
+- Verification passed: focused Matrix/batch tests 30/30; full Node suite 180/180; syntax checks for 131 JavaScript files; generic-rule guard; `git diff --check`; production build with 109 transformed modules. The optional Nano contract check skipped because the sibling source was unavailable.
+- Migration backup, migrated snapshot, and result JSON remain under the local scratch migration-artifacts directory; temporary migration helper files were removed.
+- Local-only implementation. No real API generation request, deploy, push, release, tag, version bump, or credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-31 Continuous-audio policy for saved formula `okokok` (local only)
+
+- Added Channel Formula schema support for `generationPolicy.stripChapterHeaders` and `generationPolicy.flowFormat`.
+- A formula with `stripChapterHeaders: true` or `flowFormat: continuous_audio_narration` retains its configured stages as internal story structure but forbids visible `第一章`, `第1章`, `Chapter 1`, chapter-title, and Markdown-heading output.
+- Dashboard motif randomization now carries the continuous-audio rule into the generated settings supplement and requires natural time/scene bridges instead of headings.
+- The direct Formula quality gate reports `chapter_headers` when a no-heading formula returns a visible Japanese or English chapter label.
+- Safely migrated the exact saved IndexedDB formula `okokok` under the same ID. It remains validated with 20 sources and full source coverage; the requested Japanese narration rule and forbidden pattern are present exactly once.
+- A pre-migration backup and verified updated JSON remain under the local scratch migration-artifacts directory. Temporary migration page/helper files were removed.
+- Verification passed: focused Formula tests 30/30; full Node suite 174/174; syntax checks for 131 JavaScript files; generic-rule guard; `git diff --check`; production build with 109 transformed modules; local HTTP 200. The optional Nano contract check skipped because the sibling source was unavailable.
+- Local-only implementation. No API request, deploy, push, release, tag, version bump, or credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-31 AI-only Story DNA Matrix generation (local only)
+
+- Removed local fallback from the Story DNA Matrix generation path at the user's explicit request.
+- Matrix generation now requests five cards per AI batch to reduce truncation risk.
+- Fixed the OpenAI-compatible contract conflict: `response_format: json_object` previously paired with a top-level-array prompt. Matrix prompts now require a top-level `{"rows":[...]}` object.
+- Expanded structured-response parsing for bare arrays, fenced/explanatory JSON, common row/card wrappers, single cards, story-ID-keyed cards, snake_case fields, nested provider data, and message content.
+- Partial valid batches are retained and generation continues for the remaining count. The call budget permits providers that return one usable card per request.
+- Invalid or empty batches send the bounded previous response back to AI for up to two strict `{"rows":[...]}` repair attempts; terminal errors include a bounded response preview.
+- Provider failure, invalid JSON after repairs, or exhaustion before the target count now fails closed and does not call `saveMatrix`.
+- Completion status explicitly says the selected count was generated entirely by AI. Failure status says no Matrix was saved.
+- Regression coverage verifies wrapped/single/keyed/snake_case response parsing, five-card batching, invalid-JSON repair, and three-attempt provider failure with no fallback result.
+- Verification: focused Matrix/Formula/provider/batch tests passed 62/62; full Node suite passed 171/171; syntax checks passed for 131 JavaScript files; generic-rule guard, `git diff --check`, and production build passed. The optional Nano contract check skipped because the sibling source was unavailable.
+- Local-only implementation. No real API request, deploy, push, release, tag, version bump, or credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-31 Story DNA Matrix 10-row fallback correction (local only)
+
+- Fixed 30/40/50 Matrix creation collapsing to ten rows after a large structured response was truncated or rejected.
+- AI creation now runs in bounded ten-card batches, includes accepted rows as novelty context, retries no-progress batches, and retains provider/parser diagnostics.
+- Replaced the ten-item repeating fallback with 50 novelty-safe combinations across five distinct conflict, reveal, consequence, ending, and moral-debate systems.
+- Matrix creation now fills the selected target even when the provider is unavailable; if AI plus fallback still cannot reach the target, it fails explicitly instead of saving an incomplete Matrix.
+- Added a five-minute structured Matrix timeout and clearer completion status showing the requested count and first AI fallback reason.
+- Existing incomplete saved Matrices remain unchanged and should be deleted/recreated.
+- Verification: focused Matrix/Formula/provider/batch tests passed 61/61; full Node suite passed 170/170; syntax checks passed for 131 JavaScript files; generic-rule guard, `git diff --check`, and production build passed. Direct 50-row fallback audit found 50 unique fingerprints and zero rejected pairs. The optional Nano contract check skipped because the sibling source was unavailable.
+- Local-only implementation. No real API request, deploy, push, release, tag, version bump, or credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-31 Channel Formula incomplete beat-map recovery (local only)
+
+- Fixed folder analysis stopping on `story_blueprint_incomplete` when a compatible model returned five useful beats or used an equivalent beat-map key.
+- Per-file analysis now accepts supported aliases and deterministically completes the chronology from the same response's hook, escalation, midpoint, reveal, payoff, and ending fields.
+- Core quality requirements remain fail-closed; recovery cannot hide missing hook, reveal, escalation, curiosity, retention, or 30-second-hook analysis.
+- Strengthened the repair prompt to explicitly require 6–10 chronological beat objects.
+- Corrected final synthesis input so a 40–50-file channel actually receives all source summaries rather than silently truncating at 30.
+- Regression coverage includes the reported five-beat behavior, core-field rejection, checkpoint persistence, and the 40th source appearing in the synthesis prompt.
+- Verification: focused Formula/Matrix/provider/batch tests passed 42/42; full Node suite passed 168/168; syntax checks passed for 131 JavaScript files; generic-rule guard and `git diff --check` passed.
+- Local-only implementation. No real API request, deploy, push, release, tag, version bump, or credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-30 Deep Channel Formula analysis and fail-closed quality gate (local only)
+
+- Fixed folder analysis saving a very short fallback formula after per-file or synthesis errors.
+- Analysis contract v2 now samples 12 chronological regions across each transcript (up to 30,000 characters), extracts per-story blueprints plus character/evidence/style and CTR-retention-comment systems, and synthesizes a detailed channel production rulebook.
+- Per-file analysis and final synthesis each receive one structured repair attempt. Any remaining source error or incomplete synthesis stops without saving a formula; the UI shows the failed file/quality-gate detail.
+- Checkpoints now carry an analysis version. Legacy shallow checkpoints are not resumed; valid v2 checkpoints still support safe resume. Formula reports preserve complete per-story coverage for series of up to 50 source files.
+- Dynamic formulas are eligible for motif, Matrix, and batch generation only after validated 100% source coverage and the required production fields.
+- Story DNA Matrix prompts now include the selected formula's detailed production DNA instead of only its name.
+- Corrected the provider-call overload that could interpret a structured-call options object as `onFallback`, producing `onFallback is not a function`.
+- Verification: focused tests passed 39/39, including a 40-source regression; full Node suite passed 165/165; syntax checks passed for 131 JavaScript files; generic-rule guard passed; production build passed with the existing large-chunk warning. The optional Nano contract check skipped because the sibling source was unavailable.
+- Local-only implementation. No API request, deploy, push, release, tag, version bump, or credential change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-29 DNA Matrix batch availability synchronization (local only)
+
+- Fixed the batch panel staying disabled after a Matrix was created during the same session.
+- Matrix create/delete/row lifecycle changes now emit `story-maker:matrix-updated`; the batch runtime listens and reloads available Matrix rows immediately while idle.
+- Added a focused event-contract regression test.
+- Verification: focused tests passed 8/8; full Node suite passed 160/160; syntax checks passed; production build passed (existing large-chunk warning); local HTTP returned 200.
+- Local verification URL: `http://127.0.0.1:5199/`.
+- No deploy, push, release, version bump, or API credential change.
+
+## 2026-08-29 Custom OpenAI model namespace and error-detail fix (local only)
+
+- Fixed the custom OpenAI Base URL regression reported with `https://ttmapi.site/v1`: the first implementation incorrectly sent the local ledger model ID `cx/gpt-5.5` to every custom server.
+- Model mapping is now endpoint-aware. Only `http://localhost:20128/v1` uses `cx/gpt-5.5`, `cx/gpt-5.4`, and `cx/gpt-5.4-mini`; other compatible servers use the equivalent IDs without `cx/`.
+- The first fix covered the quality-boost fetch wrapper but missed the direct `providerClients.js` editorial path. This follow-up routes that path, plus the legacy `api.js` text/stream path, through the configured Base URL and endpoint-specific model list as well.
+- Confirmed TTMAPI CORS is not the blocker: its Chat Completions preflight returned HTTP 204 and allowed localhost origin, authorization, content type, and all origins.
+- OpenAI-compatible text and stream fallbacks now retain each model's real HTTP/server error. The UI no longer replaces model-not-found and other server failures with the inaccurate generic API-key/quota message.
+- Verification on August 29, 2026: full Node suite passed 105/105 test files; focused local-ledger/custom mapping, quality routing, detailed non-stream and stream errors, and Responses fallback tests passed; production build passed with the existing large-chunk warning.
+- Local-only implementation. No deploy, push, release, version bump, API key persistence change, story prompt change, Matrix change, or generated-story behavior change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
+## 2026-08-29 Configurable OpenAI Base URL (local only)
+
+- Added an `OpenAI Base URL` field beside the homepage API-key configuration with the local default `http://localhost:20128/v1`, a visible `cx/gpt-5.5` model note, and a compatible-server example.
+- The URL is normalized and validated before the API key is saved. It accepts HTTP/HTTPS base URLs, removes a trailing slash or pasted `/chat/completions` suffix, and rejects credentials, query strings, and fragments.
+- The selected URL is kept only in the current tab's `sessionStorage`, matching the existing API-key session behavior. No API key is stored in source or long-term browser storage.
+- OpenAI Chat Completions requests now route to the selected base URL. The local ledger keeps its `cx/` model namespace, other compatible servers use the matching model IDs without `cx/`, and the official OpenAI URL continues to use the normal OpenAI request.
+- Responses API beta is disabled for compatible custom servers so keys and requests are not accidentally sent to the official Responses endpoint while a custom Chat Completions server is selected.
+- Verification on August 29, 2026: full Node suite passed 106/106 test files; focused custom endpoint, session, quality routing, model, API session, provider-client, and legacy API tests passed; production build passed with the existing large-chunk warning; desktop 1440x1000 and mobile 390x844 headless Chrome review passed; local HTTP check passed.
+- Local-only implementation. No deploy, push, release, version bump, API key persistence expansion, story prompt change, Matrix change, or generated-story behavior change was performed.
+- Local verification URL: `http://127.0.0.1:5199/`.
+
 ## 2026-08-26 Instant standard-story live display (local only)
 
 - Standard story generation now displays the complete latest sanitized text received from the AI on every stream update instead of replaying it through a synthetic 35 ms typewriter interval.

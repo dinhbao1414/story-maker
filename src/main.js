@@ -9,6 +9,7 @@
 
 import './modulePreloadPolyfill.js';
 import './privacyGuards.js';
+import { installOpenAiEndpointConfig } from './openAiEndpointConfig.js';
 import './qualityBoost.js';
 import { installLegacyUiVietnameseRuntime } from './legacyUiVietnamese.js';
 
@@ -23,10 +24,16 @@ import './channelFormulaRuntime.js';
 import './storyDnaMatrixRuntime.js';
 import './defaultModeRuntime.js';
 import './workspaceTabs.js';
+import './batchStoryWorkerRuntime.js';
+import './batchStoryRuntime.js';
 import { installStoryDnaMatrixGenerationBridge } from './storyDnaMatrixGenerationBridge.js';
 
 if (typeof document !== 'undefined' && typeof window !== 'undefined') {
-  const installMatrixBridge = () => installStoryDnaMatrixGenerationBridge({ doc: document, win: window });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installMatrixBridge, { once: true });
-  else installMatrixBridge();
+  installOpenAiEndpointConfig(globalThis);
+  const isBatchWorker = new URLSearchParams(window.location.search).get('storyBatchWorker') === '1';
+  if (!isBatchWorker) {
+    const installMatrixBridge = () => installStoryDnaMatrixGenerationBridge({ doc: document, win: window });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installMatrixBridge, { once: true });
+    else installMatrixBridge();
+  }
 }

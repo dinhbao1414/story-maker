@@ -1,0 +1,38 @@
+
+> story-maker@5.3.6 dev
+> vite --host 127.0.0.1 --port 5199 --strictPort
+
+
+  VITE v6.4.1  ready in 307 ms
+
+  ➜  Local:   http://127.0.0.1:5199/
+11:14:54 PM [vite] (client) page reload src/channelFormula.js
+11:14:54 PM [vite] (client) page reload src/channelFormulaRuntime.js
+7:11:56 AM [vite] (client) page reload src/channelFormulaRuntime.js
+7:12:05 AM [vite] (client) page reload src/channelFormula.js
+7:12:51 AM [vite] (client) page reload src/channelFormulaRuntime.js
+8:15:39 AM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+8:21:17 AM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+8:22:12 AM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+8:22:20 AM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+8:27:45 AM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+8:27:57 AM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+9:00:48 AM [vite] (client) page reload scratch/okokok-update.html
+9:04:03 AM [vite] (client) page reload scratch/okokok-update.html
+9:37:54 AM [vite] (client) page reload src/channelFormula.js
+9:37:55 AM [vite] (client) page reload src/channelFormulaRuntime.js
+9:38:36 AM [vite] (client) page reload src/channelFormula.js
+9:40:07 AM [vite] (client) page reload scratch/okokok-continuous-migration.html
+9:41:52 AM [vite] (client) page reload scratch/okokok-continuous-migration.html
+1:28:37 PM [vite] (client) page reload scratch/batch-matrix-diagnostic.html
+1:29:53 PM [vite] (client) page reload scratch/batch-matrix-diagnostic.html
+1:39:59 PM [vite] (client) page reload src/storyDnaMatrix.js
+1:39:59 PM [vite] (client) page reload src/storyDnaMatrixRuntime.js
+1:39:59 PM [vite] (client) page reload src/batchStoryRuntime.js
+1:39:59 PM [vite] (client) page reload src/batchStoryWorkerRuntime.js
+1:40:51 PM [vite] (client) page reload src/batchStoryRuntime.js
+1:42:06 PM [vite] (client) page reload scratch/migrate-okokok-row-ids.html
+1:43:16 PM [vite] (client) page reload scratch/migrate-okokok-row-ids.html
+8:50:35 PM [vite] (client) page reload src/batchStoryWorkerRuntime.js
+10:05:59 PM [vite] (client) page reload src/workspaceTabs.js
+10:05:59 PM [vite] (client) page reload src/batchStoryRuntime.js

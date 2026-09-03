@@ -29,7 +29,7 @@ export const STORY_DNA_SIMILARITY_WEIGHTS = Object.freeze({
   villainConsequence: 0.03,
 });
 
-const STATUSES = new Set(['planned', 'used', 'skipped']);
+const STATUSES = new Set(['planned', 'queued', 'generating', 'used', 'failed', 'skipped']);
 const SECRET_KEY_PATTERN = /(?:api.?key|authorization|token|secret|password|credential)/i;
 const RAW_SOURCE_KEY_PATTERN = /(?:raw.?source|source.?text|full.?text|source.?content|transcript)/i;
 const MAX_FIELD_LENGTH = 1200;
@@ -121,6 +121,13 @@ export function normalizeStoryDnaRow(value = {}, { formulaId = '' } = {}) {
   };
   normalized.noveltyFingerprint = buildStoryDnaFingerprint(normalized);
   return normalized;
+}
+
+export function reindexStoryDnaRows(rows = [], { formulaId = '' } = {}) {
+  return (Array.isArray(rows) ? rows : []).map((row, index) => ({
+    ...normalizeStoryDnaRow(row, { formulaId }),
+    id: `story-${String(index + 1).padStart(3, '0')}`,
+  }));
 }
 
 export function normalizeStoryDnaMatrix(value = {}, { now = new Date(), makeId } = {}) {

@@ -3,8 +3,26 @@ import { Lt, Oe } from './apiKeyHelpers.js';
 import { GEMINI_MODEL_VALUES, OPENAI_TEXT_MODELS as qn, OPENAI_VISION_MODELS as Ws } from './data.js';
 import { maybeCallOpenAiResponsesBeta, maybeStreamOpenAiResponsesBeta } from './openAiResponsesBeta.js';
 import { consumeSseLines, parseGeminiStreamLine, parseOpenAiStreamLine } from './providerStreamParsing.js';
+import {
+  getOpenAiBaseUrl,
+  getOpenAiChatCompletionsUrl,
+  openAiTextModelsForBaseUrl,
+} from './openAiEndpointConfig.js';
 
 const go=async e=>{const t=Oe(e);if(!t)return"API Key not set.";try{const n=await(await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(t)}`)).json();return n.error?`API Error: ${n.error.message}`:n.models?`Available Models: ${n.models.map(o=>o.name.replace("models/","")).filter(o=>o.includes("gemini")).join(", ")}`:"No models returned by API."}catch(n){return`Diagnostic Failed: ${n.message}`}};
+
+function normalizeProviderCallArguments(onFallback, options) {
+  if (onFallback && typeof onFallback === 'object' && !Array.isArray(onFallback)) {
+    return {
+      onFallback: null,
+      options: onFallback,
+    };
+  }
+  return {
+    onFallback: typeof onFallback === 'function' ? onFallback : null,
+    options: options && typeof options === 'object' ? options : {},
+  };
+}
 
 async function tf(e,t,n,o={}){var r,a,i,c;const p=`https://generativelanguage.googleapis.com/v1beta/models/${t}:generateContent?key=${encodeURIComponent(e)}`,g={temperature:o.temperature!==void 0?o.temperature:1};(o.maxOutputTokens||o.maxTokens)&&(g.maxOutputTokens=o.maxOutputTokens||o.maxTokens),o.responseMimeType&&(g.responseMimeType=o.responseMimeType);const h=o.timeoutMs||18e4,v=new AbortController,y=setTimeout(()=>v.abort(),h),S={contents:[{parts:[{text:n}]}],generationConfig:g,safetySettings:[{category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_NONE"}]};g.responseMimeType!=="application/json"&&!o.disableGoogleSearch&&(S.tools=[{googleSearch:{}}]);try{const b=await fetch(p,{method:"POST",headers:{"Content-Type":"application/json"},signal:v.signal,body:JSON.stringify(S)});if(clearTimeout(y),!b.ok){const k=await b.text();let x=`Gemini HTTP ${b.status}`;try{const I=JSON.parse(k);I.error&&I.error.message&&(x+=` — ${I.error.message}`)}catch{x+=` — ${k.slice(0,300)}`}throw new Error(x)}const $=await b.json();if((r=$.promptFeedback)!=null&&r.blockReason)throw new Error(`Blocked by Safety Filter: ${$.promptFeedback.blockReason}`);if((c=(i=(a=$.candidates)==null?void 0:a[0])==null?void 0:i.content)!=null&&c.parts){const k=$.candidates[0].content.parts.map(x=>x.text||"").join("");if(!k){const x=$.candidates[0].finishReason||"UNKNOWN";throw new Error(`Empty response (FinishReason: ${x}).`)}return k}throw $.error?new Error(`Gemini API Error: ${$.error.message}`):new Error("No response candidates (Unknown Model Refusal)")}catch(b){throw b.name==="AbortError"?new Error(`Timeout: ${t} (${h/1e3}s)`):b}finally{clearTimeout(y)}}
 
@@ -12,7 +30,7 @@ async function nf(e,t,n,o,r,a={}){var i,c,p,g;const h=`https://generativelanguag
 
 async function Gd(e,t,n,o,r,a={}){if(e.trim().startsWith("sk-"))return rf(e.trim(),t,n,o,r,a);const i=GEMINI_MODEL_VALUES,c=[];let p=!1,g=!1,h=!1;for(const y of i)try{return r&&i[0],{text:await nf(e,y,t,n,o,a),usedModel:y}}catch(S){const b=S.message||"";console.warn(`Vision model ${y} failed:`,b),c.push(`${y}: ${b}`);const $=b.toLowerCase();($.includes("safety")||$.includes("prohibited")||$.includes("block"))&&(p=!0),($.includes("quota")||$.includes("429")||$.includes("limit"))&&(g=!0),fo(b)&&(h=!0);continue}const v=await go(e);throw console.error("VISION DIAGNOSIS:",v),new Error(xr("Gemini vision failure",v,c,{safety:p,quota:g,auth:h,vision:!0}))}
 
-async function Gt(e,t,n,o,r={}){const a=Oe(e),i=Lt(a,a.startsWith("sk-")?"openai":"gemini");if(!i.ok)throw new Error(i.message);if(a.startsWith("sk-"))return of(a,n,o,r);const c=Array.isArray(r.fallbackModels)?r.fallbackModels:GEMINI_MODEL_VALUES,p=new Set([t,...c]);let g=Array.from(p);r.disableFallback?g=[t]:Number.isFinite(r.maxModelAttempts)&&r.maxModelAttempts>0&&(g=g.slice(0,Math.max(1,Math.floor(r.maxModelAttempts))));const h=[];let v=!1,y=!1,S=!1;for(const $ of g)try{return $!==t&&o&&o($),{text:await tf(a,$,n,r),usedModel:$}}catch(k){const x=k.message||"";console.warn(`Model ${$} failed:`,x),h.push(`${$}: ${x}`);const I=x.toLowerCase();(I.includes("safety")||I.includes("prohibited")||I.includes("block"))&&(v=!0),(I.includes("quota")||I.includes("429")||I.includes("limit"))&&(y=!0),fo(x)&&(S=!0);continue}console.log("All models failed. Running diagnosis...");const b=await go(a);throw console.error("DIAGNOSIS RESULT:",b),new Error(xr("Gemini text failure",b,h,{safety:v,quota:y,auth:S}))}
+async function Gt(e,t,n,o,r={}){const d=normalizeProviderCallArguments(o,r);o=d.onFallback,r=d.options;const a=Oe(e),i=Lt(a,a.startsWith("sk-")?"openai":"gemini");if(!i.ok)throw new Error(i.message);if(a.startsWith("sk-"))return of(a,n,o,r);const c=Array.isArray(r.fallbackModels)?r.fallbackModels:GEMINI_MODEL_VALUES,p=new Set([t,...c]);let g=Array.from(p);r.disableFallback?g=[t]:Number.isFinite(r.maxModelAttempts)&&r.maxModelAttempts>0&&(g=g.slice(0,Math.max(1,Math.floor(r.maxModelAttempts))));const h=[];let v=!1,y=!1,S=!1;for(const $ of g)try{return $!==t&&o&&o($),{text:await tf(a,$,n,r),usedModel:$}}catch(k){const x=k.message||"";console.warn(`Model ${$} failed:`,x),h.push(`${$}: ${x}`);const I=x.toLowerCase();(I.includes("safety")||I.includes("prohibited")||I.includes("block"))&&(v=!0),(I.includes("quota")||I.includes("429")||I.includes("limit"))&&(y=!0),fo(x)&&(S=!0);continue}console.log("All models failed. Running diagnosis...");const b=await go(a);throw console.error("DIAGNOSIS RESULT:",b),new Error(xr("Gemini text failure",b,h,{safety:v,quota:y,auth:S}))}
 
 async function of(e,t,n,o={}){const m=await maybeCallOpenAiResponsesBeta(e,t,n,o);if(m)return m;var r,a,i,c,p,g;for(const h of qn)try{h!==qn[0]&&n&&n(h);const v=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${e}`},body:JSON.stringify({model:h,messages:[{role:"user",content:t}],temperature:1,max_tokens:o.maxTokens||8192,response_format:o.responseMimeType==="application/json"?{type:"json_object"}:void 0})});if(!v.ok){const b=await v.json().catch(()=>({}));throw new Error(`OpenAI HTTP ${v.status} - ${((r=b.error)==null?void 0:r.message)||v.statusText}`)}const y=await v.json(),S=((c=(i=(a=y.choices)==null?void 0:a[0])==null?void 0:i.message)==null?void 0:c.content)||"";if(!S)throw new Error(`Empty response (FinishReason: ${((g=(p=y.choices)==null?void 0:p[0])==null?void 0:g.finish_reason)||"UNKNOWN"})`);return{text:S,usedModel:h}}catch(v){console.warn(`Model ${h} failed:`,v.message);continue}throw new Error("全モデル接続失敗: OpenAI API Keyが無効か、使用回数の上限（Quota Exceeded）に達しています。")}
 
@@ -28,6 +46,252 @@ async function cf(e,t,n,o,r={}){const m=await maybeStreamOpenAiResponsesBeta(e,t
 async function zs(e,t,n,o,r={}){const p=`https://generativelanguage.googleapis.com/v1beta/models/${t}:streamGenerateContent?alt=sse&key=${e}`,g={temperature:1};(r.maxOutputTokens||r.maxTokens)&&(g.maxOutputTokens=r.maxOutputTokens||r.maxTokens),!r.disableThinkingConfig&&(t.includes("gemini-2.5")||t.includes("gemini-2.0")||t.includes("gemini-3")||t.includes("gemini-3.5"))&&(g.thinkingConfig={thinkingBudget:2048}),r.responseMimeType&&(g.responseMimeType=r.responseMimeType);const h=r.timeoutMs||18e4,v=new AbortController;let y=setTimeout(()=>v.abort(),h),S=null;r.signal&&(S=()=>v.abort(),r.signal.addEventListener("abort",S));const b={contents:[{parts:[{text:n}]}],generationConfig:g,safetySettings:[{category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_NONE"}]};g.responseMimeType!=="application/json"&&!r.disableGoogleSearch&&(b.tools=[{googleSearch:{}}]);try{const $=await fetch(p,{method:"POST",headers:{"Content-Type":"application/json"},signal:v.signal,body:JSON.stringify(b)});if(!$.ok){clearTimeout(y);const M=await $.text();let T=`Gemini HTTP ${$.status}`;try{const K=JSON.parse(M);K.error&&K.error.message&&(T+=` — ${K.error.message}`)}catch{T+=` — ${M.slice(0,300)}`}throw new Error(T)}const k=$.body.getReader(),x=new TextDecoder("utf-8");let I="";try{for(;;){clearTimeout(y),y=setTimeout(()=>v.abort(),h);const{done:M,value:T}=await k.read();if(M)break;I+=x.decode(T,{stream:!0});I=consumeSseLines(I,parseGeminiStreamLine,o)}}finally{k.releaseLock()}}catch($){throw $.name==="AbortError"?new Error(`Aborted: ${t} stream (${h/1e3}s timeout or user abort)`):$}finally{clearTimeout(y),r.signal&&S&&r.signal.removeEventListener("abort",S)}}
 async function yt(e,t,n,o,r,a={}){const i=Oe(e),c=Lt(i,i.startsWith("sk-")?"openai":"gemini");if(!c.ok)throw new Error(c.message);if(i.startsWith("sk-"))return cf(i,n,o,r,a);const p=GEMINI_MODEL_VALUES,g=new Set([t,...p]),h=Array.from(g),v=[];let y=!1,S=!1,b=!1;for(const k of h)try{return k!==t&&r&&r(k),await zs(i,k,n,o,a),{usedModel:k}}catch(x){const I=x.message||"";console.warn(`Model ${k} stream failed:`,I),v.push(`${k}: ${I}`);const M=I.toLowerCase();if((M.includes("safety")||M.includes("prohibited")||M.includes("block"))&&(y=!0),(M.includes("quota")||M.includes("429")||M.includes("limit"))&&(S=!0),fo(I)&&(b=!0),I.includes("400")||M.includes("bad request")||M.includes("thinking_config"))try{return console.log(`Retrying model ${k} without thinkingConfig...`),await zs(i,k,n,o,{...a,disableThinkingConfig:!0}),{usedModel:k}}catch(T){console.warn(`Model ${k} stream retry failed:`,T.message),v.push(`${k} (retry): ${T.message}`)}continue}console.log("All models failed. Running diagnosis...");const $=await go(i);throw console.error("DIAGNOSIS RESULT:",$),new Error(xr("Gemini stream failure",$,v,{safety:y,quota:S,auth:b}))}
 
+function formatOpenAiModelFailures(errors = []) {
+  const details = errors
+    .filter(Boolean)
+    .map(error => String(error).slice(0, 300))
+    .join(' | ');
+  return details
+    ? `OpenAI-compatible API connection failed. Chi tiết từng model: ${details}`
+    : 'OpenAI-compatible API connection failed without a detailed server response.';
+}
+
+of = async function callOpenAiTextWithDetails(apiKey, prompt, onFallback, options = {}) {
+  const responsesResult = await maybeCallOpenAiResponsesBeta(apiKey, prompt, onFallback, options);
+  if (responsesResult) return responsesResult;
+
+  const failures = [];
+  for (const model of qn) {
+    try {
+      if (model !== qn[0] && onFallback) onFallback(model);
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 1,
+          max_tokens: options.maxTokens || 8192,
+          response_format: options.responseMimeType === 'application/json'
+            ? { type: 'json_object' }
+            : undefined,
+        }),
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(`OpenAI HTTP ${response.status} - ${payload?.error?.message || response.statusText}`);
+      }
+      const payload = await response.json();
+      const text = payload?.choices?.[0]?.message?.content || '';
+      if (!text) {
+        throw new Error(`Empty response (FinishReason: ${payload?.choices?.[0]?.finish_reason || 'UNKNOWN'})`);
+      }
+      return { text, usedModel: model };
+    } catch (error) {
+      const message = error?.message || String(error);
+      console.warn(`Model ${model} failed:`, message);
+      failures.push(`${model}: ${message}`);
+    }
+  }
+  throw new Error(formatOpenAiModelFailures(failures));
+};
+
+cf = async function callOpenAiStreamWithDetails(apiKey, prompt, onChunk, onFallback, options = {}) {
+  const responsesResult = await maybeStreamOpenAiResponsesBeta(
+    apiKey,
+    prompt,
+    onChunk,
+    onFallback,
+    options,
+  );
+  if (responsesResult) return responsesResult;
+
+  const failures = [];
+  for (const model of qn) {
+    const controller = new AbortController();
+    let abortListener = null;
+    try {
+      if (model !== qn[0] && onFallback) onFallback(model);
+      if (options.signal) {
+        abortListener = () => controller.abort();
+        options.signal.addEventListener('abort', abortListener);
+      }
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 1,
+          max_tokens: options.maxTokens || 8192,
+          stream: true,
+          response_format: options.responseMimeType === 'application/json'
+            ? { type: 'json_object' }
+            : undefined,
+        }),
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(`OpenAI HTTP ${response.status} - ${payload?.error?.message || response.statusText}`);
+      }
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          buffer = consumeSseLines(buffer, parseOpenAiStreamLine, onChunk);
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      return { usedModel: model };
+    } catch (error) {
+      if (error?.name === 'AbortError') {
+        throw new Error(`Aborted: ${model} stream`);
+      }
+      const message = error?.message || String(error);
+      console.warn(`Model ${model} stream failed:`, message);
+      failures.push(`${model}: ${message}`);
+    } finally {
+      if (options.signal && abortListener) {
+        options.signal.removeEventListener('abort', abortListener);
+      }
+    }
+  }
+  throw new Error(formatOpenAiModelFailures(failures));
+};
+
+of = async function callConfiguredOpenAiText(apiKey, prompt, onFallback, options = {}) {
+  const responsesResult = await maybeCallOpenAiResponsesBeta(apiKey, prompt, onFallback, options);
+  if (responsesResult) return responsesResult;
+
+  const baseUrl = getOpenAiBaseUrl();
+  const endpoint = getOpenAiChatCompletionsUrl();
+  const models = openAiTextModelsForBaseUrl(baseUrl);
+  const failures = [];
+  for (const model of models) {
+    try {
+      if (model !== models[0] && onFallback) onFallback(model);
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 1,
+          max_tokens: options.maxTokens || 8192,
+          response_format: options.responseMimeType === 'application/json'
+            ? { type: 'json_object' }
+            : undefined,
+        }),
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(`OpenAI HTTP ${response.status} - ${payload?.error?.message || response.statusText}`);
+      }
+      const payload = await response.json();
+      const text = payload?.choices?.[0]?.message?.content || '';
+      if (!text) {
+        throw new Error(`Empty response (FinishReason: ${payload?.choices?.[0]?.finish_reason || 'UNKNOWN'})`);
+      }
+      return { text, usedModel: model };
+    } catch (error) {
+      const message = error?.message || String(error);
+      console.warn(`Model ${model} failed:`, message);
+      failures.push(`${model}: ${message}`);
+    }
+  }
+  throw new Error(formatOpenAiModelFailures(failures));
+};
+
+cf = async function callConfiguredOpenAiStream(apiKey, prompt, onChunk, onFallback, options = {}) {
+  const responsesResult = await maybeStreamOpenAiResponsesBeta(
+    apiKey,
+    prompt,
+    onChunk,
+    onFallback,
+    options,
+  );
+  if (responsesResult) return responsesResult;
+
+  const baseUrl = getOpenAiBaseUrl();
+  const endpoint = getOpenAiChatCompletionsUrl();
+  const models = openAiTextModelsForBaseUrl(baseUrl);
+  const failures = [];
+  for (const model of models) {
+    const controller = new AbortController();
+    let abortListener = null;
+    try {
+      if (model !== models[0] && onFallback) onFallback(model);
+      if (options.signal) {
+        abortListener = () => controller.abort();
+        options.signal.addEventListener('abort', abortListener);
+      }
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 1,
+          max_tokens: options.maxTokens || 8192,
+          stream: true,
+          response_format: options.responseMimeType === 'application/json'
+            ? { type: 'json_object' }
+            : undefined,
+        }),
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(`OpenAI HTTP ${response.status} - ${payload?.error?.message || response.statusText}`);
+      }
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          buffer = consumeSseLines(buffer, parseOpenAiStreamLine, onChunk);
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      return { usedModel: model };
+    } catch (error) {
+      if (error?.name === 'AbortError') {
+        throw new Error(`Aborted: ${model} stream`);
+      }
+      const message = error?.message || String(error);
+      console.warn(`Model ${model} stream failed:`, message);
+      failures.push(`${model}: ${message}`);
+    } finally {
+      if (options.signal && abortListener) {
+        options.signal.removeEventListener('abort', abortListener);
+      }
+    }
+  }
+  throw new Error(formatOpenAiModelFailures(failures));
+};
+
 export {
   go,
   tf,
@@ -42,4 +306,5 @@ export {
   cf,
   zs,
   yt,
+  normalizeProviderCallArguments,
 };

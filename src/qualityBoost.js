@@ -13,38 +13,34 @@ import {
 } from './modeContracts.js';
 import { cleanOutputForPublicMode } from './outputCleanup.js';
 import {
-  OPENAI_CHAT_COMPLETIONS_URL,
-  OPENAI_LOCAL_RUNTIME,
-  OPENAI_TEXT_MODELS,
-} from './data.js';
+  getOpenAiBaseUrl,
+  getOpenAiChatCompletionsUrl,
+  isOfficialOpenAiBaseUrl,
+  mapOpenAiModelForBaseUrl,
+} from './openAiEndpointConfig.js';
 
 const OPENAI_SYSTEM_MARKER = '[SMK_OPENAI_PUBLIC_MODE_SYSTEM_V500]';
 
 function isOpenAiChatCompletionsUrl(url) {
   const value = String(url || '');
-  return value.startsWith(OPENAI_CHAT_COMPLETIONS_URL)
+  return value.startsWith(getOpenAiChatCompletionsUrl())
     || /https:\/\/api\.openai\.com\/v1\/chat\/completions/i.test(value);
 }
 
 function adaptOpenAiRuntimeRequest(input, init = {}) {
   const url = typeof input === 'string' ? input : input?.url;
-  if (!OPENAI_LOCAL_RUNTIME || !isOpenAiChatCompletionsUrl(url)) {
+  const targetBaseUrl = getOpenAiBaseUrl();
+  const targetUrl = getOpenAiChatCompletionsUrl();
+  if (isOfficialOpenAiBaseUrl(targetBaseUrl) || !isOpenAiChatCompletionsUrl(url)) {
     return { input, init };
   }
   const body = parseJsonBody(init.body);
   if (!body || typeof body !== 'object') {
-    return { input: OPENAI_CHAT_COMPLETIONS_URL, init };
+    return { input: targetUrl, init };
   }
-  const model = String(body.model || '');
-  const mappedModel = model.startsWith('cx/')
-    ? model
-    : model.includes('nano')
-      ? OPENAI_TEXT_MODELS[2]
-      : model.includes('mini')
-        ? OPENAI_TEXT_MODELS[1]
-        : OPENAI_TEXT_MODELS[0];
+  const mappedModel = mapOpenAiModelForBaseUrl(body.model, targetBaseUrl);
   return {
-    input: OPENAI_CHAT_COMPLETIONS_URL,
+    input: targetUrl,
     init: { ...init, body: JSON.stringify({ ...body, model: mappedModel }) },
   };
 }
@@ -859,7 +855,7 @@ async function rewriteShortOpenAiText(originalFetch, init, body, mode, draft, re
     response_format: body.response_format,
   };
 
-  const response = await originalFetch(OPENAI_CHAT_COMPLETIONS_URL, {
+  const response = await originalFetch(getOpenAiChatCompletionsUrl(), {
     method: 'POST',
     headers: continuationHeaders(init),
     body: JSON.stringify(rewriteBody),

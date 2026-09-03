@@ -1,9 +1,12 @@
 export const CHANNEL_FORMULA_SCHEMA = 'story-maker-channel-formula-v1';
+export const CHANNEL_FORMULA_ANALYSIS_VERSION = 2;
 
 export const CHANNEL_FORMULA_DEFAULT_POLICY = Object.freeze({
   minNonWhitespaceChars: 20000,
   targetNonWhitespaceChars: 22000,
   chapterCount: 4,
+  stripChapterHeaders: false,
+  flowFormat: 'chaptered',
   requireCompleteEnding: true,
   randomizeTheme: true,
   randomizeCharacters: true,
@@ -13,7 +16,7 @@ export const CHANNEL_FORMULA_DEFAULT_POLICY = Object.freeze({
 const SECRET_KEY_PATTERN = /(?:api.?key|authorization|token|secret)/i;
 const RAW_SOURCE_KEY_PATTERN = /(?:raw.?source|source.?text|full.?text|source.?content)/i;
 const MAX_ANALYSIS_DEPTH = 6;
-const MAX_ARRAY_ITEMS = 30;
+const MAX_ARRAY_ITEMS = 50;
 
 function cleanText(value, maxLength = 12000) {
   return String(value ?? '')
@@ -69,6 +72,10 @@ function normalizePolicy(policy = {}) {
       4,
       Math.min(10, Math.floor(Number(policy.chapterCount || CHANNEL_FORMULA_DEFAULT_POLICY.chapterCount))),
     ),
+    stripChapterHeaders: policy.stripChapterHeaders === true,
+    flowFormat: policy.flowFormat === 'continuous_audio_narration'
+      ? 'continuous_audio_narration'
+      : CHANNEL_FORMULA_DEFAULT_POLICY.flowFormat,
     requireCompleteEnding: policy.requireCompleteEnding !== false,
     randomizeTheme: policy.randomizeTheme !== false,
     randomizeCharacters: policy.randomizeCharacters !== false,
@@ -130,6 +137,27 @@ export function sanitizeChannelFormula(value = {}) {
   };
 }
 
+export function isChannelFormulaAnalysisReady(value = {}) {
+  const formula = sanitizeChannelFormula(value);
+  const growth = formula.analysis?.audienceGrowthSystem || {};
+  const hasGrowthSystem = Boolean(
+    growth.ctrPromise
+    && growth.hook30s
+    && growth.commentPayoff
+    && Array.isArray(growth.curiosityLadder)
+    && growth.curiosityLadder.length >= 3
+    && Array.isArray(growth.retentionBeats)
+    && growth.retentionBeats.length >= 5
+  );
+  if (formula.builtIn) return hasGrowthSystem;
+  return Boolean(
+    formula.analysisQuality?.validated === true
+    && Number(formula.analysisQuality?.sourceCoverage || 0) >= 1
+    && hasGrowthSystem
+    && cleanText(formula.reproductionPrompt, 12000).replace(/\s/gu, '').length >= 600
+  );
+}
+
 export function createChannelFormula(input = {}, { now = new Date(), makeId } = {}) {
   const timestamp = now instanceof Date ? now.toISOString() : new Date().toISOString();
   const name = cleanText(input.name, 120) || 'Channel Formula';
@@ -170,6 +198,40 @@ export function buildRepresentativeSlices(
   };
 }
 
+export function buildRepresentativeSegments(
+  value,
+  {
+    segmentCount = 12,
+    charsPerSegment = 2500,
+    maxTotalChars = 30000,
+  } = {},
+) {
+  const source = String(value || '').replace(/\r\n?/g, '\n').trim();
+  if (!source) return [];
+  const count = Math.max(3, Math.min(12, Math.floor(Number(segmentCount) || 12)));
+  const totalBudget = Math.max(count, Math.min(
+    source.length,
+    Math.floor(Number(maxTotalChars) || 30000),
+  ));
+  const length = Math.max(1, Math.min(
+    Math.floor(Number(charsPerSegment) || 2500),
+    Math.floor(totalBudget / count),
+  ));
+  return Array.from({ length: count }, (_, index) => {
+    const progress = count === 1 ? 0 : index / (count - 1);
+    const start = Math.max(0, Math.min(
+      source.length - length,
+      Math.floor((source.length - length) * progress),
+    ));
+    return {
+      index: index + 1,
+      progressPercent: Math.round(progress * 100),
+      start,
+      text: source.slice(start, start + length),
+    };
+  });
+}
+
 function stringifyForPrompt(value) {
   return JSON.stringify(value, null, 2);
 }
@@ -179,11 +241,24 @@ export function buildFileAnalysisPrompt({
   sourceCount = 0,
   stats = {},
   slices = {},
+  segments = [],
   markers = [],
 } = {}) {
+  const structuralSegments = Array.isArray(segments) && segments.length
+    ? segments.slice(0, 12).map(segment => ({
+      segment: Number(segment.index || 0),
+      progressPercent: Number(segment.progressPercent || 0),
+      text: cleanText(segment.text, 3000),
+    }))
+    : [
+      { segment: 1, progressPercent: 0, text: cleanText(slices.opening, 3600) },
+      { segment: 2, progressPercent: 50, text: cleanText(slices.middle, 3600) },
+      { segment: 3, progressPercent: 100, text: cleanText(slices.ending, 3600) },
+    ];
   return [
     'You are analyzing one Japanese YouTube story transcript as part of a channel-formula study.',
-    'Return JSON only. Analyze abstract construction, not wording.',
+    `Analysis contract version: ${CHANNEL_FORMULA_ANALYSIS_VERSION}.`,
+    'Return JSON only. Analyze abstract construction, story engineering, and audience-retention mechanics, not wording.',
     'Do not reproduce source prose, exact names, exact quotes, or unique plot details.',
     `File: ${cleanText(fileName, 240)}`,
     `Source set size: ${Math.max(0, Number(sourceCount) || 0)}`,
@@ -195,12 +270,12 @@ export function buildFileAnalysisPrompt({
     }),
     'Detected channel markers:',
     stringifyForPrompt(Array.isArray(markers) ? markers.slice(0, 20) : []),
-    'Representative excerpts (for structure only):',
-    `OPENING:\n${cleanText(slices.opening, 3600)}`,
-    `MIDDLE:\n${cleanText(slices.middle, 3600)}`,
-    `ENDING:\n${cleanText(slices.ending, 3600)}`,
+    'Chronological structural segments sampled across the complete transcript:',
+    stringifyForPrompt(structuralSegments),
+    'Reconstruct the progression across all supplied segments. Do not treat only the opening segment as representative of the whole story.',
     'Return this JSON shape:',
     stringifyForPrompt({
+      analysisVersion: CHANNEL_FORMULA_ANALYSIS_VERSION,
       file_role: 'one-sentence abstract role',
       language: 'ja',
       point_of_view: 'abstract narrator pattern',
@@ -214,6 +289,36 @@ export function buildFileAnalysisPrompt({
       epilogue_pattern: 'abstract recovery pattern',
       pacing_rules: ['rule 1', 'rule 2'],
       recurring_motifs: ['motif 1'],
+      character_system: {
+        victimRole: 'abstract victim role',
+        antagonistRole: 'abstract antagonist role',
+        allyRole: 'abstract ally role',
+        relationshipPressure: 'how status or family ties create pressure',
+      },
+      evidence_system: {
+        firstClue: 'function of first clue',
+        proofChain: ['proof stage 1', 'proof stage 2', 'proof stage 3'],
+        revealTiming: 'when proof changes meaning',
+        payoffUse: 'how proof enables the counterattack',
+      },
+      storyBlueprint: {
+        hookMechanism: 'what prevents exit in the first 30 seconds',
+        incitingIncident: 'irreversible event',
+        beatMap: [
+          {
+            progressPercent: 10,
+            function: 'story function',
+            answerDelivered: 'question answered here',
+            nextQuestion: 'larger question opened here',
+            emotionalEffect: 'viewer emotion',
+          },
+        ],
+        midpointReversal: 'belief or relationship reversed near the midpoint',
+        climaxMechanism: 'how evidence, choice, and public pressure converge',
+        consequenceChain: ['consequence 1', 'consequence 2'],
+        endingRecovery: 'concrete recovery and final state',
+        moralDebate: 'resolved plot with a debatable choice',
+      },
       forbidden_copying: ['exact names', 'exact quotes', 'unique plot details'],
       audienceGrowthSystem: {
         ctrPromise: 'abstract title and thumbnail promise',
@@ -227,8 +332,18 @@ export function buildFileAnalysisPrompt({
         commentPayoff: 'resolved conflict with a debatable moral choice',
         antiDropRules: ['answer active questions promptly'],
       },
+      styleFingerprint: {
+        sentenceRhythm: 'abstract rhythm',
+        dialoguePattern: 'how dialogue carries conflict',
+        expositionPattern: 'how context is revealed without stopping the story',
+        emotionalCadence: 'anger, relief, reversal, and recovery cadence',
+        transitionPattern: 'how scenes hand off unresolved pressure',
+      },
+      variationSlots: ['elements that can change without breaking the channel DNA'],
+      coverageNotes: ['uncertainty caused by sampled transcript regions'],
       confidence: 0.0,
     }),
+    'storyBlueprint.beatMap must contain 6 to 10 chronological beat objects spanning hook, escalation, midpoint, evidence reveal, climax/payoff, and concrete ending.',
   ].join('\n\n');
 }
 
@@ -238,7 +353,7 @@ export function buildFormulaSynthesisPrompt({
   intermediateSummaries = [],
 } = {}) {
   const summaries = Array.isArray(intermediateSummaries)
-    ? intermediateSummaries.slice(0, 30).map(summary => sanitizeValue(summary) || {})
+    ? intermediateSummaries.slice(0, 50).map(summary => sanitizeValue(summary) || {})
     : [];
   return [
     'You are synthesizing a reusable Japanese YouTube channel formula from abstract file analyses.',
@@ -267,6 +382,24 @@ export function buildFormulaSynthesisPrompt({
         narrationRules: [],
         pacingRules: [],
         forbiddenPatterns: [],
+        characterSystem: {
+          victimRoles: [],
+          antagonistRoles: [],
+          allyRoles: [],
+          relationshipPressureRules: [],
+        },
+        evidenceSystem: {
+          evidenceFamilies: [],
+          proofChainRules: [],
+          revealTimingRules: [],
+          payoffRules: [],
+        },
+        storyArchitecture: {
+          canonicalBeatMap: [],
+          midpointRules: [],
+          climaxRules: [],
+          endingRules: [],
+        },
         audienceGrowthSystem: {
           ctrPromise: '',
           hook30s: '',
@@ -275,12 +408,30 @@ export function buildFormulaSynthesisPrompt({
           commentPayoff: '',
           antiDropRules: [],
         },
+        styleFingerprint: {
+          sentenceRhythm: [],
+          dialogueRules: [],
+          expositionRules: [],
+          emotionalCadence: [],
+          transitionRules: [],
+        },
+        formulaPatterns: {
+          mandatory: [],
+          frequent: [],
+          optional: [],
+          forbidden: [],
+        },
+        variationSystem: {
+          safeVariationSlots: [],
+          combinationsToAvoid: [],
+        },
       },
-      reproductionPrompt: 'abstract reproduction rules only',
+      reproductionPrompt: 'detailed abstract production rulebook only',
       confidence: 0,
     }),
-    'The reproductionPrompt must instruct Japanese-only output, four progressive chapters, a complete ending, a minimum of 20,000 non-whitespace characters, and no source copying.',
+    'The reproductionPrompt must be a detailed production rulebook, not a three-line summary. It must instruct Japanese-only output, four progressive chapters, a complete ending, a minimum of 20,000 non-whitespace characters, and no source copying.',
     'The audienceGrowthSystem must enforce a 30-second hook, answer each active question before creating a larger one, cover the five retention windows, and leave a natural moral dilemma for comments.',
+    'Separate mandatory channel DNA from frequent patterns and optional variations. Do not let one unusual source dominate the final formula.',
   ].join('\n\n');
 }
 
@@ -291,6 +442,16 @@ export function buildFormulaGenerationPrompt({
 } = {}) {
   const safeFormula = sanitizeChannelFormula(formula);
   const policy = safeFormula.generationPolicy;
+  const continuousAudioNarration = policy.stripChapterHeaders
+    || policy.flowFormat === 'continuous_audio_narration';
+  const structureRule = continuousAudioNarration
+    ? [
+      `全${policy.chapterCount}段階の内部構成で、各段階に固有の事件、選択、発見、代償、関係変化を置く。ただし、この内部構成名を本文へ表示しない。`,
+      '最終出力は、冒頭から結末まで一続きで自然に読める音声ナレーション本文だけにする。',
+      '「第一章」「第1章」「Chapter 1」「CHAPTER 1」などの章立てタイトル、章番号、章見出し、Markdown見出しを本文内に一切記載しない。',
+      '章の区切りは見出しを使わず、時間経過や場面転換の接続文（「翌日」「二日後の説明会当日」「それから半年後」等）で自然に繋ぐ。',
+    ].join('\n')
+    : `全${policy.chapterCount}章で構成し、各章に固有の事件、選択、発見、代償、関係変化、章末状態を置く。`;
   const ctaRule = includeYoutubeCta
     ? 'A short generic Japanese channel greeting may appear once after the hook; do not use the source channel name or exact source CTA.'
     : 'Do not include a YouTube greeting, channel name, subscribe request, or CTA.';
@@ -300,7 +461,7 @@ export function buildFormulaGenerationPrompt({
     '以下は文章の模倣ではなく、抽象化された構成規則です。',
     cleanText(safeFormula.reproductionPrompt, 12000),
     `新しいランダムな着想: ${cleanText(randomizedPremise, 2400)}`,
-    `全${policy.chapterCount}章で構成し、各章に固有の事件、選択、発見、代償、関係変化、章末状態を置く。`,
+    structureRule,
     'CTR promiseを序盤の具体的な不公平・秘密・関係や地位の衝突で提示し、タイトル/サムネイルが約束した反転を必ず本文で回収する。',
     'hook30s / 30秒以内は、説明や挨拶ではなく、進行中の侮辱・異常な要求・裏切りの台詞または行動から始める。CTAはhookの後にだけ置く。',
     'Question A → Answer A → Question B → Answer B → Question C の順で進める。各質問は同じ章または次章で答え、その答えからより大きく危険な次の質問を生む。一つの疑問を長時間放置しない。',
@@ -327,6 +488,12 @@ export function validateChannelFormulaStory(text, policy = CHANNEL_FORMULA_DEFAU
   if (!source) issues.push('empty_output');
   if (charCount < normalizedPolicy.minNonWhitespaceChars) issues.push('target_length');
   if (normalizedPolicy.requireCompleteEnding && !hasNaturalEnding(source)) issues.push('unclosed_ending');
+  if (
+    normalizedPolicy.stripChapterHeaders
+    && /(?:^|\n)\s*(?:#{1,6}\s*)?(?:第\s*(?:[0-9０-９]+|[一二三四五六七八九十百]+)\s*章(?:\s|　|[:：\-—]|$)|Chapter\s*[0-9０-９]+(?:\s|[:：\-—]|$))/imu.test(source)
+  ) {
+    issues.push('chapter_headers');
+  }
   if (/\b(?:analysis|prompt|checklist|TODO|JSON only)\b/i.test(source)) issues.push('prompt_leakage');
   return {
     ok: issues.length === 0,

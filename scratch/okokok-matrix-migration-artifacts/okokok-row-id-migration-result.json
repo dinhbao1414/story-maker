@@ -1,0 +1,21 @@
+{
+  "migratedAt": "2026-08-31T06:42:39.036Z",
+  "matrixId": "matrix-1788142564319-uc4ad7",
+  "formulaId": "formula-analysis-fnv1a-54b21dc3",
+  "name": "okokok – Story DNA Matrix",
+  "rowCount": 30,
+  "uniqueIdCount": 30,
+  "firstId": "story-001",
+  "lastId": "story-030",
+  "beforeStatuses": {
+    "planned": 26,
+    "failed": 4
+  },
+  "afterStatuses": {
+    "planned": 26,
+    "failed": 4
+  },
+  "contentPreserved": true,
+  "sequentialIds": true,
+  "ok": true
+}

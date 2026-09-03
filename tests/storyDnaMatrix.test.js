@@ -8,6 +8,7 @@ import {
   evaluateStoryDnaCandidate,
   normalizeStoryDnaMatrix,
   normalizeStoryDnaRow,
+  reindexStoryDnaRows,
   chooseUnusedStoryDnaRow,
   validateMatrixDiversity,
 } from '../src/storyDnaMatrix.js';
@@ -87,6 +88,29 @@ test('normalizes Matrix metadata and bounds rows', () => {
   assert.equal(matrix.rows.length, 2);
   assert.equal(matrix.rows[1].id, 'story-002');
   assert.equal('secret' in matrix, false);
+});
+
+test('reindexes synthesized rows globally while preserving lifecycle metadata', () => {
+  const rows = Array.from({ length: 30 }, (_, index) => makeRow({
+    id: `story-${String((index % 5) + 1).padStart(3, '0')}`,
+    status: index === 3 ? 'failed' : 'planned',
+    usedAt: index === 7 ? '2026-08-30T10:00:00.000Z' : null,
+    storyId: index === 7 ? 'saved-story-8' : null,
+    locked: index === 9,
+    createdAt: `created-${index}`,
+    updatedAt: `updated-${index}`,
+  }));
+  const reindexed = reindexStoryDnaRows(rows, { formulaId: 'formula-1' });
+  assert.equal(reindexed.length, 30);
+  assert.equal(new Set(reindexed.map(row => row.id)).size, 30);
+  assert.equal(reindexed[0].id, 'story-001');
+  assert.equal(reindexed[29].id, 'story-030');
+  assert.equal(reindexed[3].status, 'failed');
+  assert.equal(reindexed[7].usedAt, '2026-08-30T10:00:00.000Z');
+  assert.equal(reindexed[7].storyId, 'saved-story-8');
+  assert.equal(reindexed[9].locked, true);
+  assert.equal(reindexed[9].createdAt, 'created-9');
+  assert.equal(reindexed[9].updatedAt, 'updated-9');
 });
 
 test('builds a stable fingerprint from normalized DNA fields', () => {

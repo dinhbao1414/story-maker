@@ -37,6 +37,8 @@ export function installWorkspaceTabs({
   if (!tabs.length || !panels.length) return null;
 
   let activeTab = 'dashboard';
+  let batchRunning = false;
+  let batchProtectedTab = null;
   const setActiveTab = value => {
     activeTab = resolveWorkspaceTab(value);
     doc.documentElement.dataset.workspaceTab = activeTab;
@@ -54,9 +56,19 @@ export function installWorkspaceTabs({
     return activeTab;
   };
   const getActiveTab = () => activeTab;
+  const setActiveTabFromUser = value => {
+    const selected = setActiveTab(value);
+    if (batchRunning) batchProtectedTab = selected;
+    return selected;
+  };
+  const setActiveTabFromProgram = value => {
+    const next = resolveWorkspaceTab(value);
+    if (batchRunning && batchProtectedTab && next !== batchProtectedTab) return activeTab;
+    return setActiveTab(next);
+  };
 
   tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => setActiveTab(tab.dataset.workspaceTab));
+    tab.addEventListener('click', () => setActiveTabFromUser(tab.dataset.workspaceTab));
     tab.addEventListener('keydown', event => {
       const key = event.key;
       let nextIndex = index;
@@ -67,21 +79,29 @@ export function installWorkspaceTabs({
       else return;
       event.preventDefault();
       const nextTab = tabs[nextIndex];
-      setActiveTab(nextTab.dataset.workspaceTab);
+      setActiveTabFromUser(nextTab.dataset.workspaceTab);
       nextTab.focus?.();
     });
   });
 
   actions.forEach(action => {
-    action.addEventListener('click', () => setActiveTab(action.dataset.workspaceAction));
+    action.addEventListener('click', () => setActiveTabFromUser(action.dataset.workspaceAction));
   });
-  win?.addEventListener?.('story-maker:settings-imported', () => setActiveTab('settings'));
-  win?.addEventListener?.('story-maker:open-projects', () => setActiveTab('projects'));
-  win?.addEventListener?.('story-maker:open-formulas', () => setActiveTab('formulas'));
-  win?.addEventListener?.('story-maker:open-dashboard', () => setActiveTab('dashboard'));
+  win?.addEventListener?.('story-maker:batch-state', event => {
+    batchRunning = event?.detail?.running === true;
+    batchProtectedTab = batchRunning ? activeTab : null;
+  });
+  win?.addEventListener?.('story-maker:settings-imported', () => setActiveTabFromProgram('settings'));
+  win?.addEventListener?.('story-maker:open-projects', () => setActiveTabFromProgram('projects'));
+  win?.addEventListener?.('story-maker:open-formulas', () => setActiveTabFromProgram('formulas'));
+  win?.addEventListener?.('story-maker:open-dashboard', () => setActiveTabFromProgram('dashboard'));
   installProgressDisclosure(doc, win);
   setActiveTab(doc.documentElement.dataset.workspaceTab);
-  return { setActiveTab, getActiveTab };
+  return {
+    setActiveTab,
+    getActiveTab,
+    isBatchNavigationProtected: () => Boolean(batchRunning && batchProtectedTab),
+  };
 }
 
 if (typeof document !== 'undefined' && typeof window !== 'undefined') {

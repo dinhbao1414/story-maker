@@ -26,6 +26,14 @@
         <button id="btn-switch-api" class="btn-switch-api" title="Giữ nguyên thiết lập hiện tại và chỉ chuyển API giữa Gemini và OpenAI">🔄 Đổi API</button>
         <button id="btn-reload" class="btn-reload" title="Tải lại toàn bộ trang; khóa API trong tab này sẽ được khôi phục">🔄 Tải lại</button>
       </div>
+      <div class="openai-endpoint-row">
+        <label for="openai-base-url">OpenAI Base URL</label>
+        <input type="url" id="openai-base-url"
+          placeholder="http://localhost:20128/v1"
+          autocomplete="url" spellcheck="false"
+          aria-describedby="openai-base-url-help">
+        <span id="openai-base-url-help" class="openai-endpoint-help">Model local: <code>cx/gpt-5.5</code> · Server khác: <code>gpt-5.5</code></span>
+      </div>
       <div class="api-notice">
         🔑 Lấy khóa API:
         <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="api-link api-link-gemini">Gemini API</a>
@@ -431,6 +439,34 @@
         <div id="cf-matrix-table">
           <div class="cf-matrix-empty">Chọn công thức rồi tạo Matrix 30, 40 hoặc 50 story card.</div>
         </div>
+      </section>
+      <section class="cf-card cf-batch-card" id="cf-batch-root">
+        <div class="cf-preview-head">
+          <div>
+            <h3>Tạo hàng loạt từ nhiều DNA Matrix</h3>
+            <p>Chọn các Matrix, tạo nhiều story đồng thời và lưu từng Output thành TXT.</p>
+          </div>
+        </div>
+        <div class="cf-batch-matrix-list" id="cf-batch-matrix-list">
+          <span class="cf-batch-empty">Đang tải danh sách Matrix...</span>
+        </div>
+        <div class="cf-batch-controls">
+          <label class="cf-field">Số story
+            <input id="cf-batch-count" type="number" min="1" max="100" value="10">
+          </label>
+          <label class="cf-field">Số luồng đồng thời
+            <input id="cf-batch-concurrency" type="number" min="1" max="10" value="10">
+          </label>
+          <button type="button" class="btn-secondary" id="cf-batch-folder">Chọn thư mục lưu TXT</button>
+          <span class="cf-batch-folder-name" id="cf-batch-folder-name">Chưa chọn thư mục</span>
+        </div>
+        <div class="cf-actions">
+          <button type="button" class="btn-generate" id="cf-batch-start" disabled>Bắt đầu tạo hàng loạt</button>
+          <button type="button" class="btn-secondary" id="cf-batch-stop" disabled>Hủy batch</button>
+        </div>
+        <div class="cf-progress" id="cf-batch-status" role="status">Chưa bắt đầu batch.</div>
+        <div class="cf-error hidden" id="cf-batch-error" role="alert"></div>
+        <div class="cf-batch-jobs" id="cf-batch-jobs" aria-live="polite"></div>
       </section>
       <section class="cf-card cf-preview-card">
         <div class="cf-preview-head">

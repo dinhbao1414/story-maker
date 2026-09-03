@@ -1,10 +1,13 @@
 import {
+  CHANNEL_FORMULA_ANALYSIS_VERSION,
   buildFileAnalysisPrompt,
   buildFormulaGenerationPrompt,
   buildFormulaSynthesisPrompt,
+  buildRepresentativeSegments,
   buildRepresentativeSlices,
   createChannelFormula,
   fingerprintSource,
+  isChannelFormulaAnalysisReady,
   sanitizeChannelFormula,
   validateChannelFormulaStory,
 } from './channelFormula.js';
@@ -23,7 +26,7 @@ import {
 } from './storyDnaMatrix.js';
 
 const MAX_FILE_CHARS = 1_200_000;
-const MAX_ANALYSIS_SUMMARIES = 30;
+const MAX_ANALYSIS_SUMMARIES = 50;
 
 const PREMISE_THEMES = Object.freeze([
   '相続と家族の境界線',
@@ -236,6 +239,7 @@ function collectMarkers(source) {
 async function readFileSnapshot(file) {
   const raw = text(await file.text(), MAX_FILE_CHARS);
   const slices = buildRepresentativeSlices(raw);
+  const segments = buildRepresentativeSegments(raw);
   return {
     fileName: text(file.name, 240),
     source: raw,
@@ -246,6 +250,7 @@ async function readFileSnapshot(file) {
       lines: raw ? raw.split('\n').length : 0,
     },
     slices,
+    segments,
     markers: collectMarkers(raw),
   };
 }
@@ -254,6 +259,9 @@ function compactAnalysis(analysis, fileName) {
   const safe = sanitizeAnalysis(analysis) || {};
   return {
     fileName: text(fileName, 160),
+    analysisVersion: Number(safe.analysisVersion || CHANNEL_FORMULA_ANALYSIS_VERSION),
+    fileRole: text(safe.file_role || safe.fileRole, 800),
+    pointOfView: text(safe.point_of_view || safe.pointOfView, 700),
     tone: text(safe.tone, 500),
     openingHook: text(safe.opening_hook || safe.openingHook, 700),
     protagonistPattern: text(safe.protagonist_pattern || safe.protagonistPattern, 700),
@@ -267,6 +275,21 @@ function compactAnalysis(analysis, fileName) {
     pacingRules: Array.isArray(safe.pacing_rules)
       ? safe.pacing_rules.slice(0, 8).map(item => text(item, 300))
       : [],
+    recurringMotifs: Array.isArray(safe.recurring_motifs)
+      ? safe.recurring_motifs.slice(0, 12).map(item => text(item, 500))
+      : [],
+    characterSystem: sanitizeAnalysis(safe.character_system || safe.characterSystem) || {},
+    evidenceSystem: sanitizeAnalysis(safe.evidence_system || safe.evidenceSystem) || {},
+    storyBlueprint: sanitizeAnalysis(safe.storyBlueprint || safe.story_blueprint) || {},
+    audienceGrowthSystem: sanitizeAnalysis(safe.audienceGrowthSystem) || {},
+    styleFingerprint: sanitizeAnalysis(safe.styleFingerprint || safe.style_fingerprint) || {},
+    variationSlots: Array.isArray(safe.variationSlots || safe.variation_slots)
+      ? (safe.variationSlots || safe.variation_slots).slice(0, 12).map(item => text(item, 500))
+      : [],
+    coverageNotes: Array.isArray(safe.coverageNotes || safe.coverage_notes)
+      ? (safe.coverageNotes || safe.coverage_notes).slice(0, 8).map(item => text(item, 500))
+      : [],
+    confidence: Math.max(0, Math.min(1, Number(safe.confidence || 0))),
   };
 }
 
@@ -279,9 +302,10 @@ function createDefaultStructuredCaller({ getApiSession, getModel } = {}) {
   return async prompt => {
     const key = resolveSessionKey(await getApiSession?.());
     if (!key) throw new Error('APIキーを入力してから分析を開始してください。');
-    const result = await Gt(key, getModel?.(key) || 'gemini-3.5-flash', prompt, {
+    const result = await Gt(key, getModel?.(key) || 'gemini-3.5-flash', prompt, null, {
       responseMimeType: 'application/json',
-      maxTokens: 5000,
+      maxTokens: 12000,
+      timeoutMs: 300000,
       disableGoogleSearch: true,
     });
     return result?.text ?? result;
@@ -514,9 +538,21 @@ export function normalizeRandomizedFormulaSettings(value = {}, formula = {}) {
     twist,
     commentDilemma,
   });
+  const continuousNarrationRule = (
+    safeFormula.generationPolicy.stripChapterHeaders
+    || safeFormula.generationPolicy.flowFormat === 'continuous_audio_narration'
+  )
+    ? [
+      `物語は${safeFormula.generationPolicy.chapterCount}段階の内部構成で設計するが、章番号や章題を本文へ表示しない。`,
+      '最終出力は冒頭から結末まで一続きの自然な音声ナレーション本文だけにする。',
+      '「第一章」「第1章」「Chapter 1」「CHAPTER 1」などの章立てタイトル、見出し、Markdown見出しを本文内に記載しない。',
+      '章の区切りは見出しを使わず、時間経過や場面転換の接続文（「翌日」「二日後の説明会当日」「それから半年後」等）で自然に繋ぐ。',
+    ].join('\n')
+    : '';
   const supplement = [
     `チャンネル公式「${safeFormula.name}」の抽象ルールを守る。`,
     safeFormula.reproductionPrompt,
+    continuousNarrationRule,
     motifNotes,
     growthNotes,
     'この設定の人物名・事件・証拠を新規に展開し、原文をコピーしない。',
@@ -734,6 +770,200 @@ function buildFallbackAnalysisSummaries(summaries) {
   };
 }
 
+function arrayLength(value) {
+  return Array.isArray(value) ? value.filter(Boolean).length : 0;
+}
+
+function normalizeStoryBlueprintBeat(item, index = 0, total = 1) {
+  const fallbackProgress = Math.round(((index + 1) / Math.max(1, total)) * 100);
+  if (typeof item === 'string') {
+    return {
+      progressPercent: fallbackProgress,
+      function: text(item, 1200),
+      answerDelivered: '',
+      nextQuestion: '',
+      emotionalEffect: '',
+    };
+  }
+  if (!item || typeof item !== 'object') return null;
+  return {
+    ...sanitizeAnalysis(item),
+    progressPercent: Math.max(0, Math.min(
+      100,
+      Number(item.progressPercent ?? item.progress ?? item.percent ?? fallbackProgress),
+    )),
+    function: text(
+      item.function
+      || item.stage
+      || item.beat
+      || item.event
+      || item.description,
+      1200,
+    ),
+    answerDelivered: text(
+      item.answerDelivered || item.answer_delivered || item.answer,
+      1200,
+    ),
+    nextQuestion: text(
+      item.nextQuestion || item.next_question || item.question,
+      1200,
+    ),
+    emotionalEffect: text(
+      item.emotionalEffect || item.emotional_effect || item.emotion,
+      800,
+    ),
+  };
+}
+
+function recoverStoryBlueprintBeatMap(safe = {}, blueprint = {}) {
+  const supplied = [
+    blueprint.beatMap,
+    blueprint.beat_map,
+    blueprint.beats,
+    blueprint.storyBeats,
+    blueprint.story_beats,
+    blueprint.canonicalBeatMap,
+    blueprint.canonical_beat_map,
+    safe.beatMap,
+    safe.beat_map,
+  ].find(Array.isArray) || [];
+  const beats = supplied
+    .map((item, index) => normalizeStoryBlueprintBeat(item, index, supplied.length))
+    .filter(item => item?.function || item?.answerDelivered || item?.nextQuestion);
+  const escalation = Array.isArray(safe.escalation_beats || safe.escalationBeats)
+    ? (safe.escalation_beats || safe.escalationBeats).filter(Boolean)
+    : [];
+  const candidates = [
+    {
+      progressPercent: 5,
+      function: text(safe.opening_hook || safe.openingHook, 1200),
+      emotionalEffect: 'Immediate tension and anti-exit hook',
+    },
+    {
+      progressPercent: 55,
+      function: text(blueprint.midpointReversal || blueprint.midpoint_reversal, 1200),
+      emotionalEffect: 'Midpoint belief reversal',
+    },
+    {
+      progressPercent: 70,
+      function: text(safe.reveal_pattern || safe.revealPattern, 1200),
+      emotionalEffect: 'Evidence changes the meaning of prior events',
+    },
+    {
+      progressPercent: 86,
+      function: text(
+        blueprint.climaxMechanism
+        || blueprint.climax_mechanism
+        || safe.justice_payoff
+        || safe.justicePayoff,
+        1200,
+      ),
+      emotionalEffect: 'Counterattack and payoff',
+    },
+    {
+      progressPercent: 100,
+      function: text(
+        blueprint.endingRecovery
+        || blueprint.ending_recovery
+        || safe.epilogue_pattern
+        || safe.epiloguePattern,
+        1200,
+      ),
+      emotionalEffect: 'Concrete recovery and moral aftertaste',
+    },
+    ...escalation.map((item, index) => ({
+      progressPercent: Math.round(18 + ((index / Math.max(1, escalation.length - 1)) * 42)),
+      function: text(item, 1200),
+      emotionalEffect: 'Escalation and pressure',
+    })),
+  ];
+  const seen = new Set(beats.map(item => text(item.function, 1200).toLowerCase()).filter(Boolean));
+  for (const candidate of candidates) {
+    const normalized = normalizeStoryBlueprintBeat(candidate, beats.length, 10);
+    const key = text(normalized?.function, 1200).toLowerCase();
+    if (!key || seen.has(key)) continue;
+    beats.push(normalized);
+    seen.add(key);
+    if (beats.length >= 10) break;
+  }
+  return beats
+    .sort((left, right) => Number(left.progressPercent || 0) - Number(right.progressPercent || 0))
+    .slice(0, 10);
+}
+
+export function normalizeChannelFormulaFileAnalysis(value = {}) {
+  const safe = sanitizeAnalysis(value) || {};
+  const blueprint = sanitizeAnalysis(safe.storyBlueprint || safe.story_blueprint) || {};
+  return {
+    ...safe,
+    storyBlueprint: {
+      ...blueprint,
+      beatMap: recoverStoryBlueprintBeatMap(safe, blueprint),
+    },
+  };
+}
+
+export function validateChannelFormulaFileAnalysis(value = {}) {
+  const safe = normalizeChannelFormulaFileAnalysis(value);
+  const growth = safe.audienceGrowthSystem || {};
+  const blueprint = safe.storyBlueprint || {};
+  const issues = [];
+  if (!text(safe.opening_hook || safe.openingHook, 1200)) issues.push('opening_hook_missing');
+  if (!text(safe.reveal_pattern || safe.revealPattern, 1200)) issues.push('reveal_pattern_missing');
+  if (arrayLength(safe.escalation_beats || safe.escalationBeats) < 3) issues.push('escalation_beats_incomplete');
+  if (arrayLength(blueprint.beatMap) < 6) issues.push('story_blueprint_incomplete');
+  if (arrayLength(growth.curiosityLadder) < 3) issues.push('curiosity_ladder_incomplete');
+  if (arrayLength(growth.retentionBeats) < 5) issues.push('retention_beats_incomplete');
+  if (!text(growth.hook30s, 1200)) issues.push('hook30s_missing');
+  return { ok: issues.length === 0, issues, analysis: safe };
+}
+
+export function validateSynthesizedChannelFormula(value = {}, {
+  expectedSourceCount = 0,
+  completedSourceCount = expectedSourceCount,
+} = {}) {
+  const safe = sanitizeChannelFormula(value);
+  const analysis = safe.analysis || {};
+  const growth = analysis.audienceGrowthSystem || {};
+  const patterns = analysis.formulaPatterns || {};
+  const architecture = analysis.storyArchitecture || {};
+  const issues = [];
+  if (completedSourceCount < expectedSourceCount) issues.push('source_coverage_incomplete');
+  if (nonWhitespaceLength(safe.reproductionPrompt) < 600) issues.push('reproduction_prompt_too_short');
+  if (!text(growth.ctrPromise, 1200)) issues.push('ctr_promise_missing');
+  if (!text(growth.hook30s, 1200)) issues.push('hook30s_missing');
+  if (arrayLength(growth.curiosityLadder) < 3) issues.push('curiosity_ladder_incomplete');
+  if (arrayLength(growth.retentionBeats) < 5) issues.push('retention_beats_incomplete');
+  if (!text(growth.commentPayoff, 1200)) issues.push('comment_payoff_missing');
+  if (arrayLength(growth.antiDropRules) < 3) issues.push('anti_drop_rules_incomplete');
+  if (arrayLength(patterns.mandatory) < 3) issues.push('mandatory_patterns_incomplete');
+  if (arrayLength(patterns.frequent) < 3) issues.push('frequent_patterns_incomplete');
+  if (arrayLength(architecture.canonicalBeatMap) < 4) issues.push('canonical_beat_map_incomplete');
+  return { ok: issues.length === 0, issues, formula: safe };
+}
+
+function buildStructuredRepairPrompt({
+  basePrompt,
+  previousOutput = '',
+  issues = [],
+  scope = 'analysis',
+} = {}) {
+  const issueInstructions = [];
+  if (issues.includes('story_blueprint_incomplete')) {
+    issueInstructions.push(
+      'storyBlueprint.beatMap must contain at least 6 chronological objects. Each object needs progressPercent, function, answerDelivered, nextQuestion, and emotionalEffect.',
+    );
+  }
+  return [
+    basePrompt,
+    '',
+    `The previous ${scope} response failed these required quality gates: ${issues.join(', ') || 'invalid_json'}.`,
+    ...issueInstructions,
+    'Return a complete replacement JSON object. Do not explain the repair and do not omit required arrays.',
+    `Previous response for repair context:\n${text(previousOutput, 30000)}`,
+  ].join('\n');
+}
+
 export function createChannelFormulaRuntimeController({
   repository,
   callStructuredAi,
@@ -769,7 +999,9 @@ export function createChannelFormulaRuntimeController({
       if (cancelled) break;
       const snapshot = await readFileSnapshot(files[index]);
       const existing = prior.get(snapshot.sourceFingerprint);
-      if (existing?.status === 'complete' && existing.analysis) {
+      if (existing?.status === 'complete'
+        && existing.analysisVersion === CHANNEL_FORMULA_ANALYSIS_VERSION
+        && existing.analysis) {
         summaries.push(compactAnalysis(existing.analysis, snapshot.fileName));
         processedCount += 1;
         resumedCount += 1;
@@ -782,15 +1014,54 @@ export function createChannelFormulaRuntimeController({
           sourceCount: files.length,
           stats: snapshot.stats,
           slices: snapshot.slices,
+          segments: snapshot.segments,
           markers: snapshot.markers,
         });
-        const analysis = parseStructuredFormulaAnalysis(await callAi(prompt));
+        let analysis = null;
+        let previousOutput = '';
+        let lastCause = null;
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+          try {
+            const request = attempt === 0
+              ? prompt
+              : buildStructuredRepairPrompt({
+                basePrompt: prompt,
+                previousOutput,
+                issues: lastCause?.issues || ['invalid_json_or_api_response'],
+                scope: 'per-file analysis',
+              });
+            if (attempt > 0) {
+              onProgress({
+                phase: 'file-retry',
+                fileIndex: index + 1,
+                totalFiles: files.length,
+                fileName: snapshot.fileName,
+                processedCount,
+                resumedCount,
+              });
+            }
+            previousOutput = await callAi(request);
+            const parsed = parseStructuredFormulaAnalysis(previousOutput);
+            const quality = validateChannelFormulaFileAnalysis(parsed);
+            if (!quality.ok) {
+              const cause = new Error(`Per-file analysis quality gate failed: ${quality.issues.join(', ')}`);
+              cause.issues = quality.issues;
+              throw cause;
+            }
+            analysis = quality.analysis;
+            break;
+          } catch (cause) {
+            lastCause = cause;
+          }
+        }
+        if (!analysis) throw lastCause || new Error('Per-file analysis failed.');
         await repository.saveAnalysisCheckpoint({
           formulaId: id,
           fileName: snapshot.fileName,
           fileFingerprint: snapshot.sourceFingerprint,
           fileIndex: index,
           totalFiles: files.length,
+          analysisVersion: CHANNEL_FORMULA_ANALYSIS_VERSION,
           status: 'complete',
           analysis,
           updatedAt: now().toISOString(),
@@ -808,6 +1079,7 @@ export function createChannelFormulaRuntimeController({
           fileFingerprint: snapshot.sourceFingerprint,
           fileIndex: index,
           totalFiles: files.length,
+          analysisVersion: CHANNEL_FORMULA_ANALYSIS_VERSION,
           status: 'error',
           error: message,
           updatedAt: now().toISOString(),
@@ -820,6 +1092,32 @@ export function createChannelFormulaRuntimeController({
       state = { status: 'cancelled', totalFiles: files.length, processedCount, resumedCount, errors };
       return { formula: null, summaries, errors, processedCount, resumedCount, cancelled: true };
     }
+    if (errors.length) {
+      state = {
+        status: 'incomplete',
+        totalFiles: files.length,
+        processedCount,
+        resumedCount,
+        errors,
+        formula: null,
+      };
+      onProgress({
+        phase: 'incomplete',
+        totalFiles: files.length,
+        processedCount,
+        resumedCount,
+        errors,
+      });
+      return {
+        formula: null,
+        summaries,
+        errors,
+        processedCount,
+        resumedCount,
+        cancelled: false,
+        incomplete: true,
+      };
+    }
     const boundedSummaries = summaries.slice(0, MAX_ANALYSIS_SUMMARIES);
     const synthesisPrompt = buildFormulaSynthesisPrompt({
       formulaName,
@@ -827,12 +1125,73 @@ export function createChannelFormulaRuntimeController({
       intermediateSummaries: boundedSummaries,
     });
     onProgress({ phase: 'synthesis', totalFiles: files.length, processedCount, resumedCount });
-    let synthesized;
-    try {
-      synthesized = parseStructuredFormulaAnalysis(await callAi(`${synthesisPrompt}\n\nsynthesizing`));
-    } catch (error) {
-      errors.push({ fileName: '__synthesis__', message: text(error?.message || error, 1000) });
-      synthesized = {};
+    let synthesized = null;
+    let synthesisOutput = '';
+    let synthesisCause = null;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const request = attempt === 0
+          ? `${synthesisPrompt}\n\nsynthesizing`
+          : buildStructuredRepairPrompt({
+            basePrompt: `${synthesisPrompt}\n\nsynthesizing`,
+            previousOutput: synthesisOutput,
+            issues: synthesisCause?.issues || ['invalid_json_or_api_response'],
+            scope: 'channel synthesis',
+          });
+        if (attempt > 0) {
+          onProgress({
+            phase: 'synthesis-retry',
+            totalFiles: files.length,
+            processedCount,
+            resumedCount,
+          });
+        }
+        synthesisOutput = await callAi(request);
+        const parsed = parseStructuredFormulaAnalysis(synthesisOutput);
+        const quality = validateSynthesizedChannelFormula(parsed, {
+          expectedSourceCount: files.length,
+          completedSourceCount: boundedSummaries.length,
+        });
+        if (!quality.ok) {
+          const cause = new Error(`Channel synthesis quality gate failed: ${quality.issues.join(', ')}`);
+          cause.issues = quality.issues;
+          throw cause;
+        }
+        synthesized = parsed;
+        break;
+      } catch (cause) {
+        synthesisCause = cause;
+      }
+    }
+    if (!synthesized) {
+      errors.push({
+        fileName: '__synthesis__',
+        message: text(synthesisCause?.message || synthesisCause || 'Channel synthesis failed.', 1000),
+      });
+      state = {
+        status: 'synthesis-error',
+        totalFiles: files.length,
+        processedCount,
+        resumedCount,
+        errors,
+        formula: null,
+      };
+      onProgress({
+        phase: 'synthesis-error',
+        totalFiles: files.length,
+        processedCount,
+        resumedCount,
+        errors,
+      });
+      return {
+        formula: null,
+        summaries,
+        errors,
+        processedCount,
+        resumedCount,
+        cancelled: false,
+        incomplete: true,
+      };
     }
     const safe = sanitizeChannelFormula({
       ...synthesized,
@@ -840,17 +1199,30 @@ export function createChannelFormulaRuntimeController({
       name: text(formulaName, 120) || 'Channel Formula',
       sourceCount: files.length,
       sourceFingerprint: fingerprintSource(files.map(file => file.name).join('\n')),
-      analysis: synthesized.analysis || buildFallbackAnalysisSummaries(boundedSummaries),
-      reproductionPrompt: synthesized.reproductionPrompt || [
-        '日本語のみで書く。抽象化された構成規則だけを使い、原文の固有名詞・台詞・事件を再利用しない。',
-        '4章構成で、各章に新しい事実・選択・代償を置き、最後は具体的な行動と後日談で完結させる。',
-        '空白を除く20,000字以上、目標22,000字で、分析メモやプロンプトを本文に出さない。',
-      ].join('\n'),
+      analysis: synthesized.analysis,
+      reproductionPrompt: synthesized.reproductionPrompt,
+      analysisVersion: CHANNEL_FORMULA_ANALYSIS_VERSION,
+      analysisQuality: {
+        validated: true,
+        sourceCoverage: 1,
+        completedSourceCount: boundedSummaries.length,
+        expectedSourceCount: files.length,
+      },
+      analysisReport: {
+        version: CHANNEL_FORMULA_ANALYSIS_VERSION,
+        sourceCoverage: {
+          selected: files.length,
+          completed: boundedSummaries.length,
+          failed: 0,
+          resumed: resumedCount,
+        },
+        stories: boundedSummaries,
+      },
       createdAt: now().toISOString(),
       updatedAt: now().toISOString(),
     });
     const formula = await repository.saveFormula(safe);
-    state = { status: errors.length ? 'completed-with-errors' : 'completed', totalFiles: files.length, processedCount, resumedCount, errors, formula };
+    state = { status: 'completed', totalFiles: files.length, processedCount, resumedCount, errors, formula };
     onProgress({ phase: 'complete', totalFiles: files.length, processedCount, resumedCount, formula, errors });
     return { formula, summaries, errors, processedCount, resumedCount, cancelled: false };
   }
@@ -874,6 +1246,7 @@ function renderFormulaPreview(element, formula) {
   element.textContent = [
     `Tên: ${formula.name}`,
     `Ngôn ngữ: ${formula.language} · Nguồn: ${formula.sourceCount} file`,
+    `Quality gate: ${isChannelFormulaAnalysisReady(formula) ? 'Đạt' : 'Chưa đạt / công thức fallback cũ'}`,
     `Góc nhìn: ${analysis.pointOfView || '—'}`,
     `Tông: ${analysis.tone || '—'}`,
     `Móc mở đầu: ${analysis.openingHook || '—'}`,
@@ -883,9 +1256,27 @@ function renderFormulaPreview(element, formula) {
     `Bật mí/chứng cứ: ${analysis.revealPattern || '—'}`,
     `Payoff: ${analysis.justicePayoff || '—'}`,
     `Hậu truyện: ${analysis.epiloguePattern || '—'}`,
-    `Chính sách: tối thiểu ${formula.generationPolicy.minNonWhitespaceChars.toLocaleString('vi-VN')} · mục tiêu ${formula.generationPolicy.targetNonWhitespaceChars.toLocaleString('vi-VN')} · ${formula.generationPolicy.chapterCount} chương`,
+    `Chính sách: tối thiểu ${formula.generationPolicy.minNonWhitespaceChars.toLocaleString('vi-VN')} · mục tiêu ${formula.generationPolicy.targetNonWhitespaceChars.toLocaleString('vi-VN')} · ${
+      formula.generationPolicy.flowFormat === 'continuous_audio_narration'
+        ? `${formula.generationPolicy.chapterCount} nhịp nội bộ · narration liên tục, không nhãn chương`
+        : `${formula.generationPolicy.chapterCount} chương`
+    }`,
     `Cấm sao chép: ${(analysis.forbiddenPatterns || []).join('; ') || '—'}`,
   ].join('\n');
+}
+
+export function formatChannelFormulaErrors(errors = []) {
+  const rows = (Array.isArray(errors) ? errors : [])
+    .filter(Boolean)
+    .map((item, index) => {
+      const source = item.fileName === '__synthesis__'
+        ? 'Tổng hợp công thức'
+        : item.fileName || `Lỗi ${index + 1}`;
+      return `${index + 1}. ${source}: ${text(item.message || item.error || 'Không rõ lỗi', 1000)}`;
+    });
+  return rows.length
+    ? `Phân tích chưa hoàn tất. Công thức chưa được lưu.\n${rows.join('\n')}\nBấm Phân tích folder lần nữa để retry.`
+    : '';
 }
 
 export function installChannelFormulaRuntime({
@@ -923,7 +1314,12 @@ export function installChannelFormulaRuntime({
       if (!status) return;
       if (progress.phase === 'file' || progress.phase === 'resume' || progress.phase === 'error') {
         status.textContent = `${progress.phase === 'error' ? 'Lỗi' : 'Đã xử lý'} file ${progress.fileIndex}/${progress.totalFiles}: ${progress.fileName || ''}`;
+      } else if (progress.phase === 'file-retry') {
+        status.textContent = `Đang retry file ${progress.fileIndex}/${progress.totalFiles}: ${progress.fileName || ''}`;
       } else if (progress.phase === 'synthesis') status.textContent = 'Đang tổng hợp công thức…';
+      else if (progress.phase === 'synthesis-retry') status.textContent = 'Bản tổng hợp chưa đạt quality gate; AI đang sửa lại…';
+      else if (progress.phase === 'incomplete') status.textContent = 'Phân tích chưa hoàn tất; chưa lưu công thức.';
+      else if (progress.phase === 'synthesis-error') status.textContent = 'Tổng hợp công thức thất bại; chưa lưu công thức.';
       else if (progress.phase === 'complete') status.textContent = `Hoàn tất: ${progress.processedCount}/${progress.totalFiles} file.`;
     },
   });
@@ -944,7 +1340,7 @@ export function installChannelFormulaRuntime({
     selected = formula ? sanitizeChannelFormula(formula) : null;
     if (hidden) hidden.value = selected ? JSON.stringify(selected) : '';
     renderFormulaPreview(preview, selected);
-    if (generateButton) generateButton.disabled = !selected;
+    if (generateButton) generateButton.disabled = !selected || !isChannelFormulaAnalysisReady(selected);
   };
   const error = message => {
     const element = doc.getElementById('cf-error');
@@ -976,12 +1372,17 @@ export function installChannelFormulaRuntime({
       const name = text(doc.getElementById('cf-formula-name')?.value, 120) || 'Channel Formula';
       const analyzeButton = doc.getElementById('cf-analyze');
       const cancelButton = doc.getElementById('cf-cancel');
+      const errorElement = doc.getElementById('cf-error');
+      if (errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.add('hidden');
+      }
       if (analyzeButton) analyzeButton.disabled = true;
       if (cancelButton) cancelButton.disabled = false;
       try {
         const result = await activeController.startAnalysis(files, { formulaName: name });
         if (result.formula) { formulas.set(result.formula.id, result.formula); choose(result.formula); await renderSelect(); }
-        if (result.errors?.length) error(`Hoàn tất nhưng có ${result.errors.length} lỗi. Bạn có thể chạy lại để resume.`);
+        if (result.errors?.length) error(formatChannelFormulaErrors(result.errors));
       } catch (cause) { error(cause?.message || cause); }
       finally {
         if (analyzeButton) analyzeButton.disabled = false;
@@ -1004,6 +1405,9 @@ export function installChannelFormulaRuntime({
     }
     if (id === 'cf-import') doc.getElementById('cf-import-file')?.click();
     if (id === 'cf-generate' && selected) {
+      if (!isChannelFormulaAnalysisReady(selected)) {
+        return error('Công thức chưa đạt quality gate hoặc là bản fallback cũ. Hãy Phân tích folder thành công trước khi random mô típ.');
+      }
       setFormulaGenerationBusyUi({
         doc,
         busy: true,

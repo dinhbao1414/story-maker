@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "id": "formula-analysis-fnv1a-54b21dc3",
+  "name": "okokok",
+  "genre": "理不尽な搾取・裏切り・追放を受けた主人公が、水面下の証拠と権威で仕掛けた罠により、加害者集団を公開の場で完全破滅に追い込む痛快スカッと復讐劇",
+  "tone": "極限の理不尽と怒り、知的な冷徹さ、公開逆転の圧倒的カタルシス、加害者の無様なぜいたく崩壊、最後は晴れやかな完全勝利と精神的・経済的解放",
+  "reproductionPromptLength": 922,
+  "retentionBeatCount": 5,
+  "antiDropRuleCount": 5,
+  "sourceCount": 20,
+  "sourceCoverage": 1,
+  "updatedAt": "2026-08-31T02:03:23.412Z",
+  "receivedAt": "2026-08-31T02:03:23.439Z"
+}

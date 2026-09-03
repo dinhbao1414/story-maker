@@ -7,6 +7,7 @@ import {
   go,
   lf,
   nf,
+  normalizeProviderCallArguments,
   of,
   rf,
   sf,
@@ -29,10 +30,18 @@ const exportedFunctions = {
   tf,
   yt,
   zs,
+  normalizeProviderCallArguments,
 };
 
 for (const [name, fn] of Object.entries(exportedFunctions)) {
   assert.equal(typeof fn, 'function', `${name} should be exported as a function`);
+}
+
+{
+  const options = { responseMimeType: 'application/json', maxTokens: 5000 };
+  const normalized = normalizeProviderCallArguments(options, {});
+  assert.equal(normalized.onFallback, null);
+  assert.equal(normalized.options, options);
 }
 
 assert.equal(await go(''), 'API Key not set.');
@@ -124,6 +133,81 @@ try {
     { text: 'hel', isThought: false },
     { text: 'lo', isThought: false },
   ]);
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
+{
+  const previousDocument = globalThis.document;
+  const previousLocation = globalThis.location;
+  const endpointInput = { value: 'https://ttmapi.site/v1' };
+  globalThis.location = { hostname: 'localhost' };
+  globalThis.document = {
+    getElementById(id) {
+      return id === 'openai-base-url' ? endpointInput : null;
+    },
+  };
+  const customCalls = [];
+  globalThis.fetch = async (url, init = {}) => {
+    customCalls.push({ url: String(url), body: JSON.parse(init.body || '{}') });
+    return {
+      ok: true,
+      json: async () => ({
+        choices: [{ message: { content: 'custom endpoint result' } }],
+      }),
+    };
+  };
+  try {
+    const result = await Gt(
+      'sk-unit-test-key-000000000000',
+      'cx/gpt-5.5',
+      'prompt',
+      { openAiResponsesBeta: false },
+    );
+    assert.equal(result.text, 'custom endpoint result');
+    assert.equal(result.usedModel, 'gpt-5.5');
+    assert.equal(customCalls[0].url, 'https://ttmapi.site/v1/chat/completions');
+    assert.equal(customCalls[0].body.model, 'gpt-5.5');
+  } finally {
+    globalThis.fetch = originalFetch;
+    globalThis.document = previousDocument;
+    globalThis.location = previousLocation;
+  }
+}
+
+globalThis.fetch = async () => ({
+  ok: false,
+  status: 404,
+  statusText: 'Not Found',
+  json: async () => ({ error: { message: 'model not found' } }),
+});
+
+try {
+  await assert.rejects(
+    () => of(
+      'sk-unit-test-key-000000000000',
+      'prompt',
+      null,
+      { openAiResponsesBeta: false },
+    ),
+    error => (
+      /Chi tiết từng model/.test(error.message)
+      && /gpt-4\.1: OpenAI HTTP 404 - model not found/.test(error.message)
+    ),
+  );
+  await assert.rejects(
+    () => cf(
+      'sk-unit-test-key-000000000000',
+      'prompt',
+      () => {},
+      null,
+      { openAiResponsesBeta: false },
+    ),
+    error => (
+      /Chi tiết từng model/.test(error.message)
+      && /gpt-4\.1: OpenAI HTTP 404 - model not found/.test(error.message)
+    ),
+  );
 } finally {
   globalThis.fetch = originalFetch;
 }

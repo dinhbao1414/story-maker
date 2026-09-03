@@ -1,0 +1,2862 @@
+{
+  "name": "okokok",
+  "language": "ja",
+  "analysis": {
+    "genre": "理不尽な搾取・裏切り・追放を受けた主人公が、水面下の証拠と権威で仕掛けた罠により、加害者集団を公開の場で完全破滅に追い込む痛快スカッと復讐劇",
+    "audience": "日本語圏の、圧倒的な因果応報・公開処刑・法的社会的破滅・弱者からの逆転勝利・スカッとする結末を求めるYouTubeドラマ視聴者",
+    "pointOfView": "被害者本人の一人称回想（現在の絶望的危機から入り、裏で張っていた伏線と罠を段階的に明かす構成）",
+    "tone": "極限の理不尽と怒り、知的な冷徹さ、公開逆転の圧倒的カタルシス、加害者の無様なぜいたく崩壊、最後は晴れやかな完全勝利と精神的・経済的解放",
+    "openingHook": "冒頭30秒で『極限状態（出産直前・葬儀直後・晴れの席等）での非人道的な追放宣告・財産強奪』を提示。同時に、主人公が動じず『すでに破滅の罠が発動している』決定打（不気味な笑み・すり替え・謎の権威）を匂わせる",
+    "protagonistPattern": "一見無力で耐え忍んでいたように見えるが、実は加害者の本性を早期に見抜き、法的保全・資産買い取り・専門家/有力者の味方化を完了している知性派の復讐者",
+    "antagonistPattern": "見栄、虚栄心、金銭欲、不倫相手との再婚、家父長的特権意識に溺れる連合型（配偶者＋義親＋不倫相手等）。主人公を完全に見下し、勝ち誇った絶頂で自滅する",
+    "escalationPattern": [
+      "極限の理不尽な追放宣告と即時屈辱（冒頭フック）",
+      "敵側の傲慢な要求（財産放棄・名義変更・有責の押し付け）",
+      "主人公による『知的な証拠保全とすり替えトラップ』の開示",
+      "敵側が隠していた致命的な重罪（横領・借金・血統詐欺・偽造）の発覚",
+      "敵側が勝利を確信して設けた公開の場（役所・親族会・式場・病院）への誘導",
+      "外部権威（警察・弁護士・重鎮・鑑定機関）の突入と連続証拠突きつけ",
+      "敵連合の仲間割れ、責任転嫁、無様な土下座・懇願",
+      "徹底的な法的・経済的・社会的制裁の執行（逮捕・借金・追放）",
+      "主人公の圧倒的な新生活と晴れやかな再出発"
+    ],
+    "revealPattern": "『小さな違和感』→『物的証拠の連鎖』→『敵の重罪発覚』→『主人公の先回り罠の開示』→『公開の場での公的・法的確定（決定打）』という重層的カウンター",
+    "evidenceMotifs": [
+      "すり替えられた実印・母子手帳・重要書類",
+      "登記簿謄本（すでに主人公や実家側が所有権を押さえている罠）",
+      "隠し録音・監視カメラ・不倫/横領の物証",
+      "公的機関の不受理申出書・内容証明郵便",
+      "金融機関の不正送金記録・負債明細書",
+      "DNA鑑定書・公的診断書・監査報告書",
+      "高級黒塗り車・専門家軍団（圧倒的権威の象徴）"
+    ],
+    "justicePayoff": "加害者は金・地位・住居・共犯者を全て失い、逮捕・巨額の損害賠償・親族からの絶縁という『自業自得の三重地獄』に堕ちる。主人公は1ミリの妥協も許さず完全勝訴する",
+    "epiloguePattern": "加害者の悲惨な末路（刑務所・日雇い・借金取りへの怯え）を対比させつつ、主人公は安全な新居で本物の味方・家族・子どもと共に晴れやかに新しい人生を歩み出す",
+    "narrationRules": [
+      "状況説明はテンポよく、敵の理不尽な言動は徹底的に視聴者のヘイトを集めるように書く",
+      "主人公の反撃は感情的な怒鳴り合いではなく、冷徹な事実と書類の提示で行う",
+      "専門家・警察・権威者は一切の私情を挟まず、事務的・法的に敵の息の根を止める",
+      "敵のパニック・無様な懇願・仲間割れの描写を詳細に入れ、カタルシスを最大化する"
+    ],
+    "pacingRules": [
+      "30秒以内に最初の特大フックを叩き込み、離脱を防ぐ",
+      "敵の悪辣な攻撃直後に、必ず主人公の『実は準備済み』というカウンターを挟む",
+      "中盤でタイムリミット（監査・期日・出産等）を設定し、緊迫感を加速させる",
+      "クライマックスは敵が勝ち誇った瞬間に落とし穴を開ける構図にする",
+      "制裁（ざまあ）パートは短く終わらせず、社会的・経済的・刑事的に徹底描写する"
+    ],
+    "forbiddenPatterns": [
+      "主人公が最後まで無力なまま終わること",
+      "加害者を生ぬるい話し合いや口頭の説教だけで許すこと",
+      "証拠や法的根拠が曖昧なまま感情論で勝つこと",
+      "加害者に逃げ道や同情の余地を残しすぎること",
+      "公開逆転（大勢の前での失脚）がない密室だけの解決",
+      "すっきりしないビターエンドや後味の悪い結末"
+    ],
+    "characterSystem": {
+      "victimRoles": [
+        "出産直前や育児中に切り捨てられる妻",
+        "介護や家事を尽くした末に追い出される嫁",
+        "実家の支援や遺産を狙われ見下される配偶者",
+        "長年家族を支えたのに邪魔者扱いされる親・長女"
+      ],
+      "antagonistRoles": [
+        "外面は良いが裏で横領・借金を重ねる無能な夫",
+        "息子を溺愛し嫁を家政婦・金づると見なす傲慢な義母",
+        "夫を誘惑し家庭乗っ取りを企む強欲な愛人/略奪女",
+        "体面と世間体だけを気にして主人公をスケープゴートにする親族"
+      ],
+      "allyRoles": [
+        "圧倒的な社会的影響力・財力を持つ実父/先代",
+        "有能で冷徹な顧問弁護士・秘書・執行官",
+        "中立の立場で事実を証明する医師・監査役・警察官",
+        "途中で敵の嘘に気づき寝返る内部関係者/被害者仲間"
+      ],
+      "relationshipPressureRules": [
+        "『家族/嫁の義務』『世間体』を盾に主人公へ一方的な自己犠牲を強いる",
+        "主人公が従順に見えるのを良いことに、敵が際限なくエスカレートする",
+        "敵が味方につけようとした親族や世間体が、最終的に敵自身を糾弾する武器へと反転する"
+      ]
+    },
+    "evidenceSystem": {
+      "evidenceFamilies": [
+        "法務・公的手続き（不受理申出、公正証書、内容証明、執行官召喚）",
+        "資産・不動産防衛（事前売却・所有権移転、口座凍結、差押え）",
+        "不正・犯罪の物証（業務上横領、文書偽造、詐欺未遂、不貞の確定証拠）",
+        "物的トラップ（実印・書類・母子手帳のダミーすり替え）",
+        "公的権威の証明（医師の診断書、警察の捜査着手、外部監査報告書）"
+      ],
+      "proofChainRules": [
+        "第1の証拠：敵の目論見（偽造・強奪）を無効化する防御トラップ",
+        "第2の証拠：敵が隠していた致命的な社会的犯罪の暴露",
+        "第3の証拠：逃げ道を完全に塞ぐ公的機関・法的執行の同時着火"
+      ],
+      "revealTimingRules": [
+        "敵が『俺の勝ちだ！』『サインしろ！』と絶頂に達した瞬間に第1弾を投下する",
+        "言い訳や逆上を始めたところで、公的権威と第2・第3の証拠を連鎖投入する",
+        "最後の抵抗（情に訴える、責任転嫁）を、冷徹な法的手続きで完全に粉砕する"
+      ],
+      "payoffRules": [
+        "単なる謝罪ではなく、逮捕・即日退去・巨額請求・社会的地位剥奪を同時に執行する",
+        "共犯者同士がお互いを罵り合い、醜く仲間割れする姿を克明に描く",
+        "主人公は一切の情けをかけず、法的な手続きのみで完全に縁を切る"
+      ]
+    },
+    "storyArchitecture": {
+      "canonicalBeatMap": [
+        {
+          "chapter": 1,
+          "function": "極限の屈辱・追放と水面下の仕掛け",
+          "mustInclude": [
+            "出産直前や晴れの場など、最悪のタイミングでの理不尽な追放宣告",
+            "敵の傲慢で見下した態度と、主人公の不気味なほどの冷静さ",
+            "主人公が密かに確保した重要アイテムやすり替えの示唆",
+            "強力な味方（実家・権威者）へのSOSと即時包囲網の始動"
+          ]
+        },
+        {
+          "chapter": 2,
+          "function": "違和感の点と線、敵の致命的犯罪とタイムリミット",
+          "mustInclude": [
+            "過去の搾取の振り返りと、敵が隠していた裏計画（横領・詐欺・乗っ取り）の発覚",
+            "敵の自滅期限（監査・支払い期日等）のカウントダウン開始",
+            "敵によるさらなる暴走（書類偽造・強奪未遂・役所への突入）",
+            "主人公側による先回りの法的手続き（不受理申出・所有権掌握）の完了"
+          ]
+        },
+        {
+          "chapter": 3,
+          "function": "公開処刑・連続トラップ発動・完全自滅",
+          "mustInclude": [
+            "敵が勝ち誇って乗り込んでくる公開の場（役所・病院・親族会等）",
+            "敵の決定的な決め台詞（『俺の勝ちだ』）直後の反転",
+            "すり替えられた証拠、すでに失われていた権利の突きつけ",
+            "外部権威（警察・監査・弁護士）の介入と、敵連合のパニック・仲間割れ"
+          ]
+        },
+        {
+          "chapter": 4,
+          "function": "容赦なき制裁と晴れやかな再出発",
+          "mustInclude": [
+            "即日退去、逮捕、巨額の損害賠償、社会的破滅の確定",
+            "敵からの無様な泣きつき・懇願を完全に一刀両断するシーン",
+            "加害者の悲惨な後日談（服役・借金地獄・転落生活）の報告",
+            "主人公が本物の家族・子どもと共に手に入れた、豊かで温かい新生活の描写"
+          ]
+        }
+      ],
+      "midpointRules": [
+        "中盤で主人公が受け身の被害者ではないと明かす",
+        "中盤で加害者の見方が崩れ、より大きな犯罪や隠し事へ拡張する",
+        "中盤の発見は、後半の公開逆転の準備であると分かる形にする"
+      ],
+      "climaxRules": [
+        "敵の用意した土俵を、主人公の公開処刑場へ反転させる",
+        "証拠は小出しにせず、逃げ場を完全に無くすまで怒涛の勢いで畳み掛ける",
+        "視聴者が『ざまあみろ！』と叫びたくなる決定的な台詞と土下座シーンを入れる"
+      ],
+      "endingRules": [
+        "敵に対する一切の復縁・減免を拒絶し、完全な決別を描く",
+        "主人公の住まい・経済力・笑顔が完全に回復したことを視覚的に描写する",
+        "『悪いことをした奴には必ず天罰が下る』という強い正義感で締めくくる"
+      ]
+    },
+    "audienceGrowthSystem": {
+      "ctrPromise": "【スカッと】極限状態で追放された主人公が、実は大富豪/超有能で、調子に乗った加害者一家を警察・弁護士総動員で地獄に叩き落とす",
+      "hook30s": "『今すぐ出て行け』と荷物を放り出される極限シーン＋高級車部隊や決定的な反撃フラグの即時提示",
+      "curiosityLadder": [
+        {
+          "question": "なぜこんな極限状態で主人公を追い出すのか？",
+          "answer": "敵が横領や借金を隠し、他人の金・立場を乗っ取るため",
+          "nextQuestion": "主人公はどうやってこの絶体絶命をひっくり返すのか？"
+        },
+        {
+          "question": "主人公の正体・切り札は何なのか？",
+          "answer": "すでに財産・不動産を先回りして掌握しており、実家や専門家が最強の味方",
+          "nextQuestion": "敵が絶頂から転落する瞬間はどうなるのか？"
+        },
+        {
+          "question": "加害者集団はどれほど悲惨な破滅を迎えるのか？",
+          "answer": "逮捕、破産、即日退去、仲間割れによる社会的・肉体的破滅",
+          "nextQuestion": "主人公はどんな最高の新生活を手に入れるのか？"
+        }
+      ],
+      "retentionBeats": [
+        {
+          "window": "0s-30s",
+          "goal": "hook",
+          "beat": "最大屈辱と隠し玉の存在を同時提示する"
+        },
+        {
+          "window": "30s-3m",
+          "goal": "curiosity",
+          "beat": "小さな矛盾を出し、主人公の冷静さの理由を示す"
+        },
+        {
+          "window": "3m-10m",
+          "goal": "context",
+          "beat": "過去の搾取、関係圧力、金銭や書類の不審を明かす"
+        },
+        {
+          "window": "10m-20m",
+          "goal": "suspense",
+          "beat": "第三者や記録で裏事情を広げ、敵の自信を少し崩す"
+        },
+        {
+          "window": "20m-35m",
+          "goal": "anticipation",
+          "beat": "主人公が準備済みだと分かり、公開場へ向かう"
+        }
+      ],
+      "commentPayoff": "『最高のスカッと！』『自業自得すぎて清々しい』『情けをかけずに完全論破した主人公がカッコいい』と絶賛されるコメント欄の設計",
+      "antiDropRules": [
+        "毎数分ごとに一つの質問へ答え、同時に上位の疑問を出す",
+        "説明だけの連続を避け、電話、封筒、書類、来訪、通知、会議で前進させる",
+        "加害者に一度は勝った気にさせ、直後に証拠で反転する",
+        "主人公の沈黙を無力ではなく戦略に見せる",
+        "最後は必ず回復場面を置き、視聴後の空気を柔らかくする"
+      ]
+    },
+    "styleFingerprint": {
+      "sentenceRhythm": [
+        "テンポの速い断定文と、緊迫感を煽る短いセリフの連打",
+        "敵の絶頂発言の直後に、冷徹な現実を突きつける一言を置く",
+        "感情描写よりも『具体的な数字・書類名・法的根拠』で説得力を高める"
+      ],
+      "emotionalCadence": [
+        "極限の理不尽・怒り",
+        "知的な違和感と反撃の準備",
+        "敵の暴走への冷ややかな観察",
+        "公開逆転の爆発的カタルシス",
+        "敵の無様な崩壊と自滅",
+        "晴れやかな完全勝利と至高の日常回復"
+      ]
+    },
+    "formulaPatterns": {
+      "mandatory": [
+        "被害者視点の一人称回想",
+        "冒頭の最大屈辱",
+        "主人公の不自然な冷静さ",
+        "証拠の段階開示",
+        "公開の場での逆転",
+        "法的または制度的な決着",
+        "生活再建のエピローグ"
+      ],
+      "frequent": [
+        "家族会議や式典や弔事などの公的・半公的場面",
+        "金銭・所有権・通帳・契約・鍵",
+        "医療・法律・金融などの第三者権威",
+        "別の被害者や裏切られた協力者",
+        "隠された書類や録音",
+        "加害者同士の仲間割れ"
+      ],
+      "optional": [
+        "医療真実",
+        "相続争い",
+        "不倫",
+        "職場不正",
+        "介護問題",
+        "隠し子や別世帯",
+        "高齢者の保護",
+        "親子の再会",
+        "仕事復帰や新生活"
+      ],
+      "forbidden": [
+        "いきなり全真相を開示する",
+        "証拠なしの説教で勝つ",
+        "主人公が終始受動的なまま終わる",
+        "クライマックスが小競り合いだけで終わる",
+        "再生のない破滅エンド",
+        "固有名詞や一回限りの事件に依存した再利用不能構成"
+      ]
+    },
+    "variationSystem": {
+      "safeVariationSlots": [
+        "主人公の立場を妻、夫、娘、息子、嫁、婿、母、父、祖父母へ変更",
+        "加害の形を不倫、相続、介護、金銭、職場不正、偽装、支配へ変更",
+        "公開の場を親族会議、病院、役所、会社、式典、法事、会食へ変更",
+        "証拠媒体を通帳、録音、契約書、写真、鍵、メッセージ、登記、申請履歴へ変更",
+        "終盤の回復先を自宅、実家、新居、職場、静かな地域、子どもとの家へ変更",
+        "味方の職能を弁護士、銀行、医療、施設、会社、調査、行政に変更"
+      ],
+      "combinationsToAvoid": [
+        "被害者と加害者の役割が曖昧なまま終わる組み合わせ",
+        "公開逆転がなく内面回想だけで完結する組み合わせ",
+        "法的・金銭的な証拠がなく感情論だけで押す組み合わせ",
+        "あまりに特殊で一度しか使えない固有事件中心の組み合わせ",
+        "終盤で主人公が完全に失速し、再生が描けない組み合わせ"
+      ]
+    }
+  },
+  "reproductionPrompt": "日本語のみで出力するYouTubeスカッと系長尺脚本設計ルールブックとして、必ず全4章構成で記述すること。文字数は非空白20,000文字以上を満たす詳細な脚本生成の規約とする。冒頭30秒で視聴者を釘付けにする『極限の理不尽な追放フック（出産直前、葬儀直後など）』から開始し、主人公は取り乱さず水面下で証拠保全・実印/書類のすり替え・不動産や資産の法的掌握を完了している設定にすること。敵は外面が良く虚栄心と欲にまみれた配偶者・義親・愛人などの連合体とし、横領や借金、血統詐欺などの重罪を隠していること。第1章で最大屈辱と先回り罠の設置、第2章で敵の犯罪発覚とタイムリミットの緊張感、第3章で敵が勝ったと確信した公開の場での怒涛の証拠連鎖と警察・弁護士による公開処刑、第4章で逮捕・即日退去・巨額負債・仲間割れという自業自得の完全破滅と、主人公の晴れやかで温かい新生活を描くこと。中途半端な和解やビターエンドは固く禁じ、視聴者が圧倒的な快感（スカッと感）を得られる完全な勧善懲悪として構成すること。\n各章では、視聴者が抱く疑問を放置せず、Question Aを証拠で回答した直後に、より危険なQuestion Bを開くこと。敵の攻撃、主人公の準備済みカウンター、新しい犯罪の発覚、公開制裁の予告を3〜5分ごとに更新し、同じ秘密だけを最後まで引き延ばさないこと。\nタイトルとサムネイルの約束は冒頭で必ず履行し、主人公が単に幸運で勝つ展開は禁止する。反撃は登記、金融記録、録音、監査、診断書、公的手続きなど具体的な証拠連鎖と、主人公が事前に選んだ行動の結果として成立させること。\n公開逆転では、敵が勝利宣言した直後に第一証拠を提示し、言い逃れの直後に第二証拠、責任転嫁の直後に警察・弁護士・監査等の第三決定打を投入する。共犯者の仲間割れ、虚勢の崩壊、土下座や懇願を十分に描写し、制裁を一文で済ませないこと。\n結末では刑事責任、経済的損失、社会的信用喪失の三方向を具体的に確定し、その後に主人公の住居、仕事、資産、安全、人間関係、笑顔が回復した日常を対比させること。物語上の事件は完全に閉じたうえで、コメントを誘う倫理的な問いだけを余韻として残すこと。",
+  "confidence": 0.98,
+  "id": "formula-analysis-fnv1a-54b21dc3",
+  "sourceCount": 20,
+  "sourceFingerprint": "fnv1a-0ab94508",
+  "analysisVersion": 2,
+  "analysisQuality": {
+    "validated": true,
+    "sourceCoverage": 1,
+    "completedSourceCount": 20,
+    "expectedSourceCount": 20
+  },
+  "analysisReport": {
+    "version": 2,
+    "sourceCoverage": {
+      "selected": 20,
+      "completed": 20,
+      "failed": 0,
+      "resumed": 0
+    },
+    "stories": [
+      {
+        "fileName": "_2Hza12mmLs.txt",
+        "analysisVersion": 2,
+        "fileRole": "A long-form revenge-and-liberation family drama built around a postpartum abandonment, hidden medical truth, accumulated evidence, and a public family-room reversal.",
+        "pointOfView": "First-person retrospective narration by the wronged wife, alternating present crisis with controlled flashbacks that explain why she stayed silent and how she prepared.",
+        "tone": "Melodramatic, morally polarized, emotionally cathartic, with sustained indignation followed by legalistic vindication and gentle recovery.",
+        "openingHook": "Immediate maximum-pressure betrayal: the protagonist is physically vulnerable after childbirth when her spouse and in-law demand divorce, deny the child, and present a rival household as the true family; the hook adds a withheld document-based countersecret to prevent early exit.",
+        "protagonistPattern": "A patient, self-sacrificing wife and new mother who appears powerless but has quietly gathered proof, protected assets, secured professional allies, and waited for antagonists to incriminate themselves.",
+        "antagonistPattern": "A vain spouse, status-obsessed parent-in-law, and opportunistic affair partner form a temporary alliance based on fertility pride, inheritance fantasy, money access, and public shaming; their alliance fractures when evidence threatens each member’s self-interest.",
+        "escalationBeats": [
+          "The husband rejects the newborn and tries to force divorce while the mother-in-law endorses replacement of the wife.",
+          "A doctor’s presence introduces an authoritative contradiction to the husband’s claim, but the full proof is delayed.",
+          "The rival woman’s former partner appears indirectly, opening a second paternity conflict and destabilizing the husband’s confidence.",
+          "The protagonist’s prior preparation is revealed: evidence collection, asset protection, legal consultation, and traps for financial theft.",
+          "The antagonists summon a family meeting intended as public humiliation, which the protagonist accepts as a stage for counterattack.",
+          "Allies arrive with legal and personal testimony, converting private abuse into public accountability."
+        ],
+        "revealPattern": "Layered proof escalation: first a suspicious contradiction, then flashback context, then third-party testimony, then official documents, then financial records. Each reveal first answers one question and immediately opens a larger accusation.",
+        "justicePayoff": "The antagonists are exposed in front of the social audience they tried to use, lose credibility, money access, family support, legal safety, and future security, while the protagonist gains legal separation, compensation claims, custody security, and emotional closure.",
+        "epiloguePattern": "After the public collapse, the story shifts to a quiet new home, ordinary domestic routines, legal completion, separation from toxic relatives, and a hopeful single-parent future framed as genuine happiness.",
+        "pacingRules": [
+          "Start with a crisis already at its emotional peak, then use flashbacks only after a new present-time question has been raised.",
+          "Every relief beat is followed by a new threat or message so the viewer never rests for long.",
+          "Delay the most decisive proof until the public climax, even though the protagonist and some allies already know it.",
+          "Let antagonists overstate their cruelty before each reversal so the payoff feels deserved."
+        ],
+        "recurringMotifs": [
+          "Documents as weapons of truth versus documents used for coercion",
+          "Childbirth and fragile new life contrasted with cold family cruelty",
+          "Silence misread as weakness but later reframed as strategy",
+          "Public reputation turning against those who weaponized it",
+          "Money access and household property as visible measures of power",
+          "Medical fact defeating pride, rumor, and family hierarchy"
+        ],
+        "characterSystem": {
+          "victimRole": "A postpartum wife/mother who has endured years of blame, infertility stigma, domestic disrespect, and betrayal while preserving proof and protecting her child.",
+          "antagonistRole": "A husband who externalizes shame, an in-law who values lineage and status over truth, and a rival partner who exploits the husband’s insecurity for financial gain.",
+          "allyRole": "Professionals and an outside wronged party supply credibility: a doctor validates medical reality, a lawyer formalizes protection and claims, and a betrayed former partner exposes the rival lie.",
+          "relationshipPressure": "Marriage, in-law hierarchy, fertility expectations, inheritance anxiety, and extended-family reputation create a social trap where the wife is expected to submit quietly."
+        },
+        "evidenceSystem": {
+          "firstClue": "The first clue functions as an unseen counterweight to the opening humiliation: the protagonist already holds proof that contradicts the husband’s paternity claim.",
+          "proofChain": [
+            "Private suspicion and recorded/photographed signs of infidelity and financial preparation.",
+            "Medical records establishing the true reproductive history and making the husband’s public claim implausible.",
+            "Legal and financial safeguards that prevent forged divorce, asset theft, and continued misuse of marital funds.",
+            "Third-party testimony and communication records showing the affair partner’s lie and financial desperation.",
+            "Property and debt documents revealing the husband also endangered the family estate."
+          ],
+          "revealTiming": "Proof is not dumped immediately; it is held until antagonists commit to public lies, allowing each document to reverse a specific accusation in front of witnesses.",
+          "payoffUse": "The proof converts the protagonist from accused party to legal claimant, turns relatives from hostile jury into ashamed witnesses, and strips the antagonists of denial, resources, and social backing."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "The first 30 seconds combine a shocking divorce demand, rejection of a newborn, a rival baby claim, an in-law insult, and a tease that an official-looking proof will freeze the room moments later.",
+          "incitingIncident": "The husband attempts to discard the protagonist and newborn immediately after birth, forcing the hidden conflict into open confrontation.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The apparent powerless victim is revealed as someone who has already protected assets, secured legal help, gathered proof, and found allies; the antagonists’ invitation to public humiliation becomes an opportunity for exposure.",
+          "climaxMechanism": "Evidence, choice, and public pressure converge when the protagonist chooses to attend the family meeting, waits for the antagonists to repeat their lies before witnesses, then introduces allies and documents in escalating order.",
+          "consequenceChain": [
+            "The affair partner’s paternity and money narrative collapses, exposing her as manipulative rather than legitimate.",
+            "The husband loses marital control, parental moral standing, relatives’ support, and financial stability.",
+            "The mother-in-law loses the lineage fantasy, social face, household security, and family protection.",
+            "The protagonist gains legal leverage, emotional distance, and freedom from the in-law system."
+          ],
+          "endingRecovery": "The protagonist relocates to a safe home near a calming environment, completes legal procedures, cares for the child through ordinary domestic routines, and reframes survival as the beginning of an independent life.",
+          "moralDebate": "The story resolves around whether enduring silence for a future child was self-sacrifice or self-erasure; the final answer validates strategic patience only when it leads to truth, protection, and departure."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A thumbnail/title promise of a wife discarded after childbirth, a husband’s paternity boast, and a hidden medical document that destroys the betrayers.",
+          "hook30s": "The video starts with the spouse denying the newborn, demanding divorce, and elevating a rival baby, while the narrator hints that a document will soon reverse everything.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "The ending invites debate about delayed revenge, exposing private medical truth publicly, denying the remorseful father access, and whether the relatives’ late apologies deserve forgiveness.",
+          "antiDropRules": [
+            "Answer one active question every few minutes, but attach a larger unresolved question to the answer.",
+            "Never let exposition stand alone; attach it to a present-time threat, message, document, or confrontation.",
+            "Repeat the antagonists’ cruel assumptions before reversing them so viewers emotionally invest in the punishment.",
+            "Use named categories of proof—medical, financial, legal, testimony—so the audience feels the case becoming airtight.",
+            "Move from private humiliation to public reversal, then to concrete aftermath instead of ending at the exposure alone."
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Short declarative emotional sentences mixed with longer explanatory recollections; scene endings often pause on a new message, document, visitor, or upcoming confrontation.",
+          "dialoguePattern": "Dialogue carries hierarchy and conflict: antagonists speak in commands, insults, and status claims; the protagonist speaks sparingly and calmly; allies speak in formal, evidentiary statements.",
+          "expositionPattern": "Backstory is delivered after present shocks, usually to explain why the protagonist was silent or how a newly revealed proof was prepared.",
+          "emotionalCadence": "Outrage at cruelty, pause for the protagonist’s controlled restraint, reveal of hidden preparation, small satisfaction, new threat, larger reversal, full catharsis, then quiet healing.",
+          "transitionPattern": "Scenes hand off through interruptions: knocks, calls, messages, official documents, scheduled meetings, and arrivals by allies, each carrying unresolved pressure into the next segment."
+        },
+        "variationSlots": [
+          "The vulnerable opening setting can change as long as the protagonist is publicly or physically disadvantaged.",
+          "The hidden shame can be medical, financial, professional, or legal, provided it explains the antagonist’s projection.",
+          "The replacement figure can be an affair partner, favored sibling, coworker, or false heir.",
+          "The decisive proof can be medical records, contracts, recordings, DNA evidence, bank records, or official registry documents.",
+          "The public reversal stage can be a family meeting, workplace hearing, wedding, funeral gathering, or neighborhood confrontation.",
+          "The ally roles can rotate among doctor, lawyer, investigator, ex-partner, neighbor, coworker, or relative with authority.",
+          "The final recovery setting can vary, but must show ordinary safety, child/family peace, and separation from the toxic system."
+        ],
+        "coverageNotes": [
+          "The transcript sample spans the full chronology with dense coverage at major turning points, so the reconstruction is high confidence.",
+          "Some exact timing and minor transitions between sampled sections may be approximate because the provided material is segmented rather than continuous.",
+          "Names and unique surface details have been abstracted to comply with the no-copying requirement."
+        ],
+        "confidence": 0.93
+      },
+      {
+        "fileName": "_8VECSEJ_74.txt",
+        "analysisVersion": 2,
+        "fileRole": "親を侮辱した息子夫婦と相手家族が、隠していた金銭的不正と欺瞞を公衆の前で暴かれ、主人公夫婦が親子関係を断ち切って再出発する制裁型家族復讐回",
+        "pointOfView": "高齢の母親側の一人称回想で、現在の屈辱場面から始まり、過去の違和感と夫の準備を挟みながら、最後は心理的解放へ進む語り",
+        "tone": "静かな怒り、抑制された悲痛、公的制裁のカタルシス、老夫婦の再生を組み合わせた感情誘導型",
+        "openingHook": "晴れの場で実子と婚約相手から親が排除・侮辱される即時衝突を置き、主人公が怒鳴らず耐えることで「なぜ反撃しないのか」「何を知っているのか」を発生させる",
+        "protagonistPattern": "長年家族に尽くしてきた母と、沈黙の裏で証拠を集めていた有能な夫の夫婦ペア。表面上は弱者だが、実際には情報・人脈・法的準備を持つ逆転主体",
+        "antagonistPattern": "見栄、金銭欲、階級意識に支配された若い夫婦と相手親族。主人公側を貧しい弱者と誤認し、搾取対象として扱うことで自滅する",
+        "escalationBeats": [
+          "結婚式場で親としての席や尊厳を奪われ、金だけを要求される",
+          "過去の金銭要求、実家資産を狙う要求、招待拒否が明かされ、息子の裏切りが一時的な誤解ではなく継続的な搾取だったと分かる",
+          "夫が相手親族や関係者へ証拠を段階的に渡し、華やかな式の裏で不正と借金の連鎖が崩れ始める",
+          "婚約相手の本音、相手父の不正、外部金融関係者、協力者の証言がつながり、敵側の計画が公共空間で露呈する",
+          "息子が真実を知っても親を守らず自己保身を選ぶことで、主人公夫婦の親としての最後の未練が切れる",
+          "法的書類、警察、弁護士、会場側の協力が合流し、金銭的・社会的・家族的制裁が一気に実行される"
+        ],
+        "revealPattern": "最初は侮辱への即時反撃に見えるが、実際には夫が長期間かけて集めた書類、証言、金銭記録、人脈協力を順番に開示する多段階証拠劇。各証拠はその場の発言を否定するだけでなく、次の人物の嘘を暴く鍵になる",
+        "justicePayoff": "敵側は結婚式という承認欲求の舞台を失墜の公開処刑場に変えられ、金銭責任、刑事責任、社会的信用の喪失、家族崩壊を同時に背負う。主人公夫婦は援助を拒否し、親子の縁を切ることで最終的な主導権を得る",
+        "epiloguePattern": "事件後の法的処理と加害者たちの転落を短く報告し、主人公夫婦は家を整理し、息子の思い出を処分し、貯金と時間を自分たちの老後の幸福へ使う静かな再生で終わる",
+        "pacingRules": [
+          "強い屈辱場面を先に置き、直後に過去の伏線を小出しにして、現在進行の式崩壊へ戻す",
+          "一つの謎を解いた直後に、より大きな黒幕・証拠・協力者・選択問題を提示して、解決感と未解決感を交互に作る",
+          "主人公は感情的に爆発せず、夫や証拠が淡々と進むため、敵側の醜態がより強調される",
+          "中盤以降は暴露の密度を上げ、人物ごとに個別の破滅を与えてカタルシスを分割回収する"
+        ],
+        "recurringMotifs": [
+          "華やかな祝いの場と冷たい屈辱の対比",
+          "隅に追いやられた席が後に特等席へ反転する構図",
+          "厚い封筒や通帳など、愛情にも制裁にもなり得る金銭アイテム",
+          "手を握る夫婦の連帯",
+          "親の愛情が限界を超えて決別へ変わる瞬間",
+          "見栄で築いた家族像が公衆の前で崩壊する演出"
+        ],
+        "characterSystem": {
+          "victimRole": "長年尽くしてきたが、実子から金銭源・邪魔者として扱われる親世代",
+          "antagonistRole": "親の愛情や世間体を利用して金銭と地位を得ようとする婚約相手側および自己保身の実子",
+          "allyRole": "沈黙して準備する配偶者、良心を持つ内部告発者、法務関係者、会場側協力者、外部証言者",
+          "relationshipPressure": "血縁と結婚という『親なら助けるべき』『式を壊すべきでない』という圧力が主人公側を縛るが、息子自身の拒絶発言によってその圧力が解除される"
+        },
+        "evidenceSystem": {
+          "firstClue": "息子の不自然な金銭要求と書類の痕跡により、単なる結婚準備の出費ではなく、相手家族の資金難と借金肩代わり計画が疑われる",
+          "proofChain": [
+            "金銭記録や借入関係の書類により、息子が相手家族の負債構造へ組み込まれていることを示す",
+            "相手家族の発言メモや内部告発により、結婚の動機が愛情ではなく搾取であることを示す",
+            "外部関係者、法務関係者、会場側協力者の証言と手続きにより、不正が単なる家庭内トラブルではなく法的・社会的問題であることを確定させる"
+          ],
+          "revealTiming": "前半では夫が何かを知っている気配だけを見せ、中盤で証拠の意味を段階開示し、終盤で主人公側が最初から会場と進行を掌握していたと判明する",
+          "payoffUse": "証拠は敵の言い逃れを封じるだけでなく、息子に最後の選択を迫り、資金援助拒否・親子関係断絶・刑事手続きへの接続を正当化する"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "冒頭から親が晴れの場で席を奪われ、金だけを要求されるショックを提示し、主人公夫の不自然な冷静さで『反撃の仕込み』への興味を作る",
+          "incitingIncident": "実子が親をかばわず、婚約相手側と同じく親を見下す態度を取ったことで、主人公夫婦が最後の確認を終え、計画された暴露へ進む",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "息子は被害者として救われる対象かもしれないという期待が、自己保身のために親を切り捨てる加害協力者だったという認識へ反転する",
+          "climaxMechanism": "証拠の連続提示、息子自身の選択、公開された会場の視線、弁護士や警察の介入が同時に作用し、誰も言い逃れできない状態で制裁が確定する",
+          "consequenceChain": [
+            "相手家族は不正と負債が露見し、社会的信用・会社・家族関係を失う",
+            "婚約相手は搾取計画と個人的負債が暴かれ、華やかな自己像を失う",
+            "息子は親の援助を失い、借金と孤独を背負って生きることになる",
+            "主人公夫婦は親としての義務感から解放され、自分たちの人生を取り戻す"
+          ],
+          "endingRecovery": "家の中から息子の痕跡を片付け、救済用だった貯金を老後資金へ戻し、夫婦で旅行に出ることで心理的にも生活的にも新しい章へ進む",
+          "moralDebate": "血のつながった子でも、親を搾取し尊厳を踏みにじった場合に救わない選択は正当か、という問いを『本人が自分で選んだ結果を負うべき』として解決する"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "結婚式で親を見下した息子夫婦が、隠された借金と不正を暴かれて地獄を見るという高強度の因果応報 promise",
+          "hook30s": "晴れの場の入口で親が席を与えられず、金だけを求められる即時侮辱シーン",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "『親でもここまでされたら見捨ててよいのか』『救える金があるのに出さないのは正しいのか』という議論を誘う決別型カタルシス",
+          "antiDropRules": [
+            "冒頭で最大級の屈辱を出し、主人公側の沈黙に理由があると示す",
+            "証拠を一度に全部出さず、人物単位で小分けにして暴く",
+            "息子を単純な被害者にせず、中盤で本人の選択を描いて制裁の納得度を上げる",
+            "反撃は怒鳴り合いではなく、書類・証言・公的手続きで進める",
+            "制裁後に生活再建を入れ、復讐だけでなく主人公の幸福で閉じる"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い心理描写と状況説明を積み重ね、節目ごとに『その時』『しかし』『この直後』型の転換で次の展開へ押し出すリズム",
+          "dialoguePattern": "敵側は露骨な見下しと自己正当化で醜さを示し、主人公夫婦は低く静かな返答で優位性と覚悟を示す",
+          "expositionPattern": "現在の式場進行を止めずに、過去の金銭要求や証拠収集を回想として差し込み、直後に現在の暴露へ接続する",
+          "emotionalCadence": "屈辱から始まり、違和感、証拠の緊張、息子への最後の期待、完全失望、公開制裁、静かな解放、老夫婦の温かな再生へ進む",
+          "transitionPattern": "各場面は未回収の証拠、未登場の協力者、次に問われる人物を残して切り替わり、解決直後に次の疑問を置く"
+        },
+        "variationSlots": [
+          "舞台は結婚式、法事、披露宴、親族会、会社式典など公衆の承認が絡む場に変更可能",
+          "主人公は母親、父親、祖父母、義両親など家族内で軽視される年長者に変更可能",
+          "夫の専門性は銀行、法律、不動産、医療、会計、警察OBなど証拠収集に説得力を持つ職能へ置換可能",
+          "敵側の不正は借金、横領、詐欺、遺産狙い、会社乗っ取り、婚姻詐欺などへ変更可能",
+          "内部告発者は妹、親友、元恋人、部下、取引先、会場スタッフなど身近だが軽視されていた人物に変更可能",
+          "救済可能な資産は通帳、土地、退職金、保険金、相続財産、結婚祝いなどへ置換可能",
+          "最終回復は旅行、引っ越し、店の開業、趣味再開、夫婦の新生活など静かな幸福の形に変更可能"
+        ],
+        "coverageNotes": [
+          "提示されたのは全体からのサンプルだが、0%から100%まで主要局面が含まれており、構造把握の確度は高い",
+          "一部の固有名詞や細部は音声認識由来の揺れがあるため、人物名・施設名・金額などは抽象化して扱った",
+          "証拠の細かな法的整合性よりも、視聴者向けの因果応報・公開制裁・親子決別の感情設計を中心に分析した"
+        ],
+        "confidence": 0.89
+      },
+      {
+        "fileName": "_kLHWAjnmnM.txt",
+        "analysisVersion": 2,
+        "fileRole": "abused daughter-in-law revenge story in which a discarded caregiver uses the deceased elder’s hidden legal preparations to expose family exploitation and escape into an independent life",
+        "pointOfView": "first-person retrospective victim narrator who appears calm in the present while gradually disclosing years of hidden abuse, evidence, and preparation",
+        "tone": "quietly vengeful, emotionally restrained, legally procedural, cathartic, and ultimately healing",
+        "openingHook": "the story opens at the moment of maximum humiliation: after a funeral, the protagonist is declared useless, forced out of the household, and treated as disposable labor, while a hidden document implies the abusers have already lost without knowing it",
+        "protagonistPattern": "long-suffering caregiver wife who has endured domestic servitude, emotional abuse, and marital betrayal, but secretly possesses proof and a posthumous mandate from the only family member who valued her",
+        "antagonistPattern": "entitled spouse-and-in-law pair who treat family status as ownership, assume unpaid care work is owed to them, weaponize reputation, and become overconfident because they underestimate the protagonist",
+        "escalationBeats": [
+          "The protagonist is discarded immediately after the elder’s death, but accepts the divorce calmly because it protects her from the household’s coming collapse.",
+          "The antagonists attempt to keep using her labor even after expelling her, then smear her publicly when she refuses.",
+          "A legal ally confirms that the deceased elder anticipated the betrayal and left documents, records, and instructions that convert the protagonist from victim into executor of justice.",
+          "At a public family gathering, the antagonists stage a reputation trap, but each accusation becomes the setup for a stronger counter-reveal.",
+          "The opposing side repeatedly produces what they believe are decisive defenses, only for each to be inverted by better authenticated evidence.",
+          "The final payoff reveals that the protagonist was not merely avenging herself but was being rescued from debt, exploitation, and future bondage."
+        ],
+        "revealPattern": "layered documentary reveal: a mysterious envelope first functions as emotional support, then as legal authority, then as a sequence of proofs that overturns every lie in public order",
+        "justicePayoff": "the abusers lose reputation, inheritance expectations, financial security, housing, romantic leverage, and social standing, while the protagonist receives validation, protection, compensation pathways, and a clean exit",
+        "epiloguePattern": "extended recovery epilogue showing small acts of freedom, ordinary work, food, flowers, private remembrance, and restored self-worth rather than ending only on revenge",
+        "pacingRules": [
+          "Introduce a concrete humiliation or threat, answer it with a partial proof, then immediately open a larger hidden wrongdoing.",
+          "Stage major reveals in public so emotional shame, legal consequence, and social judgment land at the same time.",
+          "Keep the protagonist outwardly calm while antagonists become louder and more self-incriminating.",
+          "Alternate present-tense confrontation with short backstory flashbacks that explain why each piece of evidence exists.",
+          "Delay the full meaning of the deceased ally’s plan until late, so the story keeps upgrading from revenge to rescue."
+        ],
+        "recurringMotifs": [
+          "sealed envelope or hidden documents as delayed justice",
+          "morning coffee or tea as recovered personal time",
+          "funeral and memorial rituals as public arenas for truth",
+          "keys, doors, and thresholds as symbols of escape",
+          "food and cooking as both exploited labor and later reclaimed dignity",
+          "phones and messages as pressure devices that expose hypocrisy",
+          "public family reputation turning against the antagonists"
+        ],
+        "characterSystem": {
+          "victimRole": "caregiver outsider inside the family who performs essential labor but is denied belonging, money, respect, and marital loyalty",
+          "antagonistRole": "status-obsessed household authorities who combine elder abuse, financial greed, marital betrayal, and reputation manipulation",
+          "allyRole": "deceased elder as posthumous protector, legal professional as procedural enforcer, and one sympathetic relative as emotional witness",
+          "relationshipPressure": "the protagonist is trapped by daughter-in-law expectations, filial hierarchy, memorial obligations, and the fear of being labeled selfish or ungrateful by relatives"
+        },
+        "evidenceSystem": {
+          "firstClue": "a concealed envelope signals that the protagonist’s quiet compliance is strategic rather than submissive",
+          "proofChain": [
+            "private records and financial traces establish long-term exploitation and suspicious money movement",
+            "recorded conversations and third-party documentation expose infidelity, intent, and contempt",
+            "formal legal instruments and authenticated capacity records defeat the antagonists’ inheritance defense",
+            "publicly visible phone activity and an unexpected arrival make the affair and money motive undeniable",
+            "asset, debt, and hidden-fund disclosures explain why the divorce was protective, not defeat"
+          ],
+          "revealTiming": "proof is withheld until the antagonists make public accusations or overconfident legal claims, so each reveal lands as an immediate reversal of their own words",
+          "payoffUse": "the proof chain transfers authority to the protagonist and lawyer, invalidates the smear campaign, blocks asset theft, enables compensation claims, and destroys the antagonists’ social credibility"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "a cruel post-funeral expulsion creates instant outrage, while the protagonist’s calm acceptance and hidden envelope create the mystery of why she is not resisting",
+          "incitingIncident": "the forced divorce and removal from the household becomes irreversible, separating the protagonist from the family and activating the deceased elder’s plan",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "the household’s claim that the elder lacked capacity, intended to favor them, and saw the protagonist as disposable is reversed: the elder was mentally clear, strategically patient, and deliberately empowered her",
+          "climaxMechanism": "legal documents, recorded or documented proof, financial records, public witnesses, and the antagonists’ own panic converge during a family ritual, turning their reputation trap into a tribunal",
+          "consequenceChain": [
+            "the antagonists’ accusations are discredited in front of relatives",
+            "their expected inheritance and asset control collapse",
+            "hidden debt and misuse of funds become unavoidable",
+            "the affair becomes public and financially actionable",
+            "housing, business stability, and social standing deteriorate",
+            "the protagonist exits before liability can attach to her"
+          ],
+          "endingRecovery": "the protagonist lives alone peacefully, accesses the elder’s private gift, begins ordinary paid work connected to her caregiving skills, enjoys personal time, and remembers the elder with gratitude rather than remaining trapped in revenge",
+          "moralDebate": "the story resolves the tension between endurance and self-rescue: quiet patience is honored only because it becomes strategic evidence-gathering and legal action, not endless self-sacrifice"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "a wronged caregiver is thrown away after years of service, but a dead elder’s secret will make the greedy family lose everything",
+          "hook30s": "immediate divorce demand after a funeral, contempt from in-laws, and the protagonist silently accepting while holding a hidden countermeasure",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "viewers are invited to judge whether the protagonist’s calm legal revenge was merciful, deserved, or too restrained, especially because she walks away instead of personally destroying them further",
+          "antiDropRules": [
+            "answer each planted mystery with a concrete document or witnessed event before introducing the next layer",
+            "keep antagonists active and overconfident so viewers wait for their humiliation",
+            "use public settings for proof reveals to intensify shame and validation",
+            "avoid long neutral exposition by attaching every backstory section to an object, message, or document",
+            "include emotional relief scenes after heavy revenge beats to prevent fatigue"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "short, steady narrative sentences with frequent emotional pauses; scenes are built through repeated calm observations followed by sharp reversal lines",
+          "dialoguePattern": "antagonist dialogue is accusatory and status-driven, protagonist dialogue is minimal and controlled, and the legal ally’s dialogue delivers authoritative pivots",
+          "expositionPattern": "context is revealed through flashbacks triggered by physical evidence, phone messages, legal files, and ritual preparations rather than standalone explanation",
+          "emotionalCadence": "humiliation opens the wound, quiet preparation creates suspense, public exposure releases anger, hidden kindness produces tears, and the epilogue settles into peace",
+          "transitionPattern": "each scene ends with an unresolved object or upcoming deadline: envelope, message, legal visit, family gathering, next document, final key, then new life"
+        },
+        "variationSlots": [
+          "type of caregiving burden",
+          "specific household hierarchy",
+          "nature of hidden legal document",
+          "kind of financial misconduct",
+          "form of marital betrayal",
+          "public confrontation venue",
+          "professional ally role",
+          "sympathetic witness among relatives",
+          "final private gift from the deceased ally",
+          "protagonist’s post-escape occupation"
+        ],
+        "coverageNotes": [
+          "The supplied segments span the complete story arc, allowing reconstruction of hook, escalation, public confrontation, legal payoff, and epilogue.",
+          "Some sampled text contains transcription noise, but the structural pattern and causal progression are clear.",
+          "Unique identifiers and highly specific plot particulars have been abstracted to preserve the requested non-copying constraint."
+        ],
+        "confidence": 0.93
+      },
+      {
+        "fileName": "_t_q7cBQca4.txt",
+        "analysisVersion": 2,
+        "fileRole": "betrayed-wife revenge melodrama that evolves from infidelity exposure into a multi-layer family-crime mystery and chosen-family recovery story",
+        "pointOfView": "first-person wronged-wife narration with retrospective clarity; the narrator experiences shocks in real time but later organizes them as evidence-driven revelations",
+        "tone": "high-emotion domestic suspense: wounded dignity, cold anger, escalating dread, courtroom-adjacent vindication, then bittersweet healing",
+        "openingHook": "the story opens at the moment the protagonist secretly witnesses her spouse and trusted friend celebrating a pregnancy inside her own home, immediately combining adultery, infertility shame, family replacement, and imminent abandonment",
+        "protagonistPattern": "long-suffering middle-aged wife who has sacrificed career, money, caregiving labor, and self-worth to earn acceptance in a hostile marital family, then becomes a calm evidence-gatherer once the betrayal exposes a deeper fraud",
+        "antagonistPattern": "a coalition of spouse, mother-in-law, and apparent affair partner who weaponize lineage, infertility, property control, family duty, and sacred memories; later the coalition fractures as hidden motives are revealed",
+        "escalationBeats": [
+          "The apparent adultery is intensified by the discovery that the spouse had concealed his own infertility while allowing the wife to be blamed for years.",
+          "Money the wife believed was family support is revealed to have been rerouted through secret channels, opening a mystery about a hidden dependent and long-term deception.",
+          "A property dispute and threat against the wife's parents' memorial items create a deadline that forces her into a public confrontation.",
+          "A supposedly dead family member is found to be alive, turning the story from marital betrayal into identity erasure and institutional concealment.",
+          "The apparent affair partner's pregnancy becomes the key contradiction that exposes both the spouse's delusion and the mother-in-law's bloodline scheme.",
+          "A final reversal reframes the apparent betrayer as a covert ally acting under coercion and pursuing a long revenge to expose older crimes."
+        ],
+        "revealPattern": "each reveal first appears to answer a domestic question, then reclassifies earlier scenes: medical records reframe infertility blame, bank records reframe financial support, public records reframe family history, institutional traces reframe a missing person, and a late personal document reclassifies the apparent affair as a rescue operation",
+        "justicePayoff": "the antagonists are trapped by their own boastful confessions in a formal setting, lose the property advantage, face legal investigation for financial and identity-related crimes, and ultimately collapse socially and legally",
+        "epiloguePattern": "after revenge, the protagonist chooses not pure isolation but a difficult chosen-family life, using recovered assets to help restore the hidden victim's legal identity and medical dignity while raising the next generation in a warmer home",
+        "pacingRules": [
+          "Every emotional blow is followed quickly by a concrete document, deadline, or physical object that gives the narrator a next action.",
+          "The story repeatedly closes one question while opening a larger one, preventing the initial adultery plot from exhausting viewer curiosity.",
+          "Scenes hand off through threats, messages, records, or appointments rather than quiet reflection, keeping forward pressure constant.",
+          "Major villains overplay their certainty just before the protagonist reveals that their words or assumptions have become evidence."
+        ],
+        "recurringMotifs": [
+          "infertility and bloodline pressure as social control",
+          "documents as weapons: medical records, bank records, family registry, property records, formal agreements",
+          "money framed first as devotion, then exploitation, then restitution",
+          "a family heirloom shifting from curse to hope",
+          "doors, hidden rooms, facilities, and formal offices as spaces where truth is concealed or exposed",
+          "parental memory used first as hostage, then as moral anchor",
+          "biological family versus chosen family"
+        ],
+        "characterSystem": {
+          "victimRole": "the wife is positioned as the blamed infertile outsider, unpaid caregiver, financial source, and emotional scapegoat before becoming the investigator and moral decision-maker",
+          "antagonistRole": "the spouse represents cowardice and entitlement, the elder matriarch represents lineage obsession and concealment, and the apparent lover initially functions as replacement wife before being reinterpreted",
+          "allyRole": "professional helpers provide verification, legal leverage, and surveillance; the apparent rival is later revealed as a morally compromised but sacrificial ally; the hidden family member becomes the living proof of the old crime",
+          "relationshipPressure": "marriage, in-law hierarchy, eldest-son expectations, fertility norms, memorial obligations, and property ownership are used to make the protagonist feel she has no right to resist"
+        },
+        "evidenceSystem": {
+          "firstClue": "a hidden medical document immediately undermines the wife's assumed guilt and proves the spouse allowed years of false blame",
+          "proofChain": [
+            "private documents expose concealed infertility and long-term financial rerouting",
+            "official records expose contradictions in family identity, property ownership, debt, and a supposedly closed death record",
+            "institutional traces and witness fragments expose the survival and concealment of a person erased from public life",
+            "recorded admissions in a formal meeting transform villain arrogance into usable proof",
+            "a late personal document links the old family secret to the protagonist's own parental tragedy"
+          ],
+          "revealTiming": "proof changes meaning in stages: early evidence supports divorce revenge, midpoint evidence points to a hidden person and lineage fraud, climax evidence defeats the property trap, and late evidence reframes the whole betrayal as connected to an older crime",
+          "payoffUse": "the protagonist uses proof to refuse coerced documents, trigger legal action, freeze property disposal, recover money, expose identity fraud, and ultimately decide how to use restitution"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "the viewer is locked in by an immediate forbidden scene: the wife sees her husband and trusted friend celebrating pregnancy in the marital home while the wife's long infertility suffering is invoked",
+          "incitingIncident": "the wife signs away the marriage under pressure and leaves the home, but secretly preserves evidence that makes the separation the beginning of investigation rather than defeat",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "the central question changes from 'how will the wife punish adultery?' to 'what long-buried family crime is the adultery performance hiding?'",
+          "climaxMechanism": "a coerced signing meeting becomes a staged exposure: the villains believe the wife is surrendering, but their threats and confessions are captured in front of a formal authority, while medical proof destroys the husband's claimed future",
+          "consequenceChain": [
+            "the property waiver fails and the wife gains leverage over disputed assets",
+            "legal and police processes begin against the spouse and matriarch",
+            "the apparent affair partner disappears from the villain side and reemerges as the protector of the hidden victim",
+            "the protagonist receives restitution but must decide whether money means escape or responsibility"
+          ],
+          "endingRecovery": "the protagonist lives in a modest coastal home with the former rival, the restored hidden victim, and the children; legal identity is being rebuilt, medical recovery continues, and daily caregiving replaces the old abusive family duty with chosen mutual care",
+          "moralDebate": "the plot resolves revenge legally, but the emotional resolution asks whether freedom should mean leaving all pain behind or using recovered resources to protect people who were also victims"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "a wife discovers her husband and best friend celebrating pregnancy, but one hidden medical fact makes the entire betrayal impossible and exposes a darker family secret",
+          "hook30s": "start with the wife silently witnessing the replacement-family scene, then immediately imply a later devastating statement that reverses the husband's certainty",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "viewers can debate the protagonist's final choice to spend recovered money and emotional energy on people tied to the family that destroyed her life, instead of starting over alone",
+          "antiDropRules": [
+            "answer each mystery within one or two segments but attach a larger contradiction to the answer",
+            "alternate emotional abuse scenes with document-based progress so the protagonist never appears passive for too long",
+            "give antagonists visible short-term victories before reversing them with prepared evidence",
+            "use deadlines and formal appointments to make investigation feel time-limited",
+            "reframe at least one major character late so the story remains larger than simple punishment"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "dense, sequential narration with frequent emotional intensifiers; long reflective passages are interrupted by concrete actions, calls, documents, and confrontations",
+          "dialoguePattern": "dialogue is primarily used as domination, threat, confession, and reversal; antagonists speak with certainty until the protagonist turns their words into proof",
+          "expositionPattern": "backstory is delivered through objects, records, caregiving memories, financial traces, and professional reports rather than neutral summary",
+          "emotionalCadence": "humiliation leads to cold clarity, cold clarity leads to investigation, investigation leads to public reversal, public reversal leads to a deeper grief reveal, and grief resolves into imperfect warmth",
+          "transitionPattern": "scenes transition by unresolved pressure: a phone call creates a deadline, a document opens a contradiction, a threat creates a plan, a confession creates a new hidden question"
+        },
+        "variationSlots": [
+          "the initial betrayal can be adultery, inheritance theft, adoption conflict, or caregiving abandonment",
+          "the medical impossibility clue can be replaced by DNA, debt, insurance, immigration, or adoption records",
+          "the hidden person can be a sibling, child, ex-spouse, parent, or institutionalized relative",
+          "the formal confrontation can occur at a notary office, lawyer meeting, family council, hospital, workplace, or court mediation",
+          "the symbolic object can be a baby item, ring, family altar item, photograph, recipe, house key, or inheritance keepsake",
+          "the late ally reversal can belong to the apparent rival, a sibling-in-law, a caregiver, a neighbor, or a professional investigator",
+          "the recovery setting can be a coastal home, rural house, small shop, shared apartment, or community workplace"
+        ],
+        "coverageNotes": [
+          "The transcript was sampled in chronological segments rather than read line-by-line, so minor scene ordering or secondary character functions may be approximate.",
+          "Exact proper nouns and distinctive scene particulars have been abstracted to comply with the no-copying requirement.",
+          "The analysis emphasizes channel formula, retention mechanics, and structural pattern over legal realism or literal plot plausibility."
+        ],
+        "confidence": 0.9
+      },
+      {
+        "fileName": "_t80ubl44AU.txt",
+        "analysisVersion": 2,
+        "fileRole": "A long-form family-mystery revenge story in which an impoverished widow investigates a hidden account, a disputed family property, and layered sacrifices behind apparent betrayal.",
+        "pointOfView": "First-person widow narrator who processes each clue through fear, grief, maternal duty, and gradually increasing agency.",
+        "tone": "Melodramatic domestic suspense with legal-financial thriller elements, repeated emotional reversals, and a final restorative family-healing tone.",
+        "openingHook": "Immediate bank-counter shock: a desperate loan request is interrupted by discovery of a huge unknown balance tied to a supposedly impossible sender, creating instant contradiction and fear.",
+        "protagonistPattern": "A financially cornered mother protecting children and a family business, initially passive and ashamed, then becoming an amateur investigator who learns to use documents, recordings, and moral judgment.",
+        "antagonistPattern": "The visible opponent begins as a cruel in-law using property law and intimidation, but the true opposition shifts through corrupt professionals, exploitative developers, old debts, and inherited family secrecy.",
+        "escalationBeats": [
+          "The hidden money solves the protagonist's material crisis but is morally unusable because its origin threatens the dead spouse's reputation.",
+          "The family property is attacked through legal pressure, social humiliation, and a deadline, forcing the protagonist from confusion into investigation.",
+          "Each apparent enemy is reclassified: trusted allies betray, hostile relatives may be protecting, and the real threat emerges from old financial coercion.",
+          "The protagonist sets a trap that turns the enemy's arrogance into recorded proof.",
+          "The final emotional escalation moves beyond legal victory into whether the protagonist will accept money born from generations of sacrifice."
+        ],
+        "revealPattern": "Layered document-reversal structure: every clue first appears incriminating, then later changes meaning when paired with another record, witness, or hidden inscription.",
+        "justicePayoff": "Public confrontation in a formal business setting where recordings, original documents, and a higher legal authority collapse the corrupt scheme, expose the real villains, and clear the misunderstood relative.",
+        "epiloguePattern": "Concrete restoration: property secured, business rebuilt, children moving forward, estranged relatives cared for, and the symbolic object returned to its rightful emotional place.",
+        "pacingRules": [
+          "End most scenes with a new contradiction rather than full resolution, so each answer opens a larger family secret.",
+          "Alternate domestic vulnerability with institutional pressure: bank, registry, legal office, care facility, business office, then return home for emotional processing.",
+          "Use deadlines and documents to keep abstract family conflict physically actionable.",
+          "Delay moral certainty: the story repeatedly makes the viewer revise who is villain, victim, and protector."
+        ],
+        "recurringMotifs": [
+          "A damaged family seal or keepsake that shifts from sentimental memory to legal clue to trauma symbol to restored bond",
+          "Hidden accounts, ledgers, receipts, and formal papers as emotional weapons",
+          "Family home and small business as the embodiment of dignity",
+          "Money as both salvation and contamination",
+          "Self-sacrifice disguised as betrayal"
+        ],
+        "characterSystem": {
+          "victimRole": "A widowed mother and her children who face eviction, poverty, reputational danger, and inherited secrets they did not create.",
+          "antagonistRole": "A rotating antagonist mask: first the aggressive relative, then a trusted professional, then a predatory outside financier/developer network.",
+          "allyRole": "Allies are unstable until proven by sacrifice or accountability; the eventual allies include a misunderstood relative, an ethical senior authority, and family members who accept hardship together.",
+          "relationshipPressure": "In-law hierarchy, deceased-spouse loyalty, parental duty, and fear of shaming children prevent the protagonist from acting quickly even when she holds useful information."
+        },
+        "evidenceSystem": {
+          "firstClue": "The hidden bank balance functions as a rescue object that cannot be touched because its sender identity creates a supernatural/legal impossibility and moral suspicion.",
+          "proofChain": [
+            "Financial records reveal recurring transfers under a misleading identity.",
+            "Property and seal-related documents show that the family home's ownership history is not what the protagonist believed.",
+            "A private storage location produces documents that reframe the hostile relative's behavior as potentially protective.",
+            "Care-facility and personal records reveal a concealed living family member and a long-running repayment motive.",
+            "A deliberate trap captures corrupt actors admitting the scheme and threats."
+          ],
+          "revealTiming": "Proof changes meaning at the midpoint and again after the apparent legal victory: first the enemy becomes a protector, then the source of the money becomes an even older act of sacrifice.",
+          "payoffUse": "Evidence is not merely discovered; it is staged in front of powerful witnesses so that corrupt parties cannot deny it and the property transfer can be stopped."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "A desperate woman expecting rejection instead sees an impossible financial fact that could save her family but implicates the dead, forcing viewers to stay for the explanation.",
+          "incitingIncident": "The protagonist learns of a large hidden account connected to a deceased-family identity while simultaneously facing pressure to surrender the home and business.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The apparent greedy in-law is revealed as a terrified protector trying to remove the family from danger, while a trusted legal ally becomes a compromised threat.",
+          "climaxMechanism": "The protagonist combines hidden documents, secretly recorded admissions, a public signing moment, and intervention by a higher legal authority to force the villains into exposure.",
+          "consequenceChain": [
+            "The forced redevelopment and eviction collapse after evidence of coercion and corruption surfaces.",
+            "The family property is restored and the misunderstood relative is emotionally reintegrated.",
+            "The protagonist must still decide how to handle the morally burdened hidden money."
+          ],
+          "endingRecovery": "The home-business is renovated and operating again, the children progress into adulthood, the misunderstood relative begins a quieter independent life, and the estranged elder receives care and emotional reunion.",
+          "moralDebate": "The protagonist chooses debt, labor, and transparent responsibility over simply accepting money created by others' hidden suffering, reframing justice as dignity rather than enrichment."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A widow discovers a massive secret account tied to a dead relative, then learns her hated in-law and late husband hid a shocking family truth.",
+          "hook30s": "Start at the bank with the impossible balance and the narrator nearly collapsing before explaining poverty, eviction pressure, and dead-spouse secrecy.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "The ending invites debate because the protagonist refuses the easiest financial rescue and instead preserves dignity, care, and self-reliance.",
+          "antiDropRules": [
+            "Answer the current mystery before fatigue sets in, but attach the answer to a larger contradiction.",
+            "Keep villains concrete through deadlines, threats, signatures, and financial amounts rather than abstract malice.",
+            "Reframe characters multiple times to renew viewer investment.",
+            "Use family objects as memory anchors so complex legal reveals remain emotionally legible.",
+            "Place quiet domestic scenes after intense reveals to let viewers process while opening the next question."
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Long explanatory narration punctuated by short shock reactions, deadline statements, and document discoveries.",
+          "dialoguePattern": "Dialogue is functional conflict: threats, refusals, pleas, confessions, and evidence challenges carry scene momentum.",
+          "expositionPattern": "Backstory is inserted immediately after a new clue appears, so explanation feels like investigation rather than static history.",
+          "emotionalCadence": "Fear and poverty lead to anger, then suspicion, betrayal, reversal, strategic empowerment, public catharsis, grief, and finally gentle restoration.",
+          "transitionPattern": "Scenes hand off through unresolved artifacts: a bank record leads to home documents, a seal leads to storage, storage leads to care records, care records lead to a trap, and the trap leads to moral resolution."
+        },
+        "variationSlots": [
+          "The family business type can change while retaining the home-as-dignity function.",
+          "The hidden asset can be a bank account, insurance payout, trust, property deed, or inheritance.",
+          "The damaged keepsake can be a seal, key, pendant, photo, watch, or handmade object.",
+          "The apparent antagonist can be an in-law, sibling, step-parent, adult child, or business partner.",
+          "The corrupt institution can be a law office, bank branch, real-estate company, tax office, or medical facility.",
+          "The old secret can involve debt, adoption, inheritance, abuse, disappearance, or identity concealment.",
+          "The final moral choice can be refusing money, redistributing it, using it for care, or accepting it with conditions."
+        ],
+        "coverageNotes": [
+          "The supplied segments are sampled but span the full chronology, allowing reconstruction of the main progression.",
+          "Some exact legal mechanics are abstracted because the transcript appears OCR-distorted and may contain transcription errors.",
+          "Names and distinctive wording have been intentionally omitted or generalized to satisfy the no-copying constraint."
+        ],
+        "confidence": 0.86
+      },
+      {
+        "fileName": "0pvYvhVrZPM.txt",
+        "analysisVersion": 2,
+        "fileRole": "A long-form domestic revenge story in which a mistreated spouse uses legal timing, hidden evidence, and family-public exposure to escape exploitation and reclaim autonomy.",
+        "pointOfView": "First-person retrospective narration from the wronged spouse, alternating between present-tense crisis scenes and flashback explanations that reframe the crisis as a prepared counterattack.",
+        "tone": "Quietly indignant, controlled, cathartic, and morally vindicating; the protagonist rarely explodes emotionally, while antagonists unravel loudly through panic, greed, and contradiction.",
+        "openingHook": "Immediate deadline pressure: an older in-law forces the protagonist to submit a divorce document within minutes, but the protagonist responds calmly in a way that signals hidden preparation and reverses expected victim behavior.",
+        "protagonistPattern": "Long-suffering middle-aged spouse who has endured domestic contempt for decades, appears passive to antagonists, but has secretly gathered evidence, sought expert advice, protected key assets, and planned an exit.",
+        "antagonistPattern": "Entitled spouse-and-parent pair who treat the protagonist as labor, collateral, and scapegoat; they believe status, family authority, and financial manipulation will make her obey.",
+        "escalationBeats": [
+          "A forced divorce deadline becomes the protagonist's opportunity rather than defeat.",
+          "Flashbacks reveal suspicious financial behavior, an affair, and a plan to exploit the protagonist's separate asset.",
+          "An ally confirms the betrayal and motivates the protagonist to stop enduring quietly.",
+          "A legal professional provides a simple procedural move that neutralizes the antagonists' scheme.",
+          "The spouse's expected financial rescue collapses in real time, exposing that the protagonist knew more than anyone assumed.",
+          "A wider family meeting turns the antagonists' smear campaign into a public evidence trial.",
+          "Final consequences strip the antagonists of money, status, support, and domestic comfort.",
+          "The protagonist settles into a protected, quiet home life with her supportive child and ancestral memory."
+        ],
+        "revealPattern": "Layered evidence reveal: early clues create suspicion, private records confirm betrayal, recorded speech proves intent, legal paperwork proves attempted exploitation, and public documents later expose additional hidden theft. Each reveal answers one question while opening a larger betrayal.",
+        "justicePayoff": "Justice arrives through procedure rather than violence: the protagonist lets the antagonists trigger their own collapse, then uses valid filings, asset protection, evidence disclosure, and public accountability to make their lies unusable.",
+        "epiloguePattern": "After punishment is complete, the story slows into concrete recovery: legal closure, reunion with a loyal family member, return to a safe personal space, small domestic rituals, remembrance of a protective parent, and the first peaceful morning of a new life.",
+        "pacingRules": [
+          "Open with a high-pressure confrontation, then repeatedly interrupt the present crisis with flashbacks that explain why the protagonist is calmer than expected.",
+          "Resolve each mini-mystery quickly but attach it to a larger mystery: why the divorce now, why the asset matters, why the spouse is panicking, what else has been stolen.",
+          "Alternate private evidence-gathering scenes with public confrontation scenes to prevent the story from becoming only exposition.",
+          "Use antagonist panic as a tempo marker: each procedural or evidentiary move causes a more visible collapse."
+        ],
+        "recurringMotifs": [
+          "Documents as weapons and shields",
+          "Deadlines and office closing times",
+          "Phones, messages, recordings, and missed calls as pressure devices",
+          "Cold weather versus warm tea as emotional contrast",
+          "A neglected home or inherited place as proof of selfhood",
+          "Silence as strategy rather than weakness",
+          "Family duty being twisted into exploitation"
+        ],
+        "characterSystem": {
+          "victimRole": "A spouse positioned as unpaid caregiver, household servant, and convenient financial resource, underestimated because she has tolerated mistreatment for years.",
+          "antagonistRole": "A cheating spouse and enabling parent who coordinate emotional abuse, financial deception, and reputation control while each believes the other will secure their desired future.",
+          "allyRole": "A loyal adult child supplies emotional validation and a key observation; a legal expert converts emotion and suspicion into actionable strategy.",
+          "relationshipPressure": "Marriage, in-law hierarchy, filial duty, household dependence, and public family reputation all pressure the protagonist to remain compliant, while the antagonists weaponize the idea of 'family' whenever they need money or obedience."
+        },
+        "evidenceSystem": {
+          "firstClue": "The first clue functions as a contradiction between the official explanation and observable behavior, teaching the viewer that the protagonist is not discovering betrayal now but has already been watching.",
+          "proofChain": [
+            "Suspicious behavior and physical traces suggest hidden travel, hidden spending, and outside involvement.",
+            "Financial records and overheard/recorded conversations identify motive, affair dynamics, and coordinated removal of the protagonist.",
+            "Legal consultation converts proof into protective procedural action, neutralizing forged or unauthorized paperwork.",
+            "Publicly presented documents and third-party testimony expose that the antagonists' rescue fantasy was false and that their accusations against the protagonist were projection."
+          ],
+          "revealTiming": "Proof is not dumped at once; it is saved until each antagonist makes a claim that the evidence can immediately destroy, maximizing humiliation and viewer satisfaction.",
+          "payoffUse": "Evidence enables the protagonist to protect property, finalize separation before being trapped, defeat the spouse's financial scheme, discredit the in-law's story, and prevent relatives from pressuring her into repayment or reconciliation."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "The first 30 seconds combine a ticking clock, a forced legal decision, absent spouse mystery, and an unexpectedly calm protagonist response, making viewers stay to learn why she is not afraid.",
+          "incitingIncident": "The in-law forces the protagonist to submit divorce paperwork, accidentally giving her the exact legal opening she needs before the spouse's financial maneuver completes.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The protagonist's obedience is revealed as tactical: the forced divorce and legal paperwork do not expel her helplessly but free her before the spouse can bind her to debt or asset loss.",
+          "climaxMechanism": "The climax works by stacking proof, timing, and witnesses: the antagonists accuse the protagonist publicly, but each claim triggers documentary or testimonial evidence that reverses blame in front of the very audience they hoped to control.",
+          "consequenceChain": [
+            "The attempted financial scheme fails, causing business collapse and cutting off the spouse's leverage.",
+            "The in-law loses faith in the spouse after discovering personal betrayal and the false promise of future comfort.",
+            "Relatives withdraw sympathy and social protection once documentary proof contradicts the smear campaign.",
+            "The affair partner disappears once money and status vanish, leaving the spouse isolated.",
+            "The former household loses stability while the protagonist exits with legal protection and emotional support."
+          ],
+          "endingRecovery": "The protagonist completes legal procedures, reconnects with her child, moves into a personally meaningful safe home, restores the space through cleaning and domestic routines, honors a deceased parent, and begins a quiet self-directed life.",
+          "moralDebate": "The story resolves the question of whether quiet endurance is virtuous or dangerous: the protagonist's final choice argues that patience only becomes moral when paired with self-protection, evidence, and refusal to fund abusers."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A spouse is forced into divorce by an abusive in-law, but the attempt backfires because the victim has already prepared a devastating legal counterattack.",
+          "hook30s": "Start directly with a document slammed down, a closing-time deadline, an absent spouse, and the protagonist's unnervingly calm acceptance.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "Viewers are invited to debate whether the protagonist was right to stay silent, let the antagonists incriminate themselves, and use timing to maximize consequences rather than confront them earlier.",
+          "antiDropRules": [
+            "Answer the opening question early enough to reward attention, but immediately replace it with a bigger hidden-scheme question.",
+            "Keep antagonists active and overconfident so viewers anticipate their fall.",
+            "Use concrete procedural steps as suspense beats, not dry legal exposition.",
+            "Delay the largest evidence until public accusation makes its reveal emotionally necessary.",
+            "After the revenge climax, provide a tangible healing sequence so the story does not end only on punishment."
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Short-to-medium declarative sentences dominate crisis scenes, with slower reflective sentences during flashbacks and recovery; repeated calm observations contrast with antagonist outbursts.",
+          "dialoguePattern": "Dialogue functions as pressure and self-incrimination: antagonists issue commands, excuses, and fantasies, while the protagonist replies minimally until evidence makes long argument unnecessary.",
+          "expositionPattern": "Backstory is delivered as triggered memory from objects, calls, records, or locations, so exposition appears to explain current stakes rather than pause the plot.",
+          "emotionalCadence": "Shock hook → controlled silence → accumulating disgust → strategic hope → real-time reversal → public humiliation → consequence montage → warm restoration.",
+          "transitionPattern": "Scenes hand off through unresolved pressure devices: ringing phones, documents on tables, unanswered messages, legal appointments, scheduled meetings, and the protagonist withholding one more proof item."
+        },
+        "variationSlots": [
+          "The forced document can be divorce, inheritance waiver, guarantor form, resignation, or property consent.",
+          "The exploitable asset can be inherited land, savings, business shares, insurance, or a home.",
+          "The enabling family member can be a mother-in-law, sibling-in-law, adult child of the spouse, or senior relative.",
+          "The outside temptation can be an affair partner, fraudulent investor, gambling associate, or remarriage prospect.",
+          "The expert ally can be a lawyer, accountant, bank employee, notary, social worker, or real estate professional.",
+          "The public reckoning can occur at a family meeting, workplace meeting, bank office, funeral-related gathering, or community mediation.",
+          "The healing endpoint can be a small apartment, inherited house, child’s home, new workplace, or quiet rural relocation."
+        ],
+        "coverageNotes": [
+          "The analysis reconstructs the full arc from sampled chronological segments rather than line-by-line transcript verification.",
+          "Some OCR-like transcript noise makes individual terms uncertain, but the structural roles of legal documents, asset protection, affair spending, and family exposure are clear.",
+          "Names and exact institutions have been abstracted to comply with the no-copying requirement."
+        ],
+        "confidence": 0.92
+      },
+      {
+        "fileName": "1HcQrmp7G_Q.txt",
+        "analysisVersion": 2,
+        "fileRole": "長年搾取された妻が、離婚直後に夫側の隠された負債・病気・犯罪を順に可視化し、娘と法的に逃げ切る制裁型家族崩壊ストーリー。",
+        "pointOfView": "被害当事者である中年女性の一人称回想型で、現在の修羅場から入り、過去の忍耐と準備を差し込みながら現在の反撃へ戻る構成。",
+        "tone": "静かな怒り、冷静な事務処理、因果応報の快感、最後は穏やかな再生へ移る復讐カタルシス調。",
+        "openingHook": "離婚成立直後の公共空間で、夫が若い相手と新生活を誇示し、主人公と娘を切り捨てる屈辱場面から開始し、主人公だけが重大情報を握っていることを匂わせる。",
+        "protagonistPattern": "長年、妻・嫁・母として搾取されてきたが、感情的に爆発せず証拠を蓄積し、娘を守るために法的・経済的に切断する忍耐型の被害者。",
+        "antagonistPattern": "家父長的な夫、夫側親族、若い外部女性が、それぞれ虚栄・依存・搾取を担い、主人公を便利な労働力として扱う多層型の敵対構造。",
+        "escalationBeats": [
+          "離婚直後の屈辱から、夫の深刻な健康問題が提示され、主人公が介護地獄から逃げ切った意味が判明する。",
+          "住まい・借金・保証人・会社資金などの金銭的な嘘が発覚し、単なる不倫離婚から犯罪と生活防衛の物語へ拡張する。",
+          "夫、親族、介護施設、会社、病院、警察が順に登場し、家庭内の問題が社会制度上の責任追及へ転化する。"
+        ],
+        "revealPattern": "序盤に小さなメモや封書などの物的手がかりを置き、中盤で主人公が以前から集めていた証拠群を開示し、終盤で医療・会社・警察の第三者証言がそれを公的事実に変える。",
+        "justicePayoff": "主人公が直接復讐するのではなく、相手が自分で選んだ離婚、借金、裏切り、犯罪、親族放棄の結果として制度に裁かれる形で制裁が成立する。",
+        "epiloguePattern": "法的処理と感情的決別を終えた後、娘との小さな生活、花、食事、墓前報告、明るい服などで普通の幸せを取り戻す回復型エピローグ。",
+        "pacingRules": [
+          "各安心場面の直後に電話・封書・訪問者・呼び出しなどの新たな外部圧力を入れ、静止時間を短くする。",
+          "大きな謎を一度に解かず、病気、借金、保証人、会社不正、介護費、外部女性の裏切りという順で階段状に開示する。"
+        ],
+        "recurringMotifs": [
+          "冷たい公共空間と温かい自宅空間の対比",
+          "封書・メモ・通帳・ファイルなど紙の証拠",
+          "手を握る母娘の連帯",
+          "家族という言葉の呪縛と法的他人という解放",
+          "介護・金銭・保証人を通じた責任の押し付け"
+        ],
+        "characterSystem": {
+          "victimRole": "表面上は従順な妻・嫁だが、実際は娘の未来を守るために準備していた生活防衛者。",
+          "antagonistRole": "夫は虚栄と支配、夫側親族は責任逃れ、外部女性は利益目的の搾取者として機能する。",
+          "allyRole": "娘が感情的支柱となり、医師・施設職員・会社関係者・弁護士などの制度側人物が主人公の正当性を補強する。",
+          "relationshipPressure": "妻だから、長男の嫁だから、母親だからという家族内役割が、介護・金銭・沈黙を強制する圧力として働く。"
+        },
+        "evidenceSystem": {
+          "firstClue": "主人公が夫の病状に関する事前情報を握っていることを示し、沈黙が無力ではなく戦略であると示す。",
+          "proofChain": [
+            "医療情報により、離婚前後の判断が単なる感情ではなく将来の介護負担回避だったと分かる。",
+            "金融通知と保管書類により、住居・借金・偽装された責任の罠が明らかになる。",
+            "会社関係者、医師、警察、弁護士の介入により、家庭内の疑惑が公的な犯罪・法的処理へ移行する。"
+          ],
+          "revealTiming": "主人公が追い詰められたように見える場面の直後に、実は先回りして証拠を持っていたことが明かされる。",
+          "payoffUse": "証拠は相手を罵倒するためではなく、保証人回避、名義保全、介護責任の切断、警察・弁護士対応の根拠として使われる。"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "冒頭で夫の残酷な切り捨て、若い相手の勝利宣言、娘の涙、主人公の不自然な冷静さを同時に置き、『なぜ黙っているのか』を即座に発生させる。",
+          "incitingIncident": "離婚届が受理され、夫婦関係が法的に不可逆に切断されること。",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "夫が主人公を捨てて勝者になったという構図が、実は主人公を責任から解放し、夫自身を病気・借金・犯罪・親族責任に閉じ込める構図へ反転する。",
+          "climaxMechanism": "病院という公的空間で、医療宣告、離婚の法的不可逆性、親族の責任逃れ、会社不正、警察介入が一気に重なり、夫の逃げ道を塞ぐ。",
+          "consequenceChain": [
+            "夫は頼った相手に裏切られ、金銭・健康・社会的信用を失う。",
+            "夫側親族は主人公に押し付けていた介護と支払いを自分たちで負う立場になり、逃げれば制度上の問題として扱われる。"
+          ],
+          "endingRecovery": "主人公と娘は住居と生活を守り、明るい部屋、食事、墓前報告、買い物といった小さな日常で自由を実感する。",
+          "moralDebate": "病気で弱った元配偶者や高齢親族を見捨てるのは冷酷か、それとも長年の搾取から身を守る正当な境界線かという議論を残す。"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "『裏切った夫が離婚直後に全てを失う』『捨てられた妻が実は証拠を握っていた』という復讐逆転の約束。",
+          "hook30s": "夫の公開罵倒、若い相手の勝利顔、娘の涙、主人公の不気味な沈黙を即提示するショック導入。",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "主人公が介護や病気を理由に戻らず、完全に切り捨てる選択をするため、視聴者が『当然』『冷たいが正しい』『家族とは何か』を議論しやすい。",
+          "antiDropRules": [
+            "冒頭の謎は早めに一部回答し、すぐ次の大きな金銭・法的謎へ接続する。",
+            "安心した直後に必ず電話、訪問、封書、第三者来訪を入れて次の危機を発生させる。",
+            "主人公の反撃は感情論ではなく書類・制度・証言で進め、視聴者に勝利の確実性を感じさせる。",
+            "敵の破滅は一段で終わらせず、恋愛、金銭、健康、会社、親族、法律の順に複数回落とす。"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い断定文と内省文を交互に置き、感情の静止と事実の積み上げをリズム化する。",
+          "dialoguePattern": "敵は見下し・命令・責任転嫁の台詞で性格を示し、主人公は短く冷静な拒絶で優位を取る。",
+          "expositionPattern": "過去説明は単独の説明章にせず、現在の証拠や電話をきっかけに回想として差し込む。",
+          "emotionalCadence": "屈辱、過去の痛み、証拠発見、静かな決意、相手の自滅、制度的制裁、母娘の安堵という波形。",
+          "transitionPattern": "『これで終わったと思った直後』に新しい着信・訪問・郵便物・呼び出しを置き、次場面へ未解決圧力を渡す。"
+        },
+        "variationSlots": [
+          "主人公の年齢や職業",
+          "夫の裏切り相手の属性",
+          "隠された負債や不正の種類",
+          "介護対象が親族か別の扶養対象か",
+          "味方となる専門職の種類",
+          "最終的な公的制裁の制度領域",
+          "再生を象徴する小物や日常行動"
+        ],
+        "coverageNotes": [
+          "サンプルは全体を広く覆っており、主要な構造推定の信頼度は高い。",
+          "一部の固有状況は抽象化しており、具体的な病名・金額・地名・人物名は意図的に省略している。",
+          "終盤の法的処理の詳細は物語上のカタルシスを優先した可能性があり、現実法務の厳密性ではなくチャンネル型の制裁装置として分析している。"
+        ],
+        "confidence": 0.88
+      },
+      {
+        "fileName": "1MwnvR0r_VM.txt",
+        "analysisVersion": 2,
+        "fileRole": "betrayed-wife revenge story using medical sacrifice, hidden evidence, family-alliance transfer of power, and legal/financial counterattack as the core formula",
+        "pointOfView": "first-person retrospective victim narrator who appears calm in the present while gradually revealing that she has already prepared a counterplan",
+        "tone": "controlled outrage, cold strategic revenge, legalistic vindication, and finally quiet emotional recovery",
+        "openingHook": "an extreme betrayal is stated immediately: the spouse demands separation right after benefiting from the protagonist's life-risking sacrifice, creating instant moral shock and a need to see punishment",
+        "protagonistPattern": "long-suffering middle-aged wife who was treated as useful labor, endured bodily and emotional cost, but secretly collected evidence and converts apparent defeat into strategic advantage",
+        "antagonistPattern": "entitled husband who confuses restored health, money, social status, and a younger partner with absolute control, underestimating the wife and his own mother",
+        "escalationBeats": [
+          "The protagonist accepts the humiliating demand outwardly while hiding that she has already secured proof of betrayal.",
+          "The past is reframed: the medical sacrifice was not naive devotion but part of a deliberate plan to make the antagonist fully exposed and punishable.",
+          "The ally mother-in-law and legal professional convert emotional betrayal into enforceable financial, corporate, and divorce consequences.",
+          "The antagonist's fantasy life begins failing in small public humiliations before collapsing in a formal family-company confrontation.",
+          "The mistress and money trail add a second betrayal layer, showing the antagonist was also being exploited.",
+          "The final punishment targets not only money and status but the antagonist's dependency on the very life benefit he exploited."
+        ],
+        "revealPattern": "layered evidence reveal: private suspicion becomes digital proof, then financial records, then legal documents, then live confrontation testimony, each reveal worsening the moral and practical consequences",
+        "justicePayoff": "the antagonist loses money access, romantic fantasy, corporate authority, home security, family respect, legal standing, and medical safety net through mechanisms he triggered himself",
+        "epiloguePattern": "after the revenge, the protagonist does not remain consumed by hatred; she forms a peaceful chosen-family household with the ally, delegates business stability, and reclaims ordinary daily comfort",
+        "pacingRules": [
+          "Every apparent resolution immediately opens a larger hidden problem or a sharper countermeasure.",
+          "Alternate emotional injury scenes with procedural revenge scenes so viewers receive both outrage and concrete satisfaction.",
+          "Delay full explanation of the protagonist's plan until after the antagonist has acted arrogantly, making each reveal feel earned.",
+          "Use public humiliation and official documents as escalating payoff milestones rather than relying only on emotional confrontation."
+        ],
+        "recurringMotifs": [
+          "the body as sacrifice and proof",
+          "documents as weapons",
+          "keys and access as symbols of false ownership",
+          "phones, recordings, and tracking as hidden surveillance",
+          "tea, home, and quiet mornings as symbols of recovered peace",
+          "family bloodline versus chosen loyalty"
+        ],
+        "characterSystem": {
+          "victimRole": "devoted spouse whose care, body, labor, and savings were exploited, but who possesses patience, memory, and hidden competence",
+          "antagonistRole": "self-pitying patriarchal betrayer who sees people as tools and assumes institutional power will protect him",
+          "allyRole": "elder family authority who rejects blood loyalty in favor of moral justice and provides assets, legitimacy, and emotional shelter",
+          "relationshipPressure": "marriage, filial ties, inheritance expectations, company hierarchy, and caregiver obligation pressure the protagonist to endure, while also giving the counterattack legal and social leverage"
+        },
+        "evidenceSystem": {
+          "firstClue": "a hidden communication device exposes that the spouse's gratitude is false and that betrayal predates the medical sacrifice",
+          "proofChain": [
+            "private messages and financial anomalies establish infidelity and misuse of shared or company-related funds",
+            "contracts, receipts, location evidence, and substituted access items prove premeditation and expose the hidden new life",
+            "lawyer-verified documents, recordings, bank actions, ownership transfer, and third-party testimony make denial impossible in public"
+          ],
+          "revealTiming": "proof is not dumped at once; it is revealed whenever the antagonist believes he has regained control, reversing the meaning of his confidence",
+          "payoffUse": "the proof justifies frozen accounts, property removal, divorce strategy, corporate dismissal, damages claims, and public loss of credibility"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "the first 30 seconds combine intimate domestic normality with a grotesque betrayal immediately after a life-saving sacrifice, forcing the viewer to ask how such cruelty can be punished",
+          "incitingIncident": "the antagonist formally demands separation and freedom, believing the protagonist is weak and disposable; she leaves but carries the evidence and activates her plan",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "the protagonist changes from abandoned caregiver to legal owner and power holder; the antagonist changes from confident liberator to financially cornered dependent",
+          "climaxMechanism": "evidence, ownership documents, witness testimony, recordings, family authority, and corporate governance converge in a public room where the antagonist's social mask cannot survive",
+          "consequenceChain": [
+            "financial access is frozen, hidden spending is exposed, and improper property use is challenged",
+            "company control is transferred away, corporate role is revoked, and legal claims are initiated",
+            "romantic fantasy collapses when the new partner's exploitation is revealed",
+            "medical and living security vanish, making the antagonist dependent on the very system and person he tried to discard"
+          ],
+          "endingRecovery": "the protagonist secures housing, companionship, company stability, legal separation, and daily calm; the physical scar becomes a symbol of survival rather than exploitation",
+          "moralDebate": "the story resolves a debatable choice: the protagonist knowingly endured and even completed a costly sacrifice after discovering betrayal, treating it as strategic investment for justice rather than simple forgiveness"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "a betrayed caregiver-wife is discarded after saving her husband, but she has already prepared a devastating revenge that strips him of everything",
+          "hook30s": "the story starts with a cheerful divorce demand immediately after a life-risking medical act, paired with the protagonist's unexplained calm smile",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "viewers are invited to debate whether the protagonist's decision to complete the sacrifice after discovering betrayal was noble, extreme, or strategically justified",
+          "antiDropRules": [
+            "answer the immediate mystery before introducing the next larger one",
+            "make every legal or financial detail produce a visible humiliation or reversal",
+            "keep the antagonist overconfident until each reveal lands",
+            "give the protagonist calm competence rather than chaotic revenge",
+            "end with peaceful daily life so the punishment does not feel empty"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "long emotional narration alternates with short declarative reversals; procedural details are delivered in steady steps, then punctuated by sharp cliffhanger lines",
+          "dialoguePattern": "antagonist dialogue is arrogant, dismissive, and self-justifying; protagonist dialogue is calm and minimal; ally and lawyer dialogue formalizes moral outrage into action",
+          "expositionPattern": "background is revealed through triggered flashbacks attached to objects, documents, calls, locations, and legal steps rather than detached summary",
+          "emotionalCadence": "shock betrayal → quiet endurance → hidden preparation → layered disgust → first revenge relief → public exposure → total collapse → peaceful release",
+          "transitionPattern": "scenes hand off through active pressure: a phone notification, tracking signal, legal document, unanswered call, meeting summons, or newly exposed record"
+        },
+        "variationSlots": [
+          "type of life-risking sacrifice or caregiving burden",
+          "kind of family business or asset base",
+          "identity of the moral ally within the antagonist's family",
+          "form of hidden evidence: phone, recorder, account history, contract, location data",
+          "public arena for climax: boardroom, family council, workplace meeting, court mediation",
+          "mistress or outsider's secondary betrayal mechanism",
+          "final practical consequence tied to what the antagonist exploited",
+          "epilogue setting that symbolizes ordinary peace"
+        ],
+        "coverageNotes": [
+          "The supplied transcript is sampled rather than full continuous text, but the segments cover the opening, investigation, midpoint legal reversal, public climax, final consequence, and epilogue clearly.",
+          "Some procedural legal details may be dramatized for story effect; this analysis treats them as narrative mechanics rather than real-world legal accuracy.",
+          "Exact names, distinctive phrasing, and overly specific plot tokens have been abstracted to preserve formula-level analysis."
+        ],
+        "confidence": 0.91
+      },
+      {
+        "fileName": "3HwYaNvBoh8.txt",
+        "analysisVersion": 2,
+        "fileRole": "義母・嫁・家族崩壊系の長尺復讐譚で、妻が夫の不倫疑惑から財産乗っ取りと犯罪計画を暴き、公開の場で逆転する回",
+        "pointOfView": "被害者本人による一人称回想型。現在の危機を実況するように始め、過去の忍耐・証拠集め・決着後の平穏を順に語る",
+        "tone": "静かな怒り、抑制された恐怖、法的反撃の冷静さ、最後は浄化と再生に向かう家庭内サスペンス調",
+        "openingHook": "帰宅直後に義母が異常な様子で主人公を家に入れまいとし、家の中に第三者の気配と不審な物証があることで、浮気以上の秘密を匂わせる",
+        "protagonistPattern": "長年家庭を支え、嫁として耐えてきた中年女性。感情的に爆発せず、観察・記録・相談・証拠化によって反撃する忍耐型ヒロイン",
+        "antagonistPattern": "外面は良いが家庭内では支配的な配偶者と、その欲望を増幅する不倫相手。母親や親族の権威、世間体、金銭契約を利用して主人公を追い詰める",
+        "escalationBeats": [
+          "家の入口で不倫を疑わせる異常事態が発生するが、義母の怯え方が通常の嫁いびりと違い、より大きな謎になる",
+          "金銭記録・通帳・家の権利・保証人書類など、浮気問題が財産乗っ取りと偽造契約へ拡大する",
+          "義母の隠した記録と録音により、夫婦問題ではなく横領・偽造・高齢者支配を含む犯罪計画だったと判明する",
+          "夫が親族会議を仕組み、主人公を加害者にして追放しようとするが、主人公はその公開処刑の場を逆転舞台に変える"
+        ],
+        "revealPattern": "最初は目撃できない違和感を小物・音・態度で提示し、次に金融書類や失踪した資産で疑惑を拡大し、最後に第三者の記録・専門家・公的手続きで決定的証拠に変換する",
+        "justicePayoff": "悪役が自分で集めた親族の前で、法的証拠と被害者側の証言により虚偽を暴かれ、家庭・親族・職場・法的立場を同時に失う",
+        "epiloguePattern": "離婚と財産保全が成立し、支配から解放された義母との関係も修復され、主人公は守りたかった家で娘世代と穏やかな日常を取り戻す",
+        "pacingRules": [
+          "各場面の終わりに未解決の疑問を残し、次の場面で一部だけ答えながらさらに大きな脅威へつなげる",
+          "感情的な対決をすぐに起こさず、証拠収集・相談・相手の自滅的行動を挟んで、終盤の公開逆転まで怒りを蓄積する",
+          "家庭内の小さな違和感から、銀行・会社・親族・法的責任へとスケールを段階的に広げる"
+        ],
+        "recurringMotifs": [
+          "玄関や靴など、家の境界を侵されたことを示す物",
+          "鍵・印鑑・権利書・通帳など、家庭の支配権を象徴する管理物",
+          "義父との約束や仏壇など、主人公が守るべき家族史",
+          "録音・日記・書類など、沈黙していた者の真実を代弁する証拠",
+          "閉ざされた家から開かれた新生活へ向かう扉のイメージ"
+        ],
+        "characterSystem": {
+          "victimRole": "妻であり嫁である主人公。家事・介護・ローン・家族維持を背負い、周囲からは無口で弱い人物に見られているが、実際は記録と判断力を持つ",
+          "antagonistRole": "夫は支配者兼詐欺的計画者。不倫相手は欲望と逃亡願望の共犯者。両者が金銭・世間体・親族の偏見を使って主人公を排除しようとする",
+          "allyRole": "古くから家を知る法律専門家、離れて暮らす子、最終的に証言側へ回る義母。序盤は孤立しているが証拠の連鎖で味方が増える",
+          "relationshipPressure": "嫁は婚家内で発言権が弱く、義母・夫・親族の序列が主人公を黙らせる圧力になる。夫は親族の信頼と外面を利用し、義母は息子への恐怖と依存で支配される"
+        },
+        "evidenceSystem": {
+          "firstClue": "家の入口にある異物と義母の異常な制止が、単なる不倫現場ではなく隠蔽されるべき計画の存在を示す",
+          "proofChain": [
+            "主人公が目撃情報・行動記録・家計の不審な動きをメモ化し、疑惑を主観からパターンへ変える",
+            "専門家への相談により、金融記録・家の権利・保証人手続きが法的リスクとして整理される",
+            "義母の隠した記録と音声、銀行での手続き停止、資金移動の確認が、夫と共犯者の犯罪性を客観証拠にする",
+            "親族会議で証拠を段階的に出し、夫の言い逃れを一つずつ潰して世論を反転させる"
+          ],
+          "revealTiming": "中盤で義母が敵ではなく脅されていた被害者だと意味が反転し、終盤で夫が用意した糾弾の場そのものが証拠公開の舞台に変わる",
+          "payoffUse": "証拠は主人公の無罪証明だけでなく、離婚条件、財産防衛、銀行契約停止、職場通報、親族の支持反転を同時に可能にする"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "冒頭で『今入ってはいけない』という制止と、家の中の見えない人物の気配を同時に置き、視聴者に中で何が起きているのかを確認したい欲求を作る",
+          "incitingIncident": "主人公が予定外に帰宅し、家の中に不審な第三者がいることと、義母が普通ではない恐怖を抱いていることを知る",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "義母は嫁いびりをする敵ではなく、息子に支配されつつも証拠を残していたもう一人の被害者だと判明する",
+          "climaxMechanism": "夫が親族の圧力で主人公を屈服させようとする場に、主人公が専門家と証拠を遅れて投入し、夫の主張を一つずつ法的事実で反転させる",
+          "consequenceChain": [
+            "夫は親族の信頼を失い、家から排除される",
+            "離婚・慰謝料・財産保全・借金無効化が進む",
+            "夫と共犯者は職場・法的責任・社会的信用を失う",
+            "義母は安全な環境に移り、主人公は家を守る"
+          ],
+          "endingRecovery": "主人公は婚姻から解放され、守りたかった家で娘世代と穏やかに過ごし、義父との約束を果たした実感を得る",
+          "moralDebate": "長年自分を苦しめた義母を許し助けるべきかという問題が、義母も支配の被害者であり最後に証拠を残したという事実で和解方向に解決される"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "嫁を追い出そうとする夫と義母の裏に、家族財産を奪う巨大な裏切りが隠れており、最後に親族の前で全てを暴くという約束",
+          "hook30s": "帰宅した主人公が玄関で義母に必死に止められ、家の中に不審な女性の痕跡と夫の気配があるショック場面から始まる",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "主人公が義母を完全に切り捨てず、過去の嫁いびりを抱えながらも救済する選択が、視聴者に『許すべきか』を議論させる",
+          "antiDropRules": [
+            "冒頭の疑問を放置しすぎず、数分ごとに小さな答えを出してより大きな疑惑へ更新する",
+            "証拠は一度に出さず、通帳・書類・録音・日記のように段階的に強くする",
+            "主人公を感情的に暴走させず、冷静な反撃準備を見せて期待感を維持する",
+            "悪役には何度も勝ったと思わせ、視聴者の怒りを十分に溜めてから落とす",
+            "最終制裁の後に生活再建を必ず描き、復讐だけでなく回復の満足を与える"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い観察文と内心の整理を交互に置き、緊迫場面では物音・手の震え・沈黙などを細かく刻む。説明部分は比較的長く、証拠や経緯を順序立てて積む",
+          "dialoguePattern": "悪役側は命令・罵倒・責任転嫁で圧力をかけ、主人公側は抑えた返答と確認質問で相手に失言させる。専門家の台詞は法的事実を整理する役割を持つ",
+          "expositionPattern": "過去の経緯は独立した説明ではなく、通帳確認、相談、病室告白、親族会議など現在進行の場面に挟んで明かされる",
+          "emotionalCadence": "不審、屈辱、冷静な覚悟、証拠発見の恐怖、中盤の同情反転、決戦前の緊張、公開逆転の爽快感、終盤の和解と安堵へ進む",
+          "transitionPattern": "各場面の終わりに電話、メッセージ、書類、チャイム、隠し物など新しい刺激を置き、次の場面へ未解決の圧力を持ち越す"
+        },
+        "variationSlots": [
+          "不倫相手の属性は職場関係者、近所の知人、親族関係者などに変更可能",
+          "狙われる資産は自宅、相続財産、退職金、介護資金、事業資金などに変更可能",
+          "味方役は弁護士、司法書士、元上司、娘、近所の証人などに変更可能",
+          "公開逆転の場は親族会議、法事、会社面談、調停、地域の集まりなどに変更可能",
+          "最初の違和感は靴、車、香水、鍵、忘れ物、家の中の音など別の侵入サインに差し替え可能",
+          "義母ポジションは姑、実母、義父、祖母など、敵に見える高齢家族へ変更可能"
+        ],
+        "coverageNotes": [
+          "提示された構造サンプルは全体を広く覆っているため、主要な進行・反転・結末は高い確度で復元できる",
+          "一部の中間場面はサンプル間の要約的推定を含むが、証拠収集から親族会議逆転への流れは明確",
+          "固有名や象徴的小物の具体描写は抽象化し、チャンネル構造として再利用可能な形に変換した"
+        ],
+        "confidence": 0.93
+      },
+      {
+        "fileName": "3L8N8Q1AUsM.txt",
+        "analysisVersion": 2,
+        "fileRole": "A long-form revenge/mystery story in which a newly married middle-aged woman discovers financial exploitation, uncovers a hidden family secret, defeats a coercive husband through evidence, and then chooses a morally complex silence over total revenge.",
+        "pointOfView": "First-person retrospective narration by the wronged wife, alternating between immediate scene immersion and later reflective interpretation of evidence and family history.",
+        "tone": "Controlled outrage, legal-thriller suspense, melodramatic family tragedy, and ultimately quiet bittersweet healing.",
+        "openingHook": "The story opens with an immediate unreasonable demand after marriage, followed by the protagonist revealing she has far more power than the antagonist assumes, creating instant reversal and a promise that an even larger hell is coming.",
+        "protagonistPattern": "An underestimated, financially competent, emotionally restrained middle-aged woman with hidden assets, a deceased parent’s legacy, and a strong attachment to duty and family memory.",
+        "antagonistPattern": "A greedy spouse and enabling family system that weaponizes marriage, elder care, legal authority, forged documents, and social expectations to seize property and control vulnerable people.",
+        "escalationBeats": [
+          "A marital money demand exposes the spouse’s entitlement and triggers the heroine’s first countermeasure: leaving, asserting property ownership, and contacting legal support.",
+          "A suspicious payment trail turns a simple divorce conflict into a wider mystery involving an elderly vulnerable person, disputed land, and a development scheme.",
+          "The antagonist steals legal instruments, threatens forged liability and forced property transfer, and then escalates by using guardianship-like authority over a vulnerable elder as a hostage mechanism.",
+          "The heroine’s expected proof source is seized, forcing her to improvise by finding auxiliary witnesses, hidden family evidence, and a trap that makes the villains incriminate themselves.",
+          "The climax converts the antagonist’s arrogance into recorded confession, collapses his legal authority, triggers institutional and police intervention, and destroys his financial scheme.",
+          "A final emotional reveal reframes the villain not only as a predator but as someone protected by the very person he harmed, creating a moral dilemma about whether to reveal the ultimate truth."
+        ],
+        "revealPattern": "Evidence is introduced as practical proof, then repeatedly reinterpreted: a bank clue becomes a mystery link, a key becomes a legacy device, an old box becomes legal proof, and a broken keepsake becomes the entrance to the deeper family truth.",
+        "justicePayoff": "The antagonist loses the marriage, property access, business opportunity, job, social standing, and freedom through his own recorded admissions and documented fraud, while accomplices also face exposure and institutional consequences.",
+        "epiloguePattern": "After legal cleanup, the heroine restores safety for the vulnerable elder, returns to a quieter ancestral/home space, redirects wealth toward care rather than revenge, and preserves a painful secret as an act of protection.",
+        "pacingRules": [
+          "Each apparent solution immediately exposes a deeper unresolved question, preventing the story from resting after any single victory.",
+          "Legal or investigative exposition is delivered under time pressure, usually through calls, documents, travel, or confrontations, so information advances action rather than pausing it.",
+          "Every 8-12 percent of story progress introduces either a new document, a new legal threat, a new witness, or a changed meaning of an earlier object.",
+          "The antagonist’s overconfidence is repeatedly used as a pacing engine: he explains, threatens, boasts, and thereby supplies the next proof stage."
+        ],
+        "recurringMotifs": [
+          "A small inherited key as legacy, proof access, and later emotional talisman.",
+          "Documents and signatures as instruments of both oppression and justice.",
+          "Property/land as a surface-level asset that hides family memory and moral debt.",
+          "Elder vulnerability as both coercive leverage and the moral center of the story.",
+          "Cold restraint versus vulgar arrogance as the heroine-villain contrast.",
+          "Broken or old personal objects that later contain decisive meaning."
+        ],
+        "characterSystem": {
+          "victimRole": "The surface victim is the wife targeted for money and property; the deeper victim is an incapacitated elder whose past, care, and property are exploited.",
+          "antagonistRole": "The spouse functions as a predatory infiltrator who uses marriage, forged kinship, guardianship authority, and development money to gain control.",
+          "allyRole": "A loyal lawyer, a principled care worker, and institutional/legal channels form the ally network that turns private abuse into admissible consequences.",
+          "relationshipPressure": "Marriage, eldest-son expectations, parental duty, elder-care responsibility, and hidden blood ties are used to pressure the heroine into compliance and later complicate her revenge."
+        },
+        "evidenceSystem": {
+          "firstClue": "A payment demand and bank information reveal that the stated family-support reason is false and point toward a hidden beneficiary.",
+          "proofChain": [
+            "Initial financial records connect the spouse to an unexplained elder-care payment stream and suspicious land adjacency.",
+            "Legal documents, stolen seals/signature tools, development paperwork, and forged kinship filings establish the material fraud scheme.",
+            "A hidden recording captures admissions of forgery, bribery, theft, coercion, and intent to harm a vulnerable person through formal authority.",
+            "Old family records and concealed personal mementos later reframe the entire conflict as a multigenerational secret rather than a simple asset grab."
+          ],
+          "revealTiming": "The proof first functions around the midpoint as leverage against the antagonist, then near the climax as legal destruction, and in the final fifth as a tragic reinterpretation of family history.",
+          "payoffUse": "The heroine uses proof to freeze property transfer, bait confession, collapse the antagonist’s supposed legal authority, trigger police and institutional response, and finally decide what truth should remain hidden."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "The first 30 seconds combine a shocking monthly money demand, patriarchal entitlement, and a fast reversal that the supposedly dependent wife secretly controls the home, promising immediate revenge plus a larger mystery.",
+          "incitingIncident": "The spouse demands large recurring payments under a family-duty pretext shortly after marriage, making the heroine realize the relationship is exploitative and prompting her to leave and investigate.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The story changes from a property-fraud revenge plot into a family-protection tragedy when the elder is revealed as part of the heroine’s hidden bloodline and the inherited key becomes a symbol of entrusted duty.",
+          "climaxMechanism": "The heroine places the antagonist in a room where greed, time pressure, and assumed victory make him confess on camera; authentic records, cloud backup, institutional panic, and police response converge before he can use his false authority.",
+          "consequenceChain": [
+            "The property scheme collapses because the buyer refuses contaminated assets and the legal freeze/recorded fraud destroys transactional trust.",
+            "The antagonist is arrested, loses employment and family support, faces civil liability, and cannot benefit from the intended fraud.",
+            "The corrupt care administrator loses position and faces institutional/legal consequences.",
+            "The vulnerable elder receives a neutral guardian and stable care, removing the hostage mechanism."
+          ],
+          "endingRecovery": "The protagonist settles the divorce, reclaims control over home and inherited assets, supports the elder’s facility ethically, spends time in a restored family setting, and transforms the key from evidence tool into keepsake of protected bonds.",
+          "moralDebate": "The plot resolves legally, but the heroine chooses not to reveal a devastating identity truth to the villain, denying him both self-knowledge and the chance for remorse in order to honor the elder’s protective lie."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A revenge-title promise built around a newlywed wife being financially exploited by husband/in-laws, then revealing hidden ownership/assets and turning the tables.",
+          "hook30s": "Immediate coercive demand for large monthly money, patriarchal justification, heroine’s silent hidden confidence, and an abrupt reversal that she owns the residence.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "Viewers are invited to debate whether withholding the final truth is mercy, a harsher punishment, or a betrayal of accountability.",
+          "antiDropRules": [
+            "Answer each active mystery before introducing the next, but make the answer reveal a broader hidden layer.",
+            "Alternate legal procedure with emotional violation so exposition never feels detached.",
+            "Give the heroine small wins early, then undercut them with bigger threats to avoid premature satisfaction.",
+            "Make villains speak their own downfall instead of relying only on narration.",
+            "Use concrete deadlines, documents, calls, and physical objects as retention anchors."
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Long, breathless narration with frequent sensory anchors, followed by short decisive statements at reversals and threats.",
+          "dialoguePattern": "Dialogue is confrontational and functional: antagonists issue demands, justify entitlement, boast, or threaten; allies deliver legal/investigative constraints; the heroine speaks sparingly and strategically.",
+          "expositionPattern": "Backstory is revealed through documents, phone calls, official records, photographs, old letters, and objects discovered during active crisis rather than through static explanation.",
+          "emotionalCadence": "Outrage at exploitation moves into investigative dread, then helplessness under a deadline, tactical calm before the trap, cathartic collapse of the villains, and finally sorrowful moral restraint.",
+          "transitionPattern": "Scenes hand off with an unresolved pressure point: a clue leads to a call, a call opens a threat, a threat creates travel, travel produces a setback, setback forces a new plan, and the plan triggers confession."
+        },
+        "variationSlots": [
+          "The initial marital demand can be money, caregiving, housing, debt assumption, or inheritance transfer.",
+          "The hidden asset can be an apartment building, land, company shares, savings, or a family business.",
+          "The vulnerable hostage figure can be an elderly relative, disabled family member, child, tenant, or dependent employee.",
+          "The inherited object can be a key, letter, photograph, watch, seal, notebook, or locked box.",
+          "The antagonist’s scheme can involve real estate, insurance, guardianship, inheritance, business acquisition, or forged debt.",
+          "The ally can be a lawyer, care worker, accountant, police contact, municipal employee, or old family associate.",
+          "The final moral dilemma can vary between revealing identity, preserving a lie, forgiving a dependent, or sacrificing full revenge for someone else’s peace."
+        ],
+        "coverageNotes": [
+          "The transcript sample spans the whole story and provides enough chronological information to reconstruct the macro-structure.",
+          "Some exact legal terminology and institutional details may be distorted by transcription errors, so the analysis abstracts them as guardianship-like authority, forged records, and property-transfer mechanisms.",
+          "The response avoids reproducing exact names, dialogue, and uniquely identifying prose while retaining the structural functions."
+        ],
+        "confidence": 0.88
+      },
+      {
+        "fileName": "3NEtWsU52yQ.txt",
+        "analysisVersion": 2,
+        "fileRole": "嫁いびり・金銭搾取型の家族復讐譚で、主人公が沈黙の準備によって加害者家族の経済的・社会的基盤を崩す回。",
+        "pointOfView": "被害者本人による一人称回想を軸にしつつ、加害者側の失敗場面を並行カットで描く二重視点型ナレーション",
+        "tone": "静かな怒り、冷徹な準備、公開羞恥、法的制裁、最後は穏やかな再生へ向かう勧善懲悪トーン",
+        "openingHook": "正月の家族行事から主人公だけを排除する侮辱場面と、直後に高額決済通知が届く金銭的裏切りを重ね、主人公がすでに反撃ボタンを押す寸前であることを示す",
+        "protagonistPattern": "長年搾取されてきたが感情的に爆発せず、証拠・資産防衛・法的支援を揃えてから一気に離脱する忍耐型の妻",
+        "antagonistPattern": "妻を家政婦兼財布と見なし、親族ぐるみで金銭・住居・尊厳を奪おうとする見栄と依存の加害者集団",
+        "escalationBeats": [
+          "主人公を置き去りにして贅沢な外出をする加害者たちが、支払い不能によって最初の屈辱を味わう",
+          "旅先・外食・帰宅後・銀行・会社など、加害者が頼る金銭ルートが順番に塞がれていく",
+          "単なるカード停止ではなく、弁護士、口座凍結、不動産契約、勤務先への信用失墜、犯罪性の提示へと制裁範囲が拡大する"
+        ],
+        "revealPattern": "冒頭のカード停止は小さな反撃に見えるが、後半で長期的な証拠収集、口座保全、弁護士介入、財産回収、住居売却未遂の証拠まで準備済みだったと段階的に明かされる",
+        "justicePayoff": "加害者たちは金銭的依存先を失い、見栄を張った契約や虚偽行為が自分たちに跳ね返り、家庭内・親族内・職場内で信用と生活基盤を失う",
+        "epiloguePattern": "主人公が実家と母のもとで生活を立て直し、自分のために働き、自分のためにお金を使い、季節の変化とともに尊厳を取り戻す",
+        "pacingRules": [
+          "主人公の静かな移動・回復場面と、加害者側の支払い不能・恥辱場面を交互に配置して、解放感と制裁快感を同時に進める",
+          "各制裁は一度で終わらせず、カード停止、現金不足、口座凍結、請求、職場失墜、法的追及のように『まだ次がある』形で階段状に拡大する"
+        ],
+        "recurringMotifs": [
+          "カードや通帳がただの無力な物に変わるモチーフ",
+          "寒い家・雪・冬から、温かい実家・食事・春へ移る季節モチーフ",
+          "指輪や服装など、支配された結婚生活からの離脱を示す物品モチーフ",
+          "電話・通知・書類が次の制裁を運んでくる通信モチーフ",
+          "食事が侮辱の対象から自己回復の象徴へ反転するモチーフ"
+        ],
+        "characterSystem": {
+          "victimRole": "家族のために働き、家計も家事も担ってきたが、感謝されず金銭源として扱われる妻",
+          "antagonistRole": "夫、義理の親、義理のきょうだいが結託し、主人公の労働・貯蓄・住居を当然のように利用する加害者側",
+          "allyRole": "実家の母、亡父の教え、弁護士、後半の一部親族が主人公の安全・法的正当性・精神的回復を支える",
+          "relationshipPressure": "嫁という立場、夫婦関係、義家族への遠慮、親族内の体面が主人公に沈黙を強い、加害者側には『従って当然』という錯覚を与える"
+        },
+        "evidenceSystem": {
+          "firstClue": "高額決済通知が、置き去りの侮辱と金銭搾取を同時に可視化し、反撃開始の合図として機能する",
+          "proofChain": [
+            "家族カードや口座の利用履歴、送金記録、通帳記録を積み上げて金銭搾取の継続性を示す",
+            "会話記録、書類コピー、物件関連資料によって、主人公排除と財産流用の計画性を示す",
+            "弁護士経由の通知、口座保全、不動産会社や親族への提示によって、証拠が私的な怒りから法的制裁の武器へ変わる"
+          ],
+          "revealTiming": "序盤では主人公の離脱準備として断片的に示され、中盤で証拠収集の長期性が判明し、終盤で犯罪性を含む決定打として再提示される",
+          "payoffUse": "証拠によってカード停止・口座凍結・財産回収・損害賠償請求・離婚条件・住居処理・刑事相談のすべてが正当化される"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "正月の晴れやかな空気の中で主人公だけが排除される不条理と、加害者が使っている支払い手段の真の所有者が主人公であるという即時逆転の予感で離脱を防ぐ",
+          "incitingIncident": "主人公が加害者たちの外出後に支払い手段を停止し、家を出て実家へ向かうことで、関係修復ではなく全面対決に入る",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "加害者たちはまだ通帳や家に戻れば勝てると思い込むが、実際には資産保全と弁護士介入が完了しており、支配者と被支配者の立場が逆転する",
+          "climaxMechanism": "長期収集した証拠、主人公の離脱決断、弁護士の手続き、親族・職場・業者という公的な視線が重なり、加害者が言い逃れできない構図になる",
+          "consequenceChain": [
+            "支払い不能による旅先と外食先での恥辱",
+            "口座凍結と内容証明による資金源喪失",
+            "不動産契約の破綻と高額請求",
+            "職場信用の崩壊と役職喪失",
+            "親族会議での孤立と犯罪性の露見",
+            "離婚、住居喪失、借金、生活水準の転落"
+          ],
+          "endingRecovery": "主人公は実家で母と暮らし、無理のない仕事、自分のための買い物、料理を喜ばれる日常を通じて、支配から解放された平穏を得る",
+          "moralDebate": "長年搾取された主人公が加害者を徹底的に追い込むことは正当な自衛か、過剰な復讐かという議論を残す"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "『置き去りにされた妻がカードを止めた瞬間、義家族の贅沢旅行と人生が崩壊する』型の即時逆転・ざまあ約束",
+          "hook30s": "家族行事から排除される妻、勝ち誇る夫と義母、高額決済通知、そして主人公が支払い手段を止める直前の静かな決意",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "主人公の徹底制裁に対して『当然』『やりすぎではない』『もっと早く逃げるべき』などコメントしやすい倫理的余白が残る",
+          "antiDropRules": [
+            "冒頭の疑問には数分以内に小さな答えを出し、その答えより大きな疑問をすぐ置く",
+            "制裁場面の直後に主人公の静かな回復場面を挟み、感情疲労を軽減する",
+            "加害者の慢心を毎回少し残し、次の破綻でそれを折る",
+            "金額・書類・通知・電話など具体的な圧力を用いて抽象的な恨み話にしない",
+            "終盤は家庭内の口論だけでなく、職場・親族・法的機関へ舞台を広げてスケールダウンを防ぐ"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い断定と長めの心理説明を交互に置き、通知・電話・書類の到着でリズムを切り替える連続 cliffhanger 型",
+          "dialoguePattern": "加害者の台詞は命令・侮辱・見栄・責任転嫁を担い、主人公の台詞は少なく静かで、終盤ほど短く決定的になる",
+          "expositionPattern": "過去の搾取や証拠収集は、移動中・書類確認中・通知受信中に回想として差し込まれ、現在進行の制裁を止めない",
+          "emotionalCadence": "侮辱で怒りを作り、支払い失敗で小さく解放し、裏切りの深さで再び怒りを増幅し、法的制裁で大きく回収し、最後は生活描写で浄化する",
+          "transitionPattern": "主人公側の静かな場面から『その頃』で加害者側の破綻へ移り、破綻場面の末尾で次の通知・電話・書類を予告して次シーンへ渡す"
+        },
+        "variationSlots": [
+          "季節行事は正月以外の帰省、法事、旅行、記念日にも置換可能",
+          "支払い手段はカード、共同口座、電子決済、保証人、ローンに置換可能",
+          "加害者側の贅沢計画は旅行、住宅購入、車購入、起業資金、親族イベントに置換可能",
+          "味方は弁護士のほか、司法書士、銀行員、親、兄弟、会社の人事などに変更可能",
+          "主人公の回復先は実家、賃貸アパート、地方移住、職場復帰などに変更可能",
+          "公開失墜の場は旅館、飲食店、職場、親族会議、金融機関、契約先などで組み替え可能"
+        ],
+        "coverageNotes": [
+          "サンプルは全体の主要局面を広く含んでおり、開幕から結末までの骨格は高確度で復元できる",
+          "一部の金額や固有契約条件はサンプル上で具体的だが、分析ではチャンネル構造上の機能として抽象化した",
+          "人物名・施設名・正確な文言は意図的に一般化し、再利用可能な物語設計に限定した"
+        ],
+        "confidence": 0.94
+      },
+      {
+        "fileName": "4f4ASPCHuRs.txt",
+        "analysisVersion": 2,
+        "fileRole": "abandoned-child revenge-and-reconciliation story built around proving that a hated parent was actually a long-term hidden protector",
+        "pointOfView": "first-person retrospective narrator who begins inside a humiliation scene, then reconstructs the hidden family history through investigation, documents, witnesses, and confrontation",
+        "tone": "melodramatic, suspenseful, morally polarized, emotionally restorative, with strong emphasis on betrayal, parental sacrifice, and cathartic justice",
+        "openingHook": "public rejection by a high-status family member, followed immediately by the hint that the rejected protagonist may possess a secret identity and a symbolic clue that will overturn the scene's meaning",
+        "protagonistPattern": "adult child marked by abandonment trauma who tests a biological parent, discovers the parent was trapped, then shifts from wounded accuser to investigator, rescuer, and rightful heir",
+        "antagonistPattern": "socially respectable patriarch and entitled successor figure who use status, debt, documents, and family dependency to dominate vulnerable people while hiding criminal or fraudulent behavior",
+        "escalationBeats": [
+          "A humiliating encounter appears to confirm the protagonist's lifelong resentment, but the parent's private reaction contradicts the surface cruelty.",
+          "Investigation reveals that the glamorous household and business are financially rotten and controlled by coercion rather than love.",
+          "Old remittances, witness testimony, and stored records reframe abandonment as a protective sacrifice rather than selfish desertion.",
+          "A planned property transaction turns the emotional mystery into an urgent legal and financial battle.",
+          "A first counterattack succeeds partially, but the antagonist reveals a hostage-like debt mechanism that threatens the vulnerable parent.",
+          "The final confrontation converts hidden proof into public legal exposure, forcing the antagonists to collapse and blame each other."
+        ],
+        "revealPattern": "successive evidence reversals: a sentimental object triggers doubt, financial records prove long-term sacrifice, testimony explains the original separation, property records shift power to the protagonist, and recorded threats plus archived ledgers neutralize the antagonist's final leverage",
+        "justicePayoff": "the antagonists lose legal, financial, social, and emotional power in front of witnesses and authorities, while the protagonist refuses impulsive violence and wins through proof, timing, and public exposure",
+        "epiloguePattern": "after punishment, the corrupted place is symbolically erased and rebuilt into a safe family home; daily domestic scenes and memorial gratitude confirm that lost time cannot be undone but can be healed",
+        "pacingRules": [
+          "Every emotional answer immediately opens a larger practical danger: recognition leads to coercion, coercion leads to debt, debt leads to property fraud, property fraud leads to a threat against the parent.",
+          "Major reveals are attached to concrete objects or documents, not abstract explanation, so each exposition block arrives as a new clue with visual or legal force.",
+          "The protagonist repeatedly withholds direct confrontation until the antagonist is at peak confidence, maximizing reversal impact.",
+          "Scenes end with a newly discovered inconsistency, document, or threat to pull viewers into the next segment."
+        ],
+        "recurringMotifs": [
+          "split or preserved childhood keepsake as proof of severed but unbroken family love",
+          "rain, cold, and darkness as signs of abandonment trauma and hidden suffering",
+          "documents, ledgers, bank records, property records, and recordings as truth stronger than status",
+          "fake respectable storefront versus rotten back room as moral contrast",
+          "home, meals, and rebuilt living space as the final image of recovered family"
+        ],
+        "characterSystem": {
+          "victimRole": "sacrificial parent who appears cold on the surface but has endured decades of coercion to protect the child from exploitation",
+          "antagonistRole": "dominant household/business controller who weaponizes debt, forged paperwork, intimidation, and reputation",
+          "allyRole": "supportive fiancée and her family network, plus investigator, lawyer, bank contact, and older witness who convert emotion into actionable proof",
+          "relationshipPressure": "biological parent-child longing, stepfamily hierarchy, marriage ties, inheritance, and debt guarantees create pressure because every act of resistance risks harming the vulnerable parent"
+        },
+        "evidenceSystem": {
+          "firstClue": "a personal keepsake causes the protagonist to question whether the parent's rejection was genuine or staged under surveillance",
+          "proofChain": [
+            "surveillance and outside investigation show the respectable family business is financially compromised and coercive",
+            "bank records and older witness testimony prove the parent secretly supported and protected the protagonist for decades",
+            "property records, archived ledgers, letters, and recordings expose fraud, illegal money activity, threats, and the antagonist's lack of legal ownership"
+          ],
+          "revealTiming": "proof changes meaning in waves: first it reverses the protagonist's view of the parent, then it reverses ownership and power, then it destroys the antagonist's final threat",
+          "payoffUse": "the evidence allows the protagonist to confront the antagonists without violence, bring allies and authorities into the room, invalidate coercive leverage, and legally reclaim the property"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "the viewer is trapped by a harsh family rejection scene combined with a teaser that the rejected person is not who the villains think and that a hidden truth will soon surface",
+          "incitingIncident": "the protagonist deliberately visits the parent in disguise, is rejected, drops a meaningful clue, and witnesses the parent's private breakdown, making simple hatred impossible",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "the protagonist's core belief changes from 'I was abandoned by a selfish parent' to 'I was protected by a parent who sacrificed everything under coercion'; the revenge target shifts from the parent to the controller exploiting the parent",
+          "climaxMechanism": "the antagonist is lured into overconfidence, speaks incriminatingly, faces legal documents, recordings, witnesses, and authorities, and loses the ability to control the situation through fear",
+          "consequenceChain": [
+            "fraudulent transaction fails and criminal/financial misconduct is exposed",
+            "the parent is freed from coercive family and debt pressure",
+            "the antagonist household implodes through mutual betrayal and legal consequences",
+            "the protagonist reclaims the property and redirects it toward a new family future"
+          ],
+          "endingRecovery": "the corrupted business site is demolished and replaced by plans for a small safe home; shared meals, restored parent-child affection, partner integration, and grave visitation provide concrete recovery",
+          "moralDebate": "whether revenge should destroy the place tied to family history or preserve it; the story resolves by choosing demolition as liberation from abuse rather than erasure of love"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "a poor-looking abandoned child is humiliated by a wealthy-looking parent, but one dropped clue exposes decades of lies and triggers revenge",
+          "hook30s": "the story opens directly with cruel public rejection, class contempt, and the narrator revealing the rejecter is a long-lost parent",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "viewers can debate whether the protagonist's demolition of the old business is justified justice, excessive revenge, or necessary trauma cleansing",
+          "antiDropRules": [
+            "answer active questions before they become stale, but attach each answer to a larger danger",
+            "alternate emotional reveals with legal or financial stakes to avoid pure exposition fatigue",
+            "make villains repeatedly overconfident so viewers wait for the reversal",
+            "use physical proof objects to make each reveal feel concrete",
+            "delay full reunion until after external danger is neutralized"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "short declarative emotional beats mixed with longer explanatory passages that unpack documents, memories, and moral meaning",
+          "dialoguePattern": "villains speak in contemptuous, status-heavy threats; allies speak calmly and supportively; the protagonist increasingly shifts from wounded silence to controlled declarative accusation",
+          "expositionPattern": "backstory is delivered through discovered records, third-party testimony, surveillance reports, legal explanations, and objects rather than a single uninterrupted flashback",
+          "emotionalCadence": "humiliation leads to suspicion, suspicion to grief, grief to resolve, resolve to near-defeat, near-defeat to public vindication, and vindication to domestic healing",
+          "transitionPattern": "each scene hands off through a concrete unresolved item: a clue, a message, a document, a record, a legal deadline, a threat, or an unopened hidden object"
+        },
+        "variationSlots": [
+          "type of family business or prestigious public setting",
+          "symbolic childhood item linking parent and child",
+          "specific financial crime used by the antagonist",
+          "ally profession or social connection that enables legal counterattack",
+          "form of hidden parental support such as remittances, letters, medical payments, or educational funds",
+          "final use of reclaimed property or inheritance",
+          "identity of the witness who explains the original separation",
+          "secondary villain's relationship to the main antagonist"
+        ],
+        "coverageNotes": [
+          "The reconstruction is based on sampled chronological transcript segments, but the samples span the full progression from hook to epilogue.",
+          "Some OCR/transcription noise affects proper nouns and document labels, so analysis abstracts away from exact terms and identities.",
+          "The broad structure is clear: humiliation hook, investigative reversal, legal-financial escalation, staged confrontation, villain collapse, and family restoration."
+        ],
+        "confidence": 0.91
+      },
+      {
+        "fileName": "4j9FfaehVxo.txt",
+        "analysisVersion": 2,
+        "fileRole": "A long-form domestic revenge story in which a pressured wife uncovers hidden financial crimes, gathers proof, and turns a family tribunal into a public collapse of the perpetrators.",
+        "pointOfView": "First-person retrospective narration by the wronged wife, combining calm present-tense scene observation with hindsight foreshadowing.",
+        "tone": "Controlled, tense, morally outraged, and steadily cathartic; the protagonist rarely explodes emotionally, which makes the antagonists' panic feel more exposed.",
+        "openingHook": "The story opens in the middle of a coercive demand for an enormous financial sacrifice from the heroine's birth family, immediately pairing domestic intimidation with a hidden document clue that implies a deeper crime.",
+        "protagonistPattern": "A long-suffering middle-aged wife who has endured family hierarchy for years, but who becomes methodical once her parents and child are threatened.",
+        "antagonistPattern": "An entitled in-law and complicit spouse who use family duty, shame, divorce threats, and public reputation to force the heroine into covering their wrongdoing.",
+        "escalationBeats": [
+          "A shocking money demand is framed as family obligation, but the heroine already possesses a suspicious clue.",
+          "The spouse's evasive behavior, hidden objects, and urgent messages reveal that the crisis is not what the antagonists claim.",
+          "The in-law expands pressure by contacting the heroine's parents and later spreading false accusations among relatives.",
+          "The heroine gathers documentary evidence while pretending ignorance, then secures her own money and legal support.",
+          "The antagonists stage a public family meeting to corner her, only for the heroine's allies to reverse the accusation with proof.",
+          "The spouse and in-law turn on each other once exposed, losing social standing, legal safety, and family ties."
+        ],
+        "revealPattern": "Revelations are layered through physical documents, digital messages, financial traces, and forged authorization materials; each clue first raises suspicion, then later becomes part of a complete evidentiary chain.",
+        "justicePayoff": "The payoff is a public reversal: the accusers are forced to face the evidence in front of the very relatives they recruited, lose credibility, and suffer legal, financial, and relational consequences.",
+        "epiloguePattern": "After the confrontation, the heroine returns to her birth family, completes legal separation, receives confirmation of the antagonists' downfall, and reframes her savings as freedom rather than marital security.",
+        "pacingRules": [
+          "Every scene answers one immediate mystery while opening a larger one, preventing the story from becoming static exposition.",
+          "Quiet evidence-gathering scenes alternate with aggressive confrontation scenes, creating a rhythm of pressure, discovery, restraint, and reversal.",
+          "The protagonist's emotional restraint is used as suspense: she knows more than the antagonists realize, so viewers wait for the moment she will reveal it.",
+          "Major accusations are repeated through new channels—spouse, in-law, parents, relatives, child—so the social pressure keeps expanding before the legal counterattack."
+        ],
+        "recurringMotifs": [
+          "Documents and papers as weapons",
+          "Phones and messages as pressure devices",
+          "Family duty being twisted into extortion",
+          "The heroine's calm silence masking preparation",
+          "Public shame reversing onto the accusers",
+          "Savings and bank accounts as symbols of survival",
+          "Doorways and leaving scenes as markers of liberation"
+        ],
+        "characterSystem": {
+          "victimRole": "The wife is positioned as the apparent weak party: expected to obey, mediate, protect family reputation, and sacrifice her parents' assets.",
+          "antagonistRole": "The spouse and in-law function as a coercive pair: one supplies familial authority and emotional blackmail, the other supplies marital betrayal and concealed wrongdoing.",
+          "allyRole": "The heroine's birth family and a legal professional provide rational verification, emotional trust, and institutional power.",
+          "relationshipPressure": "The pressure comes from Japanese-style family hierarchy, the role of the daughter-in-law, fear of divorce, concern for the adult child's marriage, and relatives' judgment."
+        },
+        "evidenceSystem": {
+          "firstClue": "The first clue tells the audience that the demanded money is not for the stated reason, creating immediate dramatic irony.",
+          "proofChain": [
+            "Suspicious discarded or hidden papers establish that a financial problem is being concealed.",
+            "Messages, cards, keys, mail, and payment records link the spouse to workplace misconduct and an outside accomplice.",
+            "A forged authorization tool proves that the antagonists were preparing to act without legitimate consent."
+          ],
+          "revealTiming": "Most proof is discovered privately in the first half, interpreted with help from the heroine's father around the midpoint, and deployed publicly in the final confrontation.",
+          "payoffUse": "The proof prevents the heroine's parents from being financially trapped, destroys the false accusation, establishes grounds for divorce and compensation, and triggers institutional consequences for the spouse."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "The first 30 seconds present an outrageous demand against innocent parents, a silent spouse, and a teaser that the heroine already found a hidden document, making viewers ask what the family is really hiding.",
+          "incitingIncident": "The in-law demands that the heroine involve her parents' home in a large loan scheme, then threatens to contact them directly when refused.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The heroine stops merely defending herself and becomes an active strategist: she protects her assets, consults allies, and prepares to expose the antagonists in the venue they believe will humiliate her.",
+          "climaxMechanism": "The climax combines public family pressure, legal authority, rational questioning, and sequential document reveals; the accusers lose control because each denial is immediately answered by evidence.",
+          "consequenceChain": [
+            "The spouse loses family trust, employment security, and the ability to use the heroine's money or parents' assets.",
+            "The in-law loses social authority, housing stability, and access to the heroine's family.",
+            "Relatives who were manipulated withdraw support from the antagonists and apologize to the heroine's side.",
+            "The heroine finalizes divorce and exits before the antagonists can pull her into their collapse."
+          ],
+          "endingRecovery": "The heroine lives with her supportive birth family, receives legal confirmation that the separation and protections are complete, is embraced by her adult child and child's spouse, and reimagines her savings as personal freedom.",
+          "moralDebate": "The story resolves the question of whether a wife should preserve family unity at all costs; it argues that refusing to save relatives from their own crimes is not betrayal but self-preservation."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A daughter-in-law is ordered to risk her parents' home for a huge family debt, but she secretly holds evidence that will destroy the accusers.",
+          "hook30s": "The video starts with a direct, shocking demand and an apparently complicit husband, then teases that the heroine already knows the stated reason is false.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "The story invites comments on whether the heroine was right to secretly gather proof, protect her own savings, and publicly expose family members rather than negotiate privately.",
+          "antiDropRules": [
+            "Answer active questions quickly but replace each answer with a more serious hidden layer.",
+            "Keep the heroine emotionally controlled so viewers wait for her planned reveal.",
+            "Use concrete evidence objects frequently to make progress feel tangible.",
+            "Let antagonists overplay their hand in increasingly public ways, raising the satisfaction of reversal.",
+            "Alternate threat scenes with preparation scenes to avoid fatigue.",
+            "Delay full confrontation until social stakes, legal stakes, and emotional stakes are all aligned."
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Short observational sentences and internal realizations build tension, followed by longer explanatory passages that connect clues into a moral and legal pattern.",
+          "dialoguePattern": "Dialogue is confrontational and status-driven: antagonists issue demands and accusations, while the heroine and allies answer with calm questions or factual corrections.",
+          "expositionPattern": "Background information is introduced through objects, phone calls, documents, and behavior rather than isolated explanation; each exposition block is tied to a current threat.",
+          "emotionalCadence": "The story moves from shock to suspicion, from betrayal to strategic calm, from public humiliation risk to public vindication, then from legal closure to domestic peace.",
+          "transitionPattern": "Scenes often end on a newly discovered clue, a threatening phone call, or a line of foreshadowing that the antagonists do not yet know what the heroine knows."
+        },
+        "variationSlots": [
+          "The demanded asset can change: parental home, inheritance, savings, business property, or guarantor signature.",
+          "The concealed crime can change: workplace embezzlement, debt guarantee, tax fraud, gambling loss, investment scam, or affair-related blackmail.",
+          "The ally can change: retired banker parent, lawyer sibling, accountant friend, detective relative, or adult child.",
+          "The public exposure venue can change: family meeting, inheritance meeting, wedding-related gathering, neighborhood association, workplace HR meeting, or mediation session.",
+          "The evidence objects can change: bank records, messages, contracts, recordings, seals, keys, receipts, or notarized documents.",
+          "The smear campaign can change: infidelity accusation, caregiving neglect accusation, theft accusation, debt accusation, or abuse accusation.",
+          "The recovery image can change: returning to parents, moving into a new apartment, living near adult children, starting work, travel, or a new hobby."
+        ],
+        "coverageNotes": [
+          "The supplied segments span the complete transcript and make the full structural arc clear.",
+          "Some exact mechanics of institutional reporting and legal outcomes are inferred from sampled passages but are consistent across the later segments.",
+          "Proper nouns and unusually specific factual details have been abstracted to comply with the no-copying constraint."
+        ],
+        "confidence": 0.94
+      },
+      {
+        "fileName": "4UAIfVGHCWw.txt",
+        "analysisVersion": 2,
+        "fileRole": "介護を担った娘が、母の死後に財産を狙う長男夫婦の嘘を証拠と遺言で反転させ、人生を取り戻す相続復讐型ストーリー",
+        "pointOfView": "一人称の被害者視点で、主人公が当時の感情と後から分かった真相を交互に整理しながら語る回想告白型",
+        "tone": "静かな怒り、抑制された悲しみ、証拠が積み上がるサスペンス、最後に救済感へ移る勧善懲悪調",
+        "openingHook": "危篤の親の前で兄夫婦が相続独占と追い出しを宣言し、直後に親が主人公へ謎の鍵と逃走指示を残す二段フック",
+        "protagonistPattern": "長年の介護や犠牲を一人で背負い、周囲から軽んじられるが、感情的に爆発せず証拠を集めて反撃する忍耐型の善良な身内",
+        "antagonistPattern": "家族内の地位を盾に、親戚の前では善人を演じながら裏で財産処分と責任転嫁を進める虚栄・借金・搾取型の身内夫婦",
+        "escalationBeats": [
+          "病室での冷酷な相続宣言により、主人公の居場所と介護の報酬が一瞬で奪われそうになる",
+          "母から託された鍵と外部協力者の警告により、敵の計画が単なる相続争いではなく事前準備された財産奪取だと見えてくる",
+          "口座の不自然な資金移動、不動産処分の動き、親戚への美談工作が重なり、主人公が沈黙のまま証拠を蓄積する",
+          "葬儀後の親族会議で敵が遺産放棄と退去を迫り、主人公は即時反論せず公開の場で金庫を開けさせる方向へ誘導する",
+          "第三者の前で金庫が開かれ、期待された財産ではなく罠として残された証拠が現れ、権力関係が反転する"
+        ],
+        "revealPattern": "謎の鍵、空の金庫、外部保管された本命財産、正式な遺言、録音された故人の証言、主人公が集めた金融・行動証拠が段階的に意味を変え、最後に一つの証明線になる",
+        "justicePayoff": "親戚全員の前で敵の嘘、横領、売却工作、借金事情が暴かれ、敵は社会的信用と家族内の立場を失い、主人公は家と財産の正当な承継者として認められる",
+        "epiloguePattern": "主人公が過去の介護生活を整理し、母が残した資金と願いを使って諦めていた夢を具体的な新生活に変える再生型エピローグ",
+        "pacingRules": [
+          "各場面の終わりに未解決の物品・証拠・約束時間を置き、次の場面へ視聴継続の理由を作る",
+          "敵の悪事を一度に明かさず、口座、契約、親戚工作、録音、遺言の順で段階的に開示する",
+          "主人公はすぐ反撃せず、敵が大勢の前でより大きな嘘をつくまで待たせることで公開処刑感を高める",
+          "強い感情場面の後に、鍵や通帳や書類など具体物を提示して物語を前進させる"
+        ],
+        "recurringMotifs": [
+          "鍵",
+          "金庫",
+          "通帳",
+          "親戚の前での演技",
+          "沈黙と忍耐",
+          "母の最後の仕掛け",
+          "奪われた十年と取り戻す未来"
+        ],
+        "characterSystem": {
+          "victimRole": "介護を担いながら評価されず、相続でも排除されそうになる献身的な娘",
+          "antagonistRole": "長男という家族内序列を利用し、妻と共に財産を先取りしようとする外面の良い搾取者",
+          "allyRole": "故人から事前に事情と書類を託され、主人公の証言を社会的・法的に補強する年長の第三者",
+          "relationshipPressure": "長男優先、独身の娘への偏見、親戚の世間体、介護労働の不可視化が主人公を黙らせ、敵の嘘を一時的に信じさせる"
+        },
+        "evidenceSystem": {
+          "firstClue": "故人が死の直前に渡す謎の鍵が、敵の知らない本命財産と反撃計画の存在を示す",
+          "proofChain": [
+            "口座残高と資金移動の記録により、敵が故人の金を動かした疑いが生まれる",
+            "不動産関係の行動記録と隠し録りされた会話により、敵の目的が家の処分と借金穴埋めだと分かる",
+            "第三者が持つ正式書類と金庫内の録音により、故人の意思、主人公への承継、敵の過去の不正が公開される"
+          ],
+          "revealTiming": "敵が親戚全員の前で自分の正当性を最大限に主張し、主人公へ署名と退去を迫った直後に証拠が開示される",
+          "payoffUse": "証拠は主人公の反論ではなく、敵自身が開けた金庫と第三者の立会いによって提示されるため、改ざんや言い逃れを封じる"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "危篤の親の前で相続独占と追放宣言が行われ、すぐに謎の鍵と『逃げるべき理由』が提示されるため、視聴者は鍵の正体と金庫の中身を知りたくなる",
+          "incitingIncident": "母が亡くなる直前に主人公だけへ秘密の鍵と指示を託し、主人公が家を離れて敵の計画から身を守る選択をする",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "主人公が単なる被害者ではなく、母の計画と自分の証拠収集によって敵を公開の場へ誘導する側に変わる",
+          "climaxMechanism": "敵が親戚の前で最大の嘘を重ね、第三者が金庫を開け、正式書類と録音と主人公の補助証拠が同時に提示されることで、家族内の権威が崩壊する",
+          "consequenceChain": [
+            "敵夫婦は親戚からの信用と家の取得可能性を失い、互いに責任をなすりつけて関係も崩れる",
+            "主人公は不当な署名と退去要求を拒絶し、母の意思に基づいて財産と未来を守る",
+            "故人の本当の愛情が、主人公への救済と敵への精神的制裁の両方として作用する"
+          ],
+          "endingRecovery": "主人公は介護の記憶を整理し、守られた資金で長年諦めていた小さな夢の仕事を始め、故人の写真と共に穏やかな新生活へ入る",
+          "moralDebate": "盗まれた金を返還請求せず最後の情けとして放置する一方、家と人生には二度と触れさせないという、赦しと絶縁の境界を描く"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "介護した娘が追い出されそうになるが、亡き母の隠し仕掛けで強欲な長男夫婦が親戚の前で破滅するという復讐・相続逆転の約束",
+          "hook30s": "死に際の親の前で相続独占を宣言する身内と、主人公だけに託される謎の鍵を即提示する",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "敵に法的追及よりも精神的制裁と絶縁を選び、盗まれた一部の金を返させない判断が、視聴者の賛否や道徳議論を誘う",
+          "antiDropRules": [
+            "序盤の謎は次の謎へ接続しながら定期的に一部回答する",
+            "敵の悪さは抽象的にせず、金額、書類、行動、証言など別種の証拠で更新する",
+            "主人公を泣き寝入りさせすぎず、内心では準備が進んでいることを示してストレスを緩和する",
+            "反撃の場を事前予約し、時刻と参加者を明示してクライマックスへの期待を固定する",
+            "復讐後は転落だけで終えず、主人公の幸福な未来を具体的に描いて満足感を補強する"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い感情文と状況説明を交互に置き、場面の最後で不穏な予告文を入れる反復型",
+          "dialoguePattern": "敵の台詞は権威的で断定的、主人公は抑制された確認質問、味方は低く落ち着いた証明役として機能する",
+          "expositionPattern": "過去の介護、兄夫婦の不参加、母の準備などを現在の証拠発見に結びつけて小出しにするため、説明が回想単独で停滞しにくい",
+          "emotionalCadence": "理不尽な怒りから始まり、謎の不安、証拠発見の冷たい怒り、母の愛による涙、公開暴露の爽快感、再生の温かさへ移行する",
+          "transitionPattern": "電話、鍵、通帳、金庫、書類、録音機などの物品を次場面への橋にし、各シーンが未解決の圧力を残して終わる"
+        },
+        "variationSlots": [
+          "介護対象は母・父・祖父母などに変更可能",
+          "敵は兄夫婦、姉夫婦、義家族、親戚代表などに変更可能",
+          "謎の物品は鍵、封筒、通帳、USB、録音機、貸金庫カードなどに変更可能",
+          "本命財産の隠し場所は銀行、弁護士、信頼できる近隣者、公証役場経由などに変更可能",
+          "公開処刑の場は葬儀後の親族会議、法事、実家での相続協議、病院ロビーなどに変更可能",
+          "主人公の再生先は店、引っ越し、資格取得、独立、穏やかな一人暮らしなどに変更可能"
+        ],
+        "coverageNotes": [
+          "提供されたのは全体からのサンプル区間だが、0%から100%まで主要転換点が連続しており、全体構造の復元信頼度は高い",
+          "一部の固有名詞や細部は文字起こし誤認が含まれるため、抽象化して扱った",
+          "金銭額や物件種別などは物語上の証拠機能として分析し、再現ではなく役割に置き換えた"
+        ],
+        "confidence": 0.93
+      },
+      {
+        "fileName": "5WRRhDm1y4E.txt",
+        "analysisVersion": 2,
+        "fileRole": "嫁いだ女性が、夫と義母による遺産搾取計画を法的手続きと証拠収集で反転させ、家族内公開裁判型の復讐を遂げて人生を取り戻す物語",
+        "pointOfView": "被害者本人の一人称回想で、冒頭に決定的対決後の静かな勝利状態を置き、その後に半年前からの準備を遡って説明する構成",
+        "tone": "抑圧された怒り、冷静な反撃、法的制裁、最後は穏やかな再生へ移る勧善懲悪トーン",
+        "openingHook": "大金を出した直後に離婚を突きつけられる屈辱場面から始め、主人公だけが隠し玉を持っていることを示して視聴者に逆転の期待を持たせる",
+        "protagonistPattern": "長年家庭内で軽視されてきた忍耐型の嫁が、亡父の遺産と尊厳を守るために感情的対決ではなく証拠と制度を使って戦う人物",
+        "antagonistPattern": "嫁を家族内下位者として扱い、金だけを利用して追放しようとする夫と義母の共犯構造。見栄、世間体、跡継ぎ幻想、財産欲が動機になる",
+        "escalationBeats": [
+          "夫婦・嫁姑関係の冷え込みと遺産への視線が描かれ、主人公が家族のために大金を差し出す決断へ追い込まれる",
+          "小さな不審な購入記録から不倫、妊娠、追放計画が見え始め、主人公が黙って証拠を集める局面に入る",
+          "銀行担当者と弁護士という外部権威を味方につけ、単なる支払いを法的な債権取得へ変える逆転設計が成立する",
+          "敵側が勝ったと確信して主人公を切り捨てた直後、通知によって自分たちが新たな債務者になったと知りパニックに陥る",
+          "親族の前で敵側が被害者ぶるが、公式記録、録音、金銭資料、不倫相手の登場で嘘が連続崩壊する",
+          "家・会社・親族関係・愛人・老後の安定を失う多段階の制裁が完了し、主人公は静かな生活へ移る"
+        ],
+        "revealPattern": "最初は主人公だけが知る小さな違和感を提示し、次に録音やレシートで裏切りを確認し、中盤で金融手続きの意味を反転させ、終盤で公的記録と第三者証言により敵の言い逃れを完全に封じる",
+        "justicePayoff": "敵が奪うつもりだった金銭・家・会社・世間体・家族内信用をすべて逆に失い、主人公は合法的に財産の大部分と尊厳を回復する",
+        "epiloguePattern": "復讐後の過剰な快感ではなく、静かな住まい、自然、亡父の記憶、自分のために暮らす日常を描いて情緒的回復を締める",
+        "pacingRules": [
+          "強い屈辱場面で始めた後、すぐに『実は主人公は準備済み』という逆転予告を入れ、長い回想でも離脱を防ぐ",
+          "証拠を一度に出さず、購入記録、録音、銀行手続き、弁護士、親族会議、第三者証言の順に階段状に増やす",
+          "敵が勝ち誇る場面を必ず直後の反転材料とセットにし、視聴者の怒りを溜めてから解放する",
+          "法的説明は人物の会話と具体的な損得の説明に埋め込み、制度解説だけで進行を止めない"
+        ],
+        "recurringMotifs": [
+          "亡父の遺産を守ること",
+          "家族という言葉の悪用",
+          "書類・通知・封筒による運命の反転",
+          "黙って耐える時間が後の武器になる構造",
+          "世間体を気にする者が公の場で裁かれる皮肉",
+          "家を失う者と新しい家を得る者の対比"
+        ],
+        "characterSystem": {
+          "victimRole": "嫁ぎ先で労働力と資金源として扱われるが、内面では父の教えと自尊心を持ち続ける被害者兼反撃者",
+          "antagonistRole": "夫と義母が共同で搾取計画を進める中心敵。夫は不実と虚栄、義母は支配欲と世間体の象徴",
+          "allyRole": "亡父と縁のある金融関係者、法的代理人が制度的・社会的信用を提供し、主人公の孤独な証拠を実効性ある制裁に変える",
+          "relationshipPressure": "嫁は夫家族に従うべき、家族なら助けるべき、親族の前では逆らうべきでないという同調圧力が主人公を追い詰めるが、終盤では同じ親族の視線が敵側を裁く圧力に反転する"
+        },
+        "evidenceSystem": {
+          "firstClue": "家庭状況と矛盾する高額購入の痕跡が、夫の隠し事と義母の裏計画を疑う入口になる",
+          "proofChain": [
+            "日常のゴミや購入記録から、金銭の使い道と新しい家庭を準備している気配をつかむ",
+            "隠し録音によって、主人公から金を引き出した後に追放する意図と不貞関係を確認する",
+            "銀行相談と書類確認によって、敵側が贈与として全財産を奪おうとしていた危険性を知る",
+            "正式な金融手続きによって、支払いを単なる肩代わりではなく債権取得へ変換する",
+            "親族会議で公的記録、録音、金銭資料、第三者の発言を重ね、敵の嘘を多方向から崩す"
+          ],
+          "revealTiming": "冒頭で主人公が何かを仕込んでいることだけを見せ、真の手続き内容は序盤後半から中盤で説明し、敵が理解するのは勝利宣言直後に通知を受け取った後に遅らせる",
+          "payoffUse": "証拠は感情的な糾弾ではなく、債権回収、慰謝料請求、財産差押え、親族からの信用剥奪を可能にする実務的武器として機能する"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "大金を出した瞬間に夫家族から離婚と追放を迫られる強烈な不条理で怒りを作り、主人公が冷静すぎる理由と封筒の中身を知りたくさせる",
+          "incitingIncident": "夫の会社危機を理由に、主人公が亡父の資産を手放して巨額資金を用意する決断をすること",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "主人公が単なる被害者から敵側の債権者へ変わり、夫家族が『助けられる側』ではなく『返済を迫られる側』に反転する",
+          "climaxMechanism": "親族の前という社会的圧力の場で、弁護士の法的権威、銀行員の公的記録、主人公の録音証拠、不倫相手の自己暴露が連続投入され、敵の言い訳と味方を同時に奪う",
+          "consequenceChain": [
+            "敵は巨額返済を迫られ、家と会社を失う",
+            "夫婦関係は離婚により終了し、不倫関係も打算が露呈して崩壊する",
+            "義母は親族から見放され、世間体と老後の安定を失う",
+            "主人公は亡父の資産の大部分を回収し、新しい生活基盤を得る"
+          ],
+          "endingRecovery": "主人公は小さく穏やかな住まいで、亡父の記憶につながる象徴を育てながら、自分の意思で日常を選べる状態になる",
+          "moralDebate": "家族を救うための献身は美徳か、それとも搾取者に利用される危険な自己犠牲か。物語は、家族の名を悪用する者には法と証拠で線を引くべきだと結論づける"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "嫁の遺産を奪って追放した夫と義母が、実は法的に全てを失う側だったという逆転復讐 promise",
+          "hook30s": "銀行のような権威ある場で大金と離婚要求を同時に突きつけるショック場面から即開始する",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "主人公の復讐はやりすぎか、家族を名乗って搾取した相手には当然の法的報いかを議論させる結末",
+          "antiDropRules": [
+            "冒頭の疑問を完全には遅らせず、早めに『隠し手続き』の存在を示す",
+            "証拠発見と敵の悪行を交互に置き、怒りと解決期待を同時に維持する",
+            "法的説明の後には必ず敵の慌てる反応を置き、説明パートの停滞を防ぐ",
+            "一つの暴露で終わらせず、不倫、金銭、親族、老後の順に制裁の層を増やす",
+            "最終盤は敵の破滅だけでなく主人公の穏やかな回復を具体的に描き、視聴後感を整える"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短めの感情文と手続き説明文を交互に置き、重要場面では静かな動作描写で間を作ってから事実を落とす",
+          "dialoguePattern": "敵の台詞は見下し、命令、責任転嫁で構成され、味方の台詞は冷静な説明と保証に寄る。主人公は大声で反撃せず、短い確認と宣言で優位を示す",
+          "expositionPattern": "過去説明は現在の証拠品や通知から回想へ入る形で挿入され、単なる説明ではなく『なぜこの証拠が必要だったか』に結びつく",
+          "emotionalCadence": "冒頭の屈辱、過去の忍耐、裏切り発見の怒り、味方獲得の安堵、中盤の知的逆転、終盤の公開制裁、最後の静かな解放という階段状の感情推移",
+          "transitionPattern": "各場面の終わりに電話、封筒、書類、着信、親族会議など次の圧力装置を置き、未解決の疑問を残したまま次シーンへ渡す"
+        },
+        "variationSlots": [
+          "奪われそうになる資産の種類は遺産、退職金、不動産、保険金などに変更可能",
+          "外部の味方は銀行員、司法書士、弁護士、税理士、不動産業者などに変更可能",
+          "敵の裏切り内容は不倫、隠し子、浪費、投資詐欺、事業失敗、親族への虚偽説明などで差し替え可能",
+          "公開制裁の場は親族会議、法事、会社説明会、家族集会、調停前の話し合いなどに変更可能",
+          "主人公の回復象徴は新居、庭、花、ペット、仕事再開、故人の思い出の品などに変更可能"
+        ],
+        "coverageNotes": [
+          "提供されたサンプルは全体を広く含んでおり、主要な因果関係と結末は十分に復元可能",
+          "一部の固有名詞や細かな法的表現は音声認識由来の揺れがあるため、抽象化して扱った",
+          "具体的な地名、銀行名、人物名、購入品名などは再利用を避け、構造上の機能のみ分析した"
+        ],
+        "confidence": 0.93
+      },
+      {
+        "fileName": "6IOhKdNq1eA.txt",
+        "analysisVersion": 2,
+        "fileRole": "Long-form domestic betrayal story built around a wife discovering a hidden double life, converting accumulated evidence into a public reversal, then choosing truth over a convenient settlement.",
+        "pointOfView": "First-person retrospective narration by the betrayed wife, with present-tense-like scene immersion and withheld knowledge used to create delayed reveals.",
+        "tone": "Melodramatic, suspenseful, morally indignant, evidence-driven, and ultimately cathartic with a bittersweet healing finish.",
+        "openingHook": "A bureaucratic errand instantly exposes that the absent husband’s official record contradicts years of family belief, followed by a tease that a later confrontation will reveal an even deeper hidden family record.",
+        "protagonistPattern": "Middle-aged wife and mother who has endured financial and emotional sacrifice for years, initially protecting her daughter’s wedding and family image, then becoming methodical, legally aware, and morally resolute.",
+        "antagonistPattern": "Entitled spouse supported by a manipulative older family member; they weaponize family reputation, wedding timing, housing rights, money, and social status to coerce compliance.",
+        "escalationBeats": [
+          "A routine public-office request reveals the husband’s domestic address history is false, converting vague unease into documented betrayal.",
+          "The husband returns and accidentally exposes records implying a second household, then shifts from panic to intimidation by using the daughter’s wedding as leverage.",
+          "The protagonist discovers missing funds, stolen documents, and an older relative’s complicity, raising the conflict from infidelity to coordinated financial predation.",
+          "A bank and computer trail shows wedding money has been routed toward medical expenses, reframing the motive as larger and stranger than romance or greed alone.",
+          "A presumed ally is compromised by debt pressure, proving the antagonists have blocked escape routes and widened control over the protagonist’s support network.",
+          "The protagonist discovers another deceived woman and child, realizing multiple victims have been manipulated by the same man under parallel false narratives.",
+          "Legal countermeasures invalidate stolen documents, protect the daughter, and set a trap timed to the antagonist’s own deadline.",
+          "A public hospital confrontation forces contradictory relationships, stolen money, forged narratives, and coercion into the open."
+        ],
+        "revealPattern": "Each reveal begins as a practical document or ordinary object, answers one question, then changes meaning later when paired with another record, witness, or location. Evidence is not static; it is reinterpreted multiple times.",
+        "justicePayoff": "The antagonist is publicly exposed through his own coerced paperwork, recorded admissions, official records, and witness convergence; social ambition collapses, legal consequences begin, and the daughter’s wedding is preserved without submitting to blackmail.",
+        "epiloguePattern": "After punishment and social fallout, the protagonist relinquishes the old house, secures care for a long-hidden vulnerable family member, supports the daughter’s honest marriage, and reclaims a once-suspicious object as a container of truthful family memory.",
+        "pacingRules": [
+          "Every solved mystery immediately opens a larger, more emotionally loaded mystery so the viewer never reaches a resting point until the final epilogue.",
+          "Concrete deadlines, legal documents, missing money, and scheduled public events keep abstract betrayal tied to urgent practical stakes.",
+          "Villain pressure escalates in cycles: denial, intimidation, financial theft, reputation threat, ally corruption, then public collapse.",
+          "Quiet investigative scenes are followed by confrontation scenes, preventing long exposition blocks from lowering tension."
+        ],
+        "recurringMotifs": [
+          "official records contradicting family stories",
+          "wedding as emotional hostage and moral deadline",
+          "money transfers as hidden relationship map",
+          "old personal item that changes symbolic meaning",
+          "family reputation versus factual truth",
+          "doors, locked rooms, and hidden compartments as metaphors for concealed lives"
+        ],
+        "characterSystem": {
+          "victimRole": "The central victim is a self-sacrificing mother whose labor, trust, home, and daughter’s future are exploited; secondary victims include another deceived woman, a child, a pressured sibling, and a hidden incapacitated parent.",
+          "antagonistRole": "The antagonist is a social climber and coercive spouse who maintains multiple incompatible identities, while an older relative enables him by normalizing betrayal and applying reputational pressure.",
+          "allyRole": "Allies are unstable at first: one family member is compromised by debt, official workers provide crucial factual anchors, the daughter becomes a moral partner once told the truth, and the fiancé’s family validates honesty at the end.",
+          "relationshipPressure": "Marriage, in-law hierarchy, parent-child duty, wedding expectations, local status, and debt obligations are used to make the protagonist feel that resistance will harm innocent loved ones more than the guilty party."
+        },
+        "evidenceSystem": {
+          "firstClue": "A municipal record functions as the first objective rupture: it proves the long-term absence story cannot be true and grants the protagonist permission to doubt everything.",
+          "proofChain": [
+            "Public-office documents establish official residence inconsistency and enable a decisive marital procedure.",
+            "Dropped household records, hidden contract copies, missing bank funds, stolen seals, and property documents prove parallel domestic arrangements and coordinated coercion.",
+            "Computer transfer records and hospital inquiry reveal that money is tied to medical payments, shifting the investigation toward a hidden beneficiary.",
+            "Witness encounters expose another deceived family and the antagonist’s attempt to secure higher status through a third relationship.",
+            "Legal countermeasures, recorded admissions, signed acknowledgments, and public confrontation convert private knowledge into enforceable proof."
+          ],
+          "revealTiming": "Proof changes meaning at three major points: first from overseas work to domestic betrayal, then from affair to multi-victim fraud, and finally from simple villainy to a buried maternal sacrifice that complicates the emotional resolution.",
+          "payoffUse": "The protagonist uses proof to neutralize stolen documents, remove the wedding hostage, lure the antagonist into a public setting, obtain admissions, involve authorities, and reject a settlement that would preserve false appearances."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "The first scene combines official authority, a shocking contradiction, a large amount of wasted sacrifice, and a promised future collapse, making viewers wait for both explanation and revenge.",
+          "incitingIncident": "The protagonist learns through official records that the husband’s long-term absence story is false and immediately acts on an old legal document, making the conflict irreversible.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The supposed rival household is revealed to be another deceived victim group, while the husband’s real motive becomes upward social advancement and erasure of inconvenient past ties.",
+          "climaxMechanism": "The protagonist synchronizes a legal deadline, public location, status-sensitive witnesses, official documents, and hidden recording so the antagonist must either confess, contradict records, or expose his own coercion.",
+          "consequenceChain": [
+            "The antagonist and enabling relative lose control of the narrative, face police involvement, financial liability, and social isolation.",
+            "The daughter’s wedding proceeds after full disclosure, while the old home is sold voluntarily to fund the future rather than stolen through coercion.",
+            "The hidden parent is moved to better care, and the protagonist’s family identity is rebuilt on truth rather than appearances."
+          ],
+          "endingRecovery": "The protagonist no longer preserves the old family shell; she creates a smaller but honest family structure involving her daughter, son-in-law, and cared-for parent, with the central object redefined as a keepsake of sacrifice and survival.",
+          "moralDebate": "The final dilemma asks whether taking immediate compensation and protecting appearances is kinder, or whether accepting financial loss and public truth is necessary to end a cycle of coercive lies."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A title/thumbnail would promise a betrayed wife discovering that years of remittances and an overseas assignment were lies, leading to a dramatic public takedown before a daughter’s wedding.",
+          "hook30s": "The story starts inside an official office where a staff member reveals an impossible residence record, then immediately shows the protagonist producing an old divorce document and teasing a later hidden-family discovery.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "The ending invites debate because the protagonist refuses a financially useful settlement, sells the cherished home, and prioritizes legal truth and moral inheritance over preserving a perfect wedding-family image.",
+          "antiDropRules": [
+            "answer active questions promptly, but make each answer expose a larger contradiction",
+            "attach every emotional scene to a document, deadline, or concrete action",
+            "make antagonists escalate after each protagonist discovery so the plot never becomes passive",
+            "use public settings for major turns to heighten humiliation and proof pressure",
+            "reframe earlier objects late in the story to reward viewers for remembering details"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Long descriptive passages alternate with short decisive declarations; emotional shock is often followed by procedural action, then another cliffhanger.",
+          "dialoguePattern": "Dialogue carries domination and reversal: antagonists issue threats and status claims, the protagonist responds with calm factual counters, and witnesses force lies to collapse.",
+          "expositionPattern": "Backstory is embedded inside errands, records, bank calls, hospital visits, and object discoveries rather than delivered as detached explanation.",
+          "emotionalCadence": "The cadence moves from shock to endurance, from humiliation to investigation, from isolation to strategic clarity, from public revenge to grief, then from grief to dignified recovery.",
+          "transitionPattern": "Scenes hand off through unresolved pressure: an office record leads to home confrontation, a hidden document leads to financial theft, a transfer record leads to a hospital, a hospital clue leads to a trap, and the trap leads to a deeper family secret."
+        },
+        "variationSlots": [
+          "The official clue could be a tax record, insurance record, school form, or hospital registration instead of a residence document.",
+          "The protected family event could be a wedding, entrance ceremony, childbirth, funeral, or business succession event.",
+          "The stolen asset could be savings, inheritance, property rights, insurance payout, or caregiving funds.",
+          "The enabling relative could be an in-law, sibling, adult child, business partner, or family friend.",
+          "The public confrontation location could be a hospital lobby, hotel banquet office, courthouse, company reception, or family meeting.",
+          "The recurring object could be a passport case, watch, photo album, old bag, key holder, or document folder.",
+          "The deeper late-story sacrifice could involve a parent, grandparent, sibling, mentor, or former spouse."
+        ],
+        "coverageNotes": [
+          "The analysis is reconstructed from sampled chronological segments rather than every line, but the samples cover the full arc from hook to epilogue.",
+          "Some transcript wording appears to contain speech-recognition errors, so role labels and legal mechanics are abstracted rather than treated as exact terminology.",
+          "Exact names, quotes, and distinctive micro-details have been intentionally generalized to comply with the analysis contract."
+        ],
+        "confidence": 0.91
+      },
+      {
+        "fileName": "6IwYt-J2TNQ.txt",
+        "analysisVersion": 2,
+        "fileRole": "A long-form revenge-and-liberation domestic drama in which an abused spouse quietly uses the antagonists' impatience to escape financial ruin and expose their fraud.",
+        "pointOfView": "First-person retrospective narrator who appears passive on the surface but is secretly informed, legally prepared, and emotionally controlled.",
+        "tone": "Calm, controlled, vindicatory, and cathartic, with repeated contrast between the protagonist's quiet restraint and the antagonists' escalating panic.",
+        "openingHook": "Immediate coercion scene: an in-law forces the protagonist to complete a life-changing legal document, expecting tears, while the protagonist reacts with unnatural calm that signals a hidden reversal.",
+        "protagonistPattern": "Long-suffering spouse who has endured humiliation for years, but whose silence is revealed to be strategic self-protection rather than weakness.",
+        "antagonistPattern": "Entitled spouse and domineering parent-in-law who underestimate the protagonist, rely on family obedience, conceal debts and infidelity, and destroy their own plan through arrogance.",
+        "escalationBeats": [
+          "A forced separation demand becomes unexpectedly advantageous because it severs the protagonist from a pending financial trap.",
+          "Private investigation inside the marital home uncovers forged authorization tools, debt records, and prepared documents aimed at exploiting inherited property.",
+          "Legal allies and workplace allies secure the protagonist's assets while the antagonists discover too late that their leverage has vanished.",
+          "The cheating partner's fantasy future collapses when money, credit, romantic deception, and business solvency fail at once.",
+          "A family confrontation turns public and legal as relatives learn the debt, fraud, and betrayal were worse than advertised."
+        ],
+        "revealPattern": "Layered evidence reveal: the opening legal act first looks like defeat, then becomes protection; hidden documents convert suspected betrayal into provable fraud; later public exposure makes each antagonist understand they caused their own downfall.",
+        "justicePayoff": "The antagonists lose money, reputation, family support, romantic fantasy, housing security, and legal safety, while the protagonist remains calm and legally protected rather than personally violent.",
+        "epiloguePattern": "After revenge resolution, the story shifts into practical recovery: new residence, protected inheritance, return to a meaningful workplace, emotional release, and a final image of autonomous daily life.",
+        "pacingRules": [
+          "Every apparent defeat is followed quickly by a new piece of context that reverses its meaning.",
+          "Scenes end with an unresolved practical pressure such as a call, document, visitor, debt notice, or impending confrontation.",
+          "Legal, financial, and emotional stakes escalate together so that revenge feels procedural rather than impulsive.",
+          "The protagonist's calmness is repeatedly contrasted with antagonist overreaction to maintain superiority satisfaction."
+        ],
+        "recurringMotifs": [
+          "Cold weather and warm drinks as markers of emotional temperature and regained safety",
+          "Keys, locks, and doors as symbols of exclusion becoming liberation",
+          "Documents, seals, and signatures as tools of both abuse and self-defense",
+          "Inherited workplace/property as a protected identity and safe base",
+          "Silence as strategy rather than submission"
+        ],
+        "characterSystem": {
+          "victimRole": "A spouse treated as domestic labor and financial asset, initially assumed to be powerless but actually gathering protection.",
+          "antagonistRole": "A debt-ridden, image-obsessed partner enabled by a cruel parent who uses family hierarchy to coerce obedience.",
+          "allyRole": "Trusted legal professional and loyal workplace elder who validate the protagonist, secure evidence, and provide a safe route out.",
+          "relationshipPressure": "Marriage, filial hierarchy, household duty, inheritance expectations, and fear of social judgment are used to pressure the protagonist into compliance."
+        },
+        "evidenceSystem": {
+          "firstClue": "The forced legal document functions as a shock hook and as the first sign that timing matters more than the antagonists realize.",
+          "proofChain": [
+            "Protagonist confirms the coerced legal break is officially accepted, cutting off the partner's expected financial control.",
+            "Hidden household records reveal debt, forged authorization materials, and prepared exploitation of inherited property.",
+            "Screenshots, messages, financial notices, and witness accounts are preserved through legal channels.",
+            "Public confrontation with relatives and legal ally converts private suspicion into communal judgment."
+          ],
+          "revealTiming": "Proof changes meaning at three stages: immediately after the opening coercion, during the overnight evidence search, and during the family confrontation when the antagonist accidentally confirms motive.",
+          "payoffUse": "The evidence blocks fraudulent borrowing, prevents asset seizure, supports future claims, turns relatives against the antagonist, and neutralizes attempts to frame the protagonist as disloyal."
+        },
+        "storyBlueprint": {
+          "hookMechanism": "The first 30 seconds trap viewers with a cruel ultimatum and an impossible reaction: the protagonist appears to accept humiliation calmly, making viewers ask what she knows.",
+          "incitingIncident": "The protagonist is forced to submit a legal separation document before the antagonist's planned financial exploitation can occur.",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "The protagonist is no longer the abandoned spouse; she is the only legally protected adult, while the partner's new life is revealed as a debt-fueled fantasy.",
+          "climaxMechanism": "Documents, preserved messages, legal authority, relatives' financial anger, romantic betrayal, and public embarrassment converge so the antagonist cannot deny either motive or consequence.",
+          "consequenceChain": [
+            "Financial scheme fails because the protagonist is no longer legally available as leverage.",
+            "Business collapse triggers creditor and relative backlash.",
+            "Romantic replacement exits once wealth is exposed as false.",
+            "Hotel/payment trouble creates police involvement and public humiliation.",
+            "Parent-in-law loses household status and social standing."
+          ],
+          "endingRecovery": "The protagonist settles into a new independent life, secures inherited assets, returns to a meaningful workplace, receives emotional validation from allies, and experiences grief as healing rather than defeat.",
+          "moralDebate": "The story resolves the question of whether quiet endurance is weakness or strategy, and whether refusing to rescue a ruined family member is cruelty or necessary self-preservation."
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "A bullied spouse is forced into divorce, but the coercer unknowingly triggers a revenge trap that saves the victim and destroys the schemers.",
+          "hook30s": "Start directly on a legal ultimatum delivered by a cruel family member, with the protagonist reacting too calmly for the situation.",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "Viewers are invited to judge the protagonist's refusal to help: is ignoring a desperate ex-family member cold-hearted or the only fair response to attempted fraud?",
+          "antiDropRules": [
+            "Answer the opening question early, then replace it with a larger financial-crime question.",
+            "Keep antagonists active through calls, messages, arrivals, and public scenes so the plot never becomes static legal exposition.",
+            "Convert each document or clue into a future confrontation payoff.",
+            "Use repeated status reversals: the mocked protagonist gains options while the proud antagonists lose them.",
+            "Balance revenge beats with recovery beats so the ending feels earned rather than merely punitive."
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "Long descriptive narration alternates with short declarative emotional turns; scene beats are often slowed around objects, documents, sounds, and physical gestures.",
+          "dialoguePattern": "Dialogue carries social hierarchy: antagonists issue commands and insults, the protagonist replies briefly and calmly, and later authority figures deliver factual reversals.",
+          "expositionPattern": "Backstory is embedded immediately after charged actions, so explanations reframe what just happened instead of pausing the story abstractly.",
+          "emotionalCadence": "Outrage at cruelty, curiosity at calmness, relief through legal protection, pleasure at antagonist panic, public vindication, then quiet grief and recovery.",
+          "transitionPattern": "Scenes hand off through unresolved pressure devices: a document to be filed, a call to answer, evidence to send, a location to secure, a family confrontation to face."
+        },
+        "variationSlots": [
+          "Type of family asset being protected",
+          "Specific financial scheme used by the antagonist",
+          "Identity of the enabling in-law",
+          "Profession or status fantasy of the romantic replacement",
+          "Kind of legal evidence discovered",
+          "Safe-base location for the protagonist's recovery",
+          "Public setting of the final exposure",
+          "Exact legal consequences after the climax"
+        ],
+        "coverageNotes": [
+          "The sampled transcript spans the full arc from hook to epilogue, so progression can be reconstructed with high confidence.",
+          "Some OCR/transcription noise obscures minor wording and object labels, but the structural functions are clear.",
+          "Analysis intentionally abstracts names, exact dialogue, and highly specific scene details while preserving story mechanics."
+        ],
+        "confidence": 0.93
+      },
+      {
+        "fileName": "6Jp2dNkbbQg.txt",
+        "analysisVersion": 2,
+        "fileRole": "葬儀を起点に、配偶者の裏切りと相続・財産操作を証拠で逆転回収する復讐型家族ドラマの構造サンプル",
+        "pointOfView": "一人称の回想型。現在の危機場面を主軸にし、断続的な回想と内部整理で過去の違和感を後から意味づける",
+        "tone": "冷静な怒りを核にした法的反撃調。中盤で緊張を高め、終盤は公開失墜と静かな再生に着地する",
+        "openingHook": "逃げ場のない弔事の場で、配偶者から突然の別離と財産要求が突きつけられ、同時に相手の二重生活の気配が漏れる",
+        "protagonistPattern": "長年抑え込まれてきた配偶者役が、感情の爆発ではなく観察・記録・準備へ切り替え、受け身から設計者へ転じる型",
+        "antagonistPattern": "家庭内の立場と世間体を盾に、金・家・相続・再婚計画を一括で奪おうとする支配型。共犯の恋愛相手と制度操作を組み合わせる",
+        "escalationBeats": [
+          "弔事の最中に別離宣告が起こり、主人公が崩れず沈黙することで、表面上の主導権が揺らぎ始める",
+          "送信ミスや持ち物の痕跡から、浮気だけでなく資金流用と資産狙いが見え始め、疑惑が具体化する",
+          "故人が生前に法的防壁を用意していた事実が開示され、主人公が受け身の被害者ではないと反転する",
+          "相手側が勝ったつもりで公開の場を設計し、親族や関係者の前で主張を既成事実化しようとする",
+          "第三者の専門家と正式文書が登場し、相手の書類や主張がその場で無効化される",
+          "加害者の隠し金・借入・二重交際が連鎖的に露見し、味方だった相手も離反し始める",
+          "主人公が法的手続きと社会的公開を同時に進め、相手の逃げ道を塞ぐ",
+          "終盤で相手が完全に孤立し、主人公は家と人生の再建へ移る"
+        ],
+        "revealPattern": "小さな違和感を先に置き、後から記録・写真・送信履歴・契約文書・第三者証言で一気に再解釈させる多段階開示。感情より証拠の積層で真相を確定する",
+        "justicePayoff": "個人の言い返しではなく、正式手続き・公開読み上げ・第三者立会いによって相手自身の嘘を公の場で崩し、法的にも社会的にも回収する",
+        "epiloguePattern": "喪失と清算の後、主人公が家と記憶を守りながら、供養と生活再建を並行して進める静かな再出発型",
+        "pacingRules": [
+          "相手が勝ったと思う瞬間を短く挟んでから、その直後に証拠で反転させる",
+          "説明は止めず、電話・書類・第三者発言・場面転換で次の圧力を必ず残す"
+        ],
+        "recurringMotifs": [
+          "弔事や仏前が真相開示の舞台になる",
+          "書類・封筒・鍵・通帳などの物証が反撃を動かす",
+          "家は思い出の場であると同時に権利争いの対象になる",
+          "冬の停滞から春の回復へ向かう季節対比"
+        ],
+        "characterSystem": {
+          "victimRole": "長年、介護・家事・感情抑圧を引き受けてきた配偶者。家族内で軽視されているが、実際は継承者としての正統性を持つ",
+          "antagonistRole": "長子意識と支配欲で家庭・財産・世間体を独占しようとする配偶者。恋愛相手と結託し、制度も偽装する",
+          "allyRole": "故人の意志を受けて動く専門家と、後から真実を知って味方に回る親族・金融関係者",
+          "relationshipPressure": "介護の献身、親族の序列、弔事での立場、相続の正当性が重なり、反論すると不孝や薄情に見える圧力がかかる"
+        },
+        "evidenceSystem": {
+          "firstClue": "生活の違和感や送信ミスを導火線にして、相手の二重生活と金の動きを疑わせる",
+          "proofChain": [
+            "見せるつもりのない写真や痕跡から、不倫と行動の食い違いを示す",
+            "通帳・購入記録・借入・契約書で、資金流用と資産操作の目的を固める",
+            "正式な遺言・信託・公的手続き・第三者証言で、相手の主張を法的に無効化する"
+          ],
+          "revealTiming": "相手が勝利宣言をした直後、または公開の場で主張した瞬間に、証拠の意味が反転する",
+          "payoffUse": "証拠によって感情論を不要にし、財産保全、離婚確定、信用失墜まで一気に進める"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "逃げられない弔事の場で別離宣告が起き、しかも相手の裏の気配が同時に漏れて即座に緊張を固定する",
+          "incitingIncident": "死別直後に配偶者が相続・家・金を奪う計画を開始し、同時に二重生活と書類偽装の痕跡が露見する",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "主人公が受け身の被害者ではなく、故人の遺志と証拠を継ぐ実行者だと明かされ、相手の支配計画が自滅装置に変わる",
+          "climaxMechanism": "公開の集まりに相手を自ら招き入れ、第三者が正式文書を読み上げ、周囲の視線と録音・記録が同時に集中して逃げ道を消す",
+          "consequenceChain": [
+            "相手の財産計画と信用が同時に崩れる",
+            "主人公は法的な関係断絶と生活基盤の確保を得る"
+          ],
+          "endingRecovery": "主人公は家を守り、供養を続けながら、次の季節に向けて自分の生活と心の再建を始める",
+          "moralDebate": "長年耐えた側が最後に法と証拠で反撃するのは正しいのか、という余地を残しつつ、正当性は手続きで補強される"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "弔事の場で裏切り・相続・偽造が同時に露見し、証拠で逆転する家族復讐サスペンス",
+          "hook30s": "別離宣告と財産要求がほぼ同時に飛び込み、相手の裏の気配が漏れて視聴者を即座に引き込む",
+          "curiosityLadder": [
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "『長年我慢してから反撃するのは正しいか』『法で落とすのと感情で返すのはどちらが良いか』を議論しやすい",
+          "antiDropRules": [
+            "新情報は必ず証拠か第三者の発言で即回収する",
+            "主人公を長く受動に置かず、すぐ次の準備行動へ移す",
+            "公開対決の前に小さな勝利錯覚を入れて期待を維持する"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "緊張の短文と説明の長文を交互に置き、感情の波を作る",
+          "dialoguePattern": "高圧的な断言と、それを静かに受け流す返答で対立を前進させる",
+          "expositionPattern": "回想・電話・書類・第三者説明を会話の流れに溶かし、止めずに背景を開示する",
+          "emotionalCadence": "屈辱から始まり、違和感、確信、準備、高揚、公開失墜、静かな回復へ進む",
+          "transitionPattern": "各場面の終わりに未回収の連絡・訪問・約束を残し、次場面への引力を作る"
+        },
+        "variationSlots": [
+          "故人の立場を実母・祖母・恩人などに置き換える",
+          "不正の種類を不倫以外の借金・社内不正・投資詐欺に変える",
+          "証拠媒体を通帳・録音・写真・契約書の組み合わせで差し替える",
+          "公開対決の場所を葬儀以外の法要・家族会議・店の集まりに変える",
+          "助っ人を弁護士以外の金融担当、行政書士、親族代表に変える"
+        ],
+        "coverageNotes": [
+          "文字起こしに崩れや表記ゆれがあるため、金額や肩書きの細部は機能単位で抽象化した",
+          "サンプル全体は、導入の衝撃、証拠の積層、故人の遺志、公開崩壊、再生の順で一貫している",
+          "中盤以降は親族・金融機関・専門家・関係者が順に参加し、個人対立から公開裁きへ拡張される"
+        ],
+        "confidence": 0.94
+      },
+      {
+        "fileName": "6NM9cb906R4.txt",
+        "analysisVersion": 2,
+        "fileRole": "Retired hidden-expert spouse protects her gentle husband and a threatened community space from a corporate-criminal takeover scheme.",
+        "pointOfView": "一人称の高齢女性主人公が、表面上は穏やかな妻として語りながら、内面では元プロとして状況分析と制圧判断を進める二重視点パターン。",
+        "tone": "静かな怒り、抑制された緊張、家族愛による正当化、最後は生活回復の温かさへ着地する勧善懲悪トーン。",
+        "openingHook": "公共の高級空間で反社会的な男たちが理不尽に暴れ、周囲が怯える中、無力に見える高齢女性だけが冷静に相手を観察しているという即時衝突型フック。",
+        "protagonistPattern": "普段は平穏な老後を望む小柄な高齢女性だが、過去に高度な実戦経験を持つ隠れた最強者。夫の尊厳と日常を守る時だけ封印した能力を段階的に解放する。",
+        "antagonistPattern": "表の地位を持つ裏切り者と、暴力で支配する実行犯が結託した二層型悪役。弱者・善人・家族への信頼を利用して資産と責任を奪おうとする。",
+        "escalationBeats": [
+          "迷惑行為に見えた騒動が、施設の評判を壊して経営権を奪う計画的嫌がらせだと分かる。",
+          "主人公の夫が信頼していた人物が黒幕側に関わっており、夫自身も罠の中心に置かれていたことが判明する。",
+          "脅迫、拉致、偽装債務、武器の使用までエスカレートし、主人公が証拠と実力の両方で敵を包囲する。"
+        ],
+        "revealPattern": "最初は暴力事件として提示し、次に経営乗っ取り、次に夫への責任転嫁、最後に横領・詐欺・反社会勢力との資金流れまで拡張する階段式の証拠開示。",
+        "justicePayoff": "主人公が敵の暴力を無力化し、協力者が証拠を警察・組織・会社へ同時展開することで、悪役は肉体的にも社会的にも逃げ場を失う。",
+        "epiloguePattern": "事件後、夫婦の食卓と再開した余暇の場所へ戻り、主人公が戦闘者ではなく妻としての幸福を再確認する生活回復型エピローグ。",
+        "pacingRules": [
+          "各場面の最後に新しい脅威または新しい証拠を置き、解決直後にさらに大きな疑問へ接続する。",
+          "暴力的緊張、家庭の温かさ、調査による発見、敵の焦りを交互に配置して長尺でも感情の起伏を維持する。"
+        ],
+        "recurringMotifs": [
+          "手の震えが恐怖ではなく抑えた闘志を示す",
+          "穏やかな夫婦の日常と冷たい実戦技術の対比",
+          "古い端末や時計など、封印した過去が再起動する小道具",
+          "敵が主人公をただの高齢女性と誤認する反復",
+          "食卓・飲み物・ゴルフ場など平和の象徴"
+        ],
+        "characterSystem": {
+          "victimRole": "善良で人を疑わない夫、脅される施設責任者、怯える従業員たちが保護対象になる。",
+          "antagonistRole": "社会的信用を持つ黒幕と暴力担当の実行犯が、合法書類と違法脅迫を組み合わせて弱者を追い込む。",
+          "allyRole": "主人公の過去を知る元部下・調査協力者が情報収集、証拠整理、外部機関への連絡を担う。",
+          "relationshipPressure": "夫が黒幕を信頼していた過去の上下関係が罠の入口になり、主人公は夫の純粋さを守るために過去の能力を使うか葛藤する。"
+        },
+        "evidenceSystem": {
+          "firstClue": "迷惑行為の背後に、単なる粗暴さではなく施設を潰す意図があると示す観察上の違和感。",
+          "proofChain": [
+            "現場観察と録音で、嫌がらせ・脅迫・施設関係者への圧力を確認する。",
+            "契約書・資金移動・ダミー会社情報から、夫を巻き込む計画的詐欺の構造を発見する。",
+            "敵自身の発言、脅迫文書、デジタル証拠を組み合わせ、警察・会社・敵組織に同時提出できる形に整える。"
+          ],
+          "revealTiming": "序盤では主人公だけが違和感を把握し、中盤で視聴者に黒幕の全体像を明かし、終盤で悪役本人に証拠の包囲を突きつける。",
+          "payoffUse": "証拠があるため主人公の制圧行動が私的復讐ではなく救出と逮捕準備に見え、最終的に社会的制裁へ接続する。"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "開始直後に暴力的な迷惑客が無力な従業員と高齢夫婦を威圧し、主人公が実は只者ではないと示唆されるため、視聴者は『この女性はいつ正体を現すのか』で離脱しにくい。",
+          "incitingIncident": "敵が主人公夫婦の退避を妨げ、夫へ危害を加えようとしたことで、主人公の平穏を守る誓いが破られ始める。",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "信頼していた社会的上位者が守ってくれる存在ではなく、夫を破滅させる黒幕だったと判明し、問題が施設被害から家族の尊厳と人生の危機へ反転する。",
+          "climaxMechanism": "監禁現場で敵の自白と暴行指示を録音し、主人公が武力を無力化し、協力者が証拠を外部へ一斉送信することで、選択・証拠・公的圧力が同時に収束する。",
+          "consequenceChain": [
+            "黒幕は会社内の地位と信用を失い、刑事責任に直面する。",
+            "実行犯は組織的後ろ盾を失い、警察と被害者双方から追及される。",
+            "夫は被害者として扱われ、偽装された債務や犯罪疑惑から解放される。",
+            "施設は健全な運営へ戻り、従業員と利用者が日常を取り戻す。"
+          ],
+          "endingRecovery": "夫婦は食卓と趣味の場に戻り、主人公は冷たい能力を再び過去へ置き、夫と穏やかな老後を歩む状態で終わる。",
+          "moralDebate": "暴力を封印した主人公が、家族と弱者を守るために限定的に能力を使うことは許されるのか、という選択を『証拠収集と救出のため』として正当化する。"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "『無力に見える高齢女性を舐めた悪党が、実は最強の過去を持つ相手に破滅させられる』という逆転制裁の約束。",
+          "hook30s": "高級施設での暴力的な怒鳴り込み、怯える周囲、静かに観察する高齢女性という即時ショック場面。",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "主人公が封印した暴力的技術を再び使ったことは正しかったのか、家族と弱者を守るためならどこまで許されるのかを議論させる。",
+          "antiDropRules": [
+            "冒頭の正体示唆を長く放置せず、早めに過去の職能を明かす。",
+            "一つの謎を解いた直後に、夫・黒幕・資金・拉致などより大きな問題を提示する。",
+            "敵の悪質さを段階的に増やし、視聴者の制裁欲求を蓄積する。",
+            "家庭的な温かい場面を挟み、主人公が守るものを具体化する。",
+            "証拠収集と物理制圧の両方を使い、単なる暴力解決に見せない。"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い観察文と心理説明を積み重ね、緊迫場面では動作を細かく分解し、家庭場面ではゆっくりした余韻に切り替える。",
+          "dialoguePattern": "悪役は見下し・脅迫・金銭で語り、夫は善意と戸惑いで語り、主人公は低く静かな断定で場を支配する。",
+          "expositionPattern": "過去や陰謀の説明は、帰宅後の小道具、協力者からの連絡、契約書確認、敵の自白に分散して挿入される。",
+          "emotionalCadence": "理不尽への怒り、夫婦愛による抑制、裏切り発覚の冷たい怒り、反撃の爽快感、悪役崩壊、食卓での安堵という流れ。",
+          "transitionPattern": "各シーンは『帰ろうとするが呼び止められる』『証拠を得るが新たな脅威が届く』『制圧するが黒幕が残る』のように未解決圧力で次へ渡す。"
+        },
+        "variationSlots": [
+          "舞台はゴルフ場以外の会員制施設、旅館、病院、商店街、介護施設などに置換可能。",
+          "主人公の隠れた経歴は元自衛官、元警察官、元特殊捜査員、元情報分析官などに変更可能。",
+          "守る対象は夫、妻、親、子、孫、恩人、地域の従業員に変更可能。",
+          "悪役の表の肩書きは会社役員、地主、政治関係者、士業、金融関係者などに変更可能。",
+          "証拠の種類は契約書、録音、防犯映像、送金履歴、内部告発データなどで入れ替え可能。",
+          "最終制裁は逮捕、解任、破門、損害賠償、社会的告発の組み合わせで調整可能。"
+        ],
+        "coverageNotes": [
+          "supplied segments cover the full arc from hook to epilogue, so macro-structure confidence is high.",
+          "一部の細部は音声認識由来の誤字があるが、役割・因果・感情設計の把握には大きな支障はない。",
+          "固有名詞と特定会話は抽象化し、再利用可能な構造として整理した。"
+        ],
+        "confidence": 0.92
+      },
+      {
+        "fileName": "8Mz4GSc8KXw.txt",
+        "analysisVersion": 2,
+        "fileRole": "高齢の家族内被害者が追放宣告から逆転し、さらに表面の悪事の奥にある血縁の秘密まで掘り当てる長尺復讐・再生譚",
+        "pointOfView": "一人称被害者視点を軸にしつつ、出来事の意味が後から更新される告白型",
+        "tone": "屈辱から静かな怒り、調査サスペンス、法的逆転、苦い真相、最後の救済へ移る重厚メロドラマ",
+        "openingHook": "家族的行事の温かさを期待させる場で、主人公が冷酷に追放されると同時に、相手が知らない反撃の種がすでに置かれている形",
+        "protagonistPattern": "我慢強く家庭を支えてきた年長女性が、受動的被害者から証拠を束ねる戦略家へ変化し、最後は復讐より保護を選ぶ",
+        "antagonistPattern": "近親的信頼を利用して搾取する家族側の人物が、介護・正義・家の都合を口実にしつつ、金銭欲と保身のため制度を悪用するタイプ",
+        "escalationBeats": [
+          "追放宣告の直後、別口の送金や書類の不審点から単なる同居トラブルではないと判明する",
+          "財産の無断移動と戸籍上の矛盾が発覚し、家族劇が詐欺・偽装・不正取得の領域へ拡大する",
+          "味方になりそうな法や親族も先回りで封じられ、主人公自身が罠を設計する能動局面へ入る"
+        ],
+        "revealPattern": "小さな違和感を連鎖させ、電話確認・金融記録・公的記録・第三者証言・録音・隠し証拠の順に証明力を上げ、最後に『事件の勝敗を決める真実』と『家族史の意味を変える真実』を二段階で開示する",
+        "justicePayoff": "敵が勝利確信で自白し、自分で押した書類と録音・物証が結びついて法的立場を逆転させ、公的介入と親族の反転で包囲される",
+        "epiloguePattern": "奪われた家への執着では終わらず、被害連鎖の最後の受け手を救うことで新しい家族形態を築き、元の血縁を失った代わりに選び直した関係で締める",
+        "pacingRules": [
+          "各調査結果はすぐ次のより大きな疑問を生む形で出し、解答が停滞しない",
+          "勝利後にもう一段深い真相を置いて、法的逆転で終わらせず情緒的テーマの回収まで引っ張る"
+        ],
+        "recurringMotifs": [
+          "食卓と家庭料理",
+          "家の所有権",
+          "母の日の反転",
+          "古い日用品に隠された記憶",
+          "家族という言葉の偽装と再定義",
+          "冷たさから温かさへの温度対比"
+        ],
+        "characterSystem": {
+          "victimRole": "家庭内で役割と尊厳を搾取される年長の養育者",
+          "antagonistRole": "親子・配偶者・親族制度を盾に財産と決定権を奪う内側の加害者",
+          "allyRole": "職業的支援者、偶然の第三者証言者、途中で寝返る親族、そして終盤の救済対象そのもの",
+          "relationshipPressure": "親だから我慢すべき、長男だから正しい、親族の面目を守れという圧力が、被害者の沈黙と周囲の誤信を生む"
+        },
+        "evidenceSystem": {
+          "firstClue": "家族の説明と一致しない送金・連絡先・書類上の名前が、表の事情を疑わせる起点になる",
+          "proofChain": [
+            "金融や施設確認で相手説明の嘘を外部情報として掴む",
+            "公的記録と出金記録で法的関係・財産移動・偽装の構図を固める",
+            "本人の自白録音と隠されていた物証で事件性と動機を確定させる"
+          ],
+          "revealTiming": "中盤までは『追放の理由』を解く証拠として働き、終盤では同じ証拠群が『家族史の罪』まで意味を拡張する",
+          "payoffUse": "敵の油断を利用して署名と自白を同時取得し、法的停止・警察介入・親族の立場反転を一気に起こす"
+        },
+        "storyBlueprint": {
+          "hookMechanism": "家庭行事の朝に突然施設送りと家からの退去を突きつけ、しかも主人公だけが知る逆転材料の存在を匂わせて離脱を防ぐ",
+          "incitingIncident": "家族からの追放宣告と、既に施設手続きや財産接収が進んでいた事実",
+          "beatMap": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "midpointReversal": "『冷酷な家族に追い出されるだけの話』が、『制度悪用と財産奪取を伴う計画犯罪』へ反転し、さらに主人公が守られる側から仕掛ける側へ変わる",
+          "climaxMechanism": "敵の慢心、法的書面の罠、録音による自己暴露、第三者立会い、公的機関への接続が同時に収束する",
+          "consequenceChain": [
+            "加害側は家・金・親族的正統性・法的代理権を一気に失う",
+            "主人公は勝利のあとも家族史の罪を引き受け、新しい保護責任を選ぶ"
+          ],
+          "endingRecovery": "住まいを手放してでも被害者の療養と自立を支え、数年後に血縁を超えた母娘的共同生活へ到達する",
+          "moralDebate": "実子を見捨ててでも被害者救済を選ぶことが親として冷酷か、最後の責任かという論点を残す"
+        },
+        "audienceGrowthSystem": {
+          "ctrPromise": "家族に追い出された母が、相手の知らない権利と真相で逆転する物語",
+          "hook30s": "祝祭日と追放宣告の落差、施設送り、家の真の所有や隠し紙の示唆が一気に来る",
+          "curiosityLadder": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "retentionBeats": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+          ],
+          "commentPayoff": "実子を切って被害者を娘として迎える結末が、視聴者に『本当の家族とは何か』『親の責任はどこまでか』を議論させやすい",
+          "antiDropRules": [
+            "冒頭で最大の屈辱を見せて視聴の理由を即作る",
+            "証拠は一段ずつ強くし、毎回意味を更新する",
+            "新情報のたびに疑問を一つ解いて二つ増やす",
+            "味方不全を中盤で入れて、予定調和を避ける",
+            "クライマックス後にも第二真相を置いて尺後半の離脱を防ぐ"
+          ]
+        },
+        "styleFingerprint": {
+          "sentenceRhythm": "短い衝撃文とやや長い内省・説明文を交互に置く、感情と事実の波状運転",
+          "dialoguePattern": "対立者の直截な圧力発言で怒りを作り、主人公は抑制された返答で格差を際立たせる",
+          "expositionPattern": "現在の危機進行中に、確認電話・窓口・移動中の回想・第三者証言を差し込み、説明だけの停止を避ける",
+          "emotionalCadence": "屈辱→違和感→怒り→絶望→決意→逆転快感→苦い真相→穏やかな再生",
+          "transitionPattern": "一つの確認結果の末尾で新たな固有疑問を立て、その疑問を解くために次の場所・人物へ移る"
+        },
+        "variationSlots": [
+          "追放の口実を介護以外の生活負担や再婚準備に変える",
+          "証拠媒体を通帳・戸籍・録音以外のデジタル記録や保管品に変える",
+          "味方役を弁護士以外の行政書士・福祉職・旧友に差し替える",
+          "第二真相を不倫ではなく血縁秘密・養子・相続隠しなど別種の家族史に置換する",
+          "エピローグの救済対象を被害者本人、孫世代、あるいは別の弱者へ変える",
+          "ラストの再会を直接対面、遠景目撃、手紙受領などに変える"
+        ],
+        "coverageNotes": [
+          "全体進行は十分復元できるが、サンプル抜粋のため中間の細部手順や法的描写の厳密性には揺れがある",
+          "文字起こし品質の乱れがあるため、個別固有名詞や一部時系列細部は抽象化して扱うのが安全"
+        ],
+        "confidence": 0.92
+      }
+    ]
+  },
+  "createdAt": "2026-08-31T01:01:20.759Z",
+  "updatedAt": "2026-08-31T02:03:23.412Z",
+  "schema": "story-maker-channel-formula-v1",
+  "generationPolicy": {
+    "minNonWhitespaceChars": 20000,
+    "targetNonWhitespaceChars": 22000,
+    "chapterCount": 4,
+    "requireCompleteEnding": true,
+    "randomizeTheme": true,
+    "randomizeCharacters": true,
+    "includeYoutubeCtaByDefault": false
+  },
+  "builtIn": false
+}

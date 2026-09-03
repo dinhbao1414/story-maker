@@ -6,6 +6,11 @@ import {
   OPENAI_TEXT_MODELS as RUNTIME_OPENAI_TEXT_MODELS,
   OPENAI_VISION_MODELS as RUNTIME_OPENAI_VISION_MODELS,
 } from './data.js';
+import {
+  getOpenAiChatCompletionsUrl,
+  openAiTextModelsForBaseUrl,
+  getOpenAiBaseUrl,
+} from './openAiEndpointConfig.js';
 
 export const diagnoseConnection = async (apiKey) => {
     if (!apiKey) return "API Key not set.";
@@ -349,10 +354,12 @@ const OPENAI_TEXT_MODELS = [
 ];
 
 async function _callOpenAI(apiKey, prompt, onFallback, options = {}) {
-  for (const modelId of RUNTIME_OPENAI_TEXT_MODELS) {
+  const endpoint = getOpenAiChatCompletionsUrl();
+  const models = openAiTextModelsForBaseUrl(getOpenAiBaseUrl());
+  for (const modelId of models) {
     try {
-      if (modelId !== RUNTIME_OPENAI_TEXT_MODELS[0] && onFallback) onFallback(modelId);
-      const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+      if (modelId !== models[0] && onFallback) onFallback(modelId);
+      const resp = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -642,9 +649,11 @@ export async function callGenerativeAIMultimodal(apiKey, prompt, images, onFallb
  * OpenAI APIストリーミング呼び出し
  */
 async function _callOpenAIStream(apiKey, prompt, onChunk, onFallback, options = {}) {
-  for (const modelId of RUNTIME_OPENAI_TEXT_MODELS) {
+  const endpoint = getOpenAiChatCompletionsUrl();
+  const models = openAiTextModelsForBaseUrl(getOpenAiBaseUrl());
+  for (const modelId of models) {
     try {
-      if (modelId !== RUNTIME_OPENAI_TEXT_MODELS[0] && onFallback) onFallback(modelId);
+      if (modelId !== models[0] && onFallback) onFallback(modelId);
       
       const controller = new AbortController();
       let onAbort = null;
@@ -653,7 +662,7 @@ async function _callOpenAIStream(apiKey, prompt, onChunk, onFallback, options = 
         options.signal.addEventListener('abort', onAbort);
       }
       
-      const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+      const resp = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

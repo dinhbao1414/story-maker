@@ -6,8 +6,10 @@ import {
   buildFileAnalysisPrompt,
   buildFormulaGenerationPrompt,
   buildFormulaSynthesisPrompt,
+  buildRepresentativeSegments,
   buildRepresentativeSlices,
   createChannelFormula,
+  isChannelFormulaAnalysisReady,
   sanitizeChannelFormula,
   validateChannelFormulaStory,
 } from '../src/channelFormula.js';
@@ -47,6 +49,19 @@ test('sanitizes secrets and raw source fields recursively', () => {
   assert.equal(sanitized.nested.safe, 'keep-me');
 });
 
+test('preserves the continuous audio narration policy', () => {
+  const formula = sanitizeChannelFormula({
+    name: 'continuous narration',
+    generationPolicy: {
+      stripChapterHeaders: true,
+      flowFormat: 'continuous_audio_narration',
+    },
+  });
+
+  assert.equal(formula.generationPolicy.stripChapterHeaders, true);
+  assert.equal(formula.generationPolicy.flowFormat, 'continuous_audio_narration');
+});
+
 test('builds bounded opening, middle, and ending representative slices', () => {
   const source = Array.from({ length: 200 }, (_, index) => `line-${index}-${'あ'.repeat(40)}`).join('\n');
   const slices = buildRepresentativeSlices(source, {
@@ -65,6 +80,21 @@ test('builds bounded opening, middle, and ending representative slices', () => {
   );
   assert.match(slices.opening, /line-0/);
   assert.match(slices.ending, /line-199/);
+});
+
+test('samples chronological segments across the whole story', () => {
+  const source = Array.from({ length: 1200 }, (_, index) => `beat-${index}`).join('\n');
+  const segments = buildRepresentativeSegments(source, {
+    segmentCount: 12,
+    charsPerSegment: 120,
+    maxTotalChars: 1440,
+  });
+  assert.equal(segments.length, 12);
+  assert.equal(segments[0].progressPercent, 0);
+  assert.equal(segments.at(-1).progressPercent, 100);
+  assert.match(segments[0].text, /beat-0/);
+  assert.match(segments.at(-1).text, /beat-1199/);
+  assert.equal(segments.reduce((sum, item) => sum + item.text.length, 0) <= 1440, true);
 });
 
 test('builds structured analysis and synthesis prompts without raw-source copying instructions', () => {
@@ -87,6 +117,8 @@ test('builds structured analysis and synthesis prompts without raw-source copyin
   assert.match(analysisPrompt, /retentionBeats/);
   assert.match(analysisPrompt, /commentPayoff/);
   assert.match(analysisPrompt, /opening_hook/);
+  assert.match(analysisPrompt, /storyBlueprint/);
+  assert.match(analysisPrompt, /beatMap/);
   assert.match(analysisPrompt, /do not reproduce|not reproduce/i);
   assert.match(analysisPrompt, /毎日スカット/);
 
@@ -101,7 +133,57 @@ test('builds structured analysis and synthesis prompts without raw-source copyin
   assert.match(synthesisPrompt, /reproductionPrompt/);
   assert.match(synthesisPrompt, /audienceGrowthSystem/);
   assert.match(synthesisPrompt, /question.*answer|answer.*question/i);
+  assert.match(synthesisPrompt, /formulaPatterns/);
+  assert.match(synthesisPrompt, /storyArchitecture/);
   assert.match(synthesisPrompt, /exact names|exact quotes/i);
+});
+
+test('accepts only validated dynamic formulas for Matrix production', () => {
+  const growth = {
+    ctrPromise: 'promise',
+    hook30s: 'hook',
+    curiosityLadder: [
+      { question: 'A', answer: 'A1', nextQuestion: 'B' },
+      { question: 'B', answer: 'B1', nextQuestion: 'C' },
+      { question: 'C', answer: 'C1', nextQuestion: 'D' },
+    ],
+    retentionBeats: [
+      { window: '0–30s', goal: 'stop exit', beat: 'shock' },
+      { window: '30s–3m', goal: 'curiosity', beat: 'withhold cause' },
+      { window: '3–8m', goal: 'retention', beat: 'first proof' },
+      { window: '8–15m', goal: 'anger', beat: 'antagonist wins' },
+      { window: '15–20m', goal: 'twist', beat: 'belief reverses' },
+    ],
+    commentPayoff: 'debate',
+    antiDropRules: ['a', 'b', 'c'],
+  };
+  const incomplete = createChannelFormula({
+    name: 'fallback',
+    reproductionPrompt: 'short',
+    analysis: { audienceGrowthSystem: growth },
+  });
+  assert.equal(isChannelFormulaAnalysisReady(incomplete), false);
+
+  const validated = createChannelFormula({
+    name: 'validated',
+    reproductionPrompt: '詳細な制作規則。'.repeat(100),
+    analysis: { audienceGrowthSystem: growth },
+    analysisQuality: { validated: true, sourceCoverage: 1 },
+  });
+  assert.equal(isChannelFormulaAnalysisReady(validated), true);
+});
+
+test('preserves up to 50 per-story analysis summaries in a channel formula', () => {
+  const stories = Array.from({ length: 40 }, (_, index) => ({
+    fileName: `story-${index + 1}.txt`,
+    storyBlueprint: { beatMap: [`beat-${index + 1}`] },
+  }));
+  const formula = sanitizeChannelFormula({
+    name: '40-story formula',
+    analysisReport: { stories },
+  });
+  assert.equal(formula.analysisReport.stories.length, 40);
+  assert.equal(formula.analysisReport.stories.at(-1).fileName, 'story-40.txt');
 });
 
 test('builds a Japanese generation prompt with the 20k contract', () => {
@@ -128,11 +210,36 @@ test('builds a Japanese generation prompt with the 20k contract', () => {
   assert.doesNotMatch(prompt, /毎日スカットをご覧いただきありがとうございます/);
 });
 
+test('builds a continuous audio narration prompt without visible chapter labels', () => {
+  const prompt = buildFormulaGenerationPrompt({
+    formula: {
+      name: 'okokok',
+      reproductionPrompt: '全4章の内部構造で因果応報を描く。',
+      generationPolicy: {
+        ...CHANNEL_FORMULA_DEFAULT_POLICY,
+        stripChapterHeaders: true,
+        flowFormat: 'continuous_audio_narration',
+      },
+    },
+    randomizedPremise: '公開の場で証拠が反転する。',
+  });
+
+  assert.match(prompt, /一続き.*音声ナレーション/);
+  assert.match(prompt, /第一章.*第1章.*Chapter 1.*CHAPTER 1/);
+  assert.match(prompt, /翌日.*二日後の説明会当日.*それから半年後/);
+  assert.match(prompt, /章番号|章立てタイトル|章見出し/);
+  assert.doesNotMatch(prompt, /全4章で構成し、各章に固有/);
+});
+
 test('validates the 20k minimum and complete ending', () => {
   assert.equal(validateChannelFormulaStory(`${'あ'.repeat(20000)}。`).ok, true);
   assert.equal(validateChannelFormulaStory(`${'あ'.repeat(19998)}。`).ok, false);
   assert.match(validateChannelFormulaStory(`${'あ'.repeat(20000)}`).issues.join(','), /unclosed_ending/);
   assert.match(validateChannelFormulaStory('').issues.join(','), /empty_output/);
+  assert.match(validateChannelFormulaStory(
+    `第一章\n${'あ'.repeat(20000)}。`,
+    { ...CHANNEL_FORMULA_DEFAULT_POLICY, stripChapterHeaders: true },
+  ).issues.join(','), /chapter_headers/);
 });
 
 test('ships one sanitized built-in Daily Scat formula', () => {

@@ -3,7 +3,12 @@ import {
   buildStoryDnaFingerprint,
   compareStoryDnaRows,
   normalizeStoryDnaRow,
+  reindexStoryDnaRows,
 } from './storyDnaMatrix.js';
+import {
+  isChannelFormulaAnalysisReady,
+  sanitizeChannelFormula,
+} from './channelFormula.js';
 import { createStoryDnaMatrixRepository } from './storyDnaMatrixStorage.js';
 import { Gt } from './providerClients.js';
 import { readApiSession } from './apiSession.js';
@@ -12,26 +17,121 @@ function text(value, maxLength = 1200) {
   return String(value ?? '').replace(/\r\n?/g, '\n').trim().slice(0, maxLength);
 }
 
-function extractJsonArray(value) {
+const STORY_DNA_FIELD_ALIASES = Object.freeze({
+  titlePromise: ['titlePromise', 'title_promise', 'title'],
+  hook: ['hook', 'openingHook', 'opening_hook'],
+  victim: ['victim', 'protagonist', 'targetVictim', 'target_victim'],
+  antagonist: ['antagonist', 'villain', 'opponent'],
+  falseAccusation: ['falseAccusation', 'false_accusation', 'accusation'],
+  location: ['location', 'setting', 'place'],
+  evidence: ['evidence', 'proof', 'clue'],
+  secret: ['secret', 'hiddenSecret', 'hidden_secret'],
+  midpointTwist: ['midpointTwist', 'midpoint_twist', 'midpoint'],
+  finalTwist: ['finalTwist', 'final_twist', 'endingTwist', 'ending_twist'],
+  villainConsequence: ['villainConsequence', 'villain_consequence', 'consequence'],
+  ending: ['ending', 'resolution', 'epilogue'],
+  moralDilemma: ['moralDilemma', 'moral_dilemma', 'commentDilemma', 'comment_dilemma'],
+});
+
+function readAliasedField(value, aliases = []) {
+  for (const alias of aliases) {
+    if (value?.[alias] != null && String(value[alias]).trim()) return value[alias];
+  }
+  return '';
+}
+
+function normalizeMatrixCardShape(value = {}) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+  return {
+    ...value,
+    ...Object.fromEntries(
+      Object.entries(STORY_DNA_FIELD_ALIASES)
+        .map(([field, aliases]) => [field, readAliasedField(value, aliases)])
+        .filter(([, fieldValue]) => fieldValue !== ''),
+    ),
+  };
+}
+
+function isMatrixCardLike(value) {
+  const normalized = normalizeMatrixCardShape(value);
+  return Boolean(
+    normalized
+    && typeof normalized === 'object'
+    && !Array.isArray(normalized)
+    && normalized.hook
+    && normalized.location
+    && normalized.evidence
+    && normalized.midpointTwist
+  );
+}
+
+function extractJsonArray(value, depth = 0) {
+  if (depth > 6 || value == null) return null;
   if (Array.isArray(value)) return value;
-  const source = text(value, 100000)
-    .replace(/^```(?:json)?\s*/i, '')
-    .replace(/\s*```$/i, '')
+  if (typeof value === 'object') {
+    if (isMatrixCardLike(value)) return [value];
+    const preferredKeys = [
+      'rows',
+      'cards',
+      'storyCards',
+      'story_cards',
+      'stories',
+      'matrix',
+      'data',
+      'result',
+      'output',
+      'output_text',
+      'text',
+      'content',
+    ];
+    for (const key of preferredKeys) {
+      if (!Object.hasOwn(value, key)) continue;
+      const extracted = extractJsonArray(value[key], depth + 1);
+      if (Array.isArray(extracted)) return extracted;
+    }
+    const messageContent = value?.choices?.[0]?.message?.content;
+    if (messageContent) {
+      const extracted = extractJsonArray(messageContent, depth + 1);
+      if (Array.isArray(extracted)) return extracted;
+    }
+    const keyedCards = Object.values(value).filter(isMatrixCardLike);
+    if (keyedCards.length) return keyedCards;
+    for (const nested of Object.values(value)) {
+      const extracted = extractJsonArray(nested, depth + 1);
+      if (Array.isArray(extracted) && extracted.some(item => item && typeof item === 'object')) {
+        return extracted;
+      }
+    }
+    return null;
+  }
+  const source = text(value, 200000)
+    .replace(/<think\b[^>]*>[\s\S]*?<\/think>/giu, '')
     .trim();
-  try {
-    const parsed = JSON.parse(source);
-    return Array.isArray(parsed) ? parsed : parsed?.rows;
-  } catch {
-    const start = source.indexOf('[');
-    const end = source.lastIndexOf(']');
-    if (start < 0 || end <= start) return null;
+  if (!source) return null;
+  const candidates = [source];
+  for (const match of source.matchAll(/```(?:json)?\s*([\s\S]*?)```/giu)) {
+    if (match[1]?.trim()) candidates.push(match[1].trim());
+  }
+  const arrayStart = source.indexOf('[');
+  const arrayEnd = source.lastIndexOf(']');
+  if (arrayStart >= 0 && arrayEnd > arrayStart) {
+    candidates.push(source.slice(arrayStart, arrayEnd + 1));
+  }
+  const objectStart = source.indexOf('{');
+  const objectEnd = source.lastIndexOf('}');
+  if (objectStart >= 0 && objectEnd > objectStart) {
+    candidates.push(source.slice(objectStart, objectEnd + 1));
+  }
+  for (const candidate of candidates) {
     try {
-      const parsed = JSON.parse(source.slice(start, end + 1));
-      return Array.isArray(parsed) ? parsed : null;
+      const parsed = JSON.parse(candidate);
+      const extracted = extractJsonArray(parsed, depth + 1);
+      if (Array.isArray(extracted)) return extracted;
     } catch {
-      return null;
+      // Try the next bounded candidate.
     }
   }
+  return null;
 }
 
 export function buildStoryDnaMatrixPrompt({
@@ -39,6 +139,35 @@ export function buildStoryDnaMatrixPrompt({
   targetCount = 30,
   existingRows = [],
 } = {}) {
+  const safeFormula = sanitizeChannelFormula(formula);
+  const formulaDigest = {
+    name: safeFormula.name,
+    reproductionPrompt: safeFormula.reproductionPrompt,
+    analysis: {
+      genre: safeFormula.analysis?.genre,
+      audience: safeFormula.analysis?.audience,
+      pointOfView: safeFormula.analysis?.pointOfView,
+      tone: safeFormula.analysis?.tone,
+      openingHook: safeFormula.analysis?.openingHook,
+      protagonistPattern: safeFormula.analysis?.protagonistPattern,
+      antagonistPattern: safeFormula.analysis?.antagonistPattern,
+      escalationPattern: safeFormula.analysis?.escalationPattern,
+      revealPattern: safeFormula.analysis?.revealPattern,
+      evidenceMotifs: safeFormula.analysis?.evidenceMotifs,
+      justicePayoff: safeFormula.analysis?.justicePayoff,
+      epiloguePattern: safeFormula.analysis?.epiloguePattern,
+      narrationRules: safeFormula.analysis?.narrationRules,
+      pacingRules: safeFormula.analysis?.pacingRules,
+      characterSystem: safeFormula.analysis?.characterSystem,
+      evidenceSystem: safeFormula.analysis?.evidenceSystem,
+      storyArchitecture: safeFormula.analysis?.storyArchitecture,
+      audienceGrowthSystem: safeFormula.analysis?.audienceGrowthSystem,
+      styleFingerprint: safeFormula.analysis?.styleFingerprint,
+      formulaPatterns: safeFormula.analysis?.formulaPatterns,
+      variationSystem: safeFormula.analysis?.variationSystem,
+      forbiddenPatterns: safeFormula.analysis?.forbiddenPatterns,
+    },
+  };
   const existing = Array.isArray(existingRows)
     ? existingRows.slice(-20).map(row => ({
       hook: row.hook,
@@ -50,8 +179,9 @@ export function buildStoryDnaMatrixPrompt({
     : [];
   return [
     'あなたは日本語YouTube家族ドラマのシリーズ企画編集者です。',
-    '選択されたチャンネル公式の抽象ルールを守り、独立したstory cardだけをJSON配列で作ってください。',
-    `チャンネル公式: ${text(formula.name, 160)}`,
+    '選択されたチャンネル公式の抽象ルールを守り、独立したstory cardをJSON objectのrows配列に入れて作ってください。',
+    'Channel Formula production DNA:',
+    text(JSON.stringify(formulaDigest, null, 2), 24000),
     `作成数: ${Math.max(1, Math.min(50, Number(targetCount) || 30))}`,
     '各rowにはtitlePromise, hook, victim, antagonist, falseAccusation, location, evidence, secret, midpointTwist, finalTwist, villainConsequence, ending, moralDilemmaを必ず入れてください。',
     '30〜50件のシリーズではlocationを8〜12種類、evidenceを6種類以上、antagonistを6種類以上、midpointTwistを5種類以上、villainConsequenceを5種類以上に分散してください。',
@@ -59,23 +189,25 @@ export function buildStoryDnaMatrixPrompt({
     '原文の固有名詞、台詞、正確な引用、raw source、チャンネルCTA、固有事件をコピーしないでください。',
     '次の既存候補とsemanticに重なるhook/evidence/twistを避けてください:',
     JSON.stringify(existing, null, 2),
-    'JSON配列のみを返してください。説明文、Markdown、番号付き解説は返さないでください。',
-    JSON.stringify([{
-      id: 'story-001',
-      titlePromise: 'CTR promise',
-      hook: 'opening shock',
-      victim: 'victim pattern',
-      antagonist: 'opponent pattern',
-      falseAccusation: 'false accusation',
-      location: 'specific setting',
-      evidence: 'concrete evidence',
-      secret: 'hidden secret',
-      midpointTwist: 'midpoint reversal',
-      finalTwist: 'final reversal',
-      villainConsequence: 'consequence',
-      ending: 'complete ending',
-      moralDilemma: 'debatable moral question',
-    }], null, 2),
+    '必ず {"rows":[...]} という単一のJSON objectだけを返してください。説明文、Markdown、番号付き解説は返さないでください。',
+    JSON.stringify({
+      rows: [{
+        id: 'story-001',
+        titlePromise: 'CTR promise',
+        hook: 'opening shock',
+        victim: 'victim pattern',
+        antagonist: 'opponent pattern',
+        falseAccusation: 'false accusation',
+        location: 'specific setting',
+        evidence: 'concrete evidence',
+        secret: 'hidden secret',
+        midpointTwist: 'midpoint reversal',
+        finalTwist: 'final reversal',
+        villainConsequence: 'consequence',
+        ending: 'complete ending',
+        moralDilemma: 'debatable moral question',
+      }],
+    }, null, 2),
   ].join('\n\n');
 }
 
@@ -85,7 +217,7 @@ export function parseStoryDnaMatrixResponse(value, {
 } = {}) {
   const parsed = extractJsonArray(value);
   if (!Array.isArray(parsed)) {
-    return { rows: [], errors: ['Matrix response must be a JSON array.'] };
+    return { rows: [], errors: ['Matrix response must contain a rows/cards array or one valid story card object.'] };
   }
   const errors = [];
   const rows = [];
@@ -94,7 +226,7 @@ export function parseStoryDnaMatrixResponse(value, {
       errors.push(`Matrix row ${index + 1} is invalid.`);
       return;
     }
-    const row = normalizeStoryDnaRow(item, { formulaId });
+    const row = normalizeStoryDnaRow(normalizeMatrixCardShape(item), { formulaId });
     const required = ['hook', 'location', 'evidence', 'midpointTwist'];
     if (required.some(field => !row[field])) {
       errors.push(`Matrix row ${index + 1} is missing a required DNA field.`);
@@ -118,29 +250,100 @@ const FALLBACK_VALUES = Object.freeze([
   ['家族に裏切られた祖母', '地方病院の待合室', '取り違えられた診察券', '守られた秘密が別の人の人生を壊していた'],
 ]);
 
+const FALLBACK_VARIANTS = Object.freeze([
+  {
+    titleAction: '沈黙を破った',
+    hookSituation: '親族全員の前で退席を命じられた直後',
+    antagonist: '世間体と根回しで周囲を支配する親族',
+    accusation: '家族の資産を故意に失わせた',
+    secret: '複数の時刻記録が同じ人物によって書き換えられていた',
+    midpointLayer: '告発を始めた人物も別の嘘に利用されていた',
+    finalTwist: '主人公への告発は、さらに弱い被害者を隠すための囮だった',
+    consequence: '反対者は隠していた利害関係と虚偽の説明を公の場で認める',
+    ending: '主人公は家族の許可を求めず、新しい生活の契約を自分で結ぶ',
+    dilemma: '真実を公表して、利用されていた告発者まで傷つけるべきなのか。',
+  },
+  {
+    titleAction: '追放から戻った',
+    hookSituation: '重要な式典で身に覚えのない謝罪文を読まされそうになった瞬間',
+    antagonist: '制度と肩書きを盾に責任を移す年長者',
+    accusation: '共同体の信用を壊す情報を流した',
+    secret: '保管場所の異なる三つの記録に同じ偽造痕が残っていた',
+    midpointLayer: '味方の沈黙は裏切りではなく、証拠を守るための時間稼ぎだった',
+    finalTwist: '失われたと思われた原本は、反対者自身が安全な場所へ移していた',
+    consequence: '反対者は役職と決定権を失い、被害回復の費用を負担する',
+    ending: '主人公は残る人々のための透明な記録制度を作り、静かに町を離れる',
+    dilemma: '共同体を立て直すためなら、加害者に最後の協力を求めてもよいのか。',
+  },
+  {
+    titleAction: '一度だけ嘘を選んだ',
+    hookSituation: '守るはずだった人物から公開の場で犯人だと指差されたとき',
+    antagonist: '被害者のふりをして同情を集める身近な協力者',
+    accusation: '弱い家族を利用して自分だけ利益を得た',
+    secret: '証言の順番が意図的に入れ替えられ、最初の通報者が消されていた',
+    midpointLayer: '主人公が守ろうとした相手こそ、偽証を提案した人物だった',
+    finalTwist: '主人公の小さな嘘が、隠されていた本当の被害者を救う唯一の手がかりになる',
+    consequence: '反対者は法的責任だけでなく、利用した人々一人ずつに説明を求められる',
+    ending: '主人公は完全な和解を拒み、守る相手を自分の意思で選び直す',
+    dilemma: '誰かを救った嘘でも、最後にはすべて告白すべきなのか。',
+  },
+  {
+    titleAction: '証拠を捨てたふりをした',
+    hookSituation: '唯一の証拠を燃やしたと非難され、鍵を取り上げられた夜',
+    antagonist: '金銭管理と情報遮断で家族を分断する管理役',
+    accusation: '重要な証拠を消して責任逃れをした',
+    secret: '廃棄記録と実際の移動履歴が一致せず、内部に協力者がいた',
+    midpointLayer: '消えた証拠は複製されていたが、その複製には主人公の過去の過ちも残っていた',
+    finalTwist: '反撃すれば主人公自身も責任を問われる証拠だった',
+    consequence: '反対者は管理権を剥奪され、隠した記録を被害者へ返還する',
+    ending: '主人公は自分の過ちも認めたうえで、支配されない小さな仕事を始める',
+    dilemma: '相手を止めるために、自分の過去まで公表する覚悟は必要なのか。',
+  },
+  {
+    titleAction: '最後の証人を信じた',
+    hookSituation: '誰も味方しない調停の席で、知らない番号から一通の連絡が届いた瞬間',
+    antagonist: '善意を装い証人同士を接触させない調停役',
+    accusation: '争いを作り、家族から金を取ろうとした',
+    secret: '別々の証人が同じ言い間違いをしており、証言用の台本が存在した',
+    midpointLayer: '最後の証人は事件の目撃者ではなく、台本を書かされた当事者だった',
+    finalTwist: '主人公を救う証言は、最も信頼されていなかった人物の記憶から生まれる',
+    consequence: '反対者は築いた信用を失い、操作した決定をすべて再審査される',
+    ending: '主人公は壊れた関係を元に戻さず、証人と新しい支援の輪を作る',
+    dilemma: '過去に嘘をついた証人を、真実を話した一度だけで許せるのか。',
+  },
+]);
+
 export function buildFallbackStoryDnaRows(formula = {}, targetCount = 30, {
   random = Math.random,
+  startIndex = 0,
 } = {}) {
   const count = Math.max(1, Math.min(50, Math.floor(Number(targetCount) || 30)));
   const offset = Math.min(FALLBACK_VALUES.length - 1, Math.floor(Math.max(0, Number(random()) || 0) * FALLBACK_VALUES.length));
   return Array.from({ length: count }, (_, index) => {
-    const [victim, location, evidence, midpointTwist] = FALLBACK_VALUES[(offset + index) % FALLBACK_VALUES.length];
+    const globalIndex = Math.max(0, Math.floor(Number(startIndex) || 0)) + index;
+    const baseIndex = (offset + globalIndex) % FALLBACK_VALUES.length;
+    const variantIndex = Math.floor(globalIndex / FALLBACK_VALUES.length) % FALLBACK_VARIANTS.length;
+    const [victim] = FALLBACK_VALUES[baseIndex];
+    const location = FALLBACK_VALUES[(baseIndex + (variantIndex * 2)) % FALLBACK_VALUES.length][1];
+    const evidence = FALLBACK_VALUES[(baseIndex + (variantIndex * 3)) % FALLBACK_VALUES.length][2];
+    const midpointBase = FALLBACK_VALUES[(baseIndex + (variantIndex * 4)) % FALLBACK_VALUES.length][3];
+    const variant = FALLBACK_VARIANTS[variantIndex];
     return normalizeStoryDnaRow({
-      id: `fallback-story-${String(index + 1).padStart(3, '0')}`,
+      id: `fallback-story-${String(globalIndex + 1).padStart(3, '0')}`,
       formulaId: formula.id || '',
-      titlePromise: `${victim}が一つの証拠で立場を逆転させる`,
-      hook: `「あなたが悪い」と言われた瞬間、${evidence}が主人公の前に現れる。`,
+      titlePromise: `${variant.titleAction}${victim}が、${evidence}で立場を逆転させる`,
+      hook: `${variant.hookSituation}、${evidence}が主人公の前に現れる。`,
       victim,
-      antagonist: `家族内の評判を利用する第${(index % 5) + 1}の反対者`,
-      falseAccusation: `${victim}が隠された損失の責任を負わされる`,
+      antagonist: variant.antagonist,
+      falseAccusation: `${victim}が「${variant.accusation}」と決めつけられる`,
       location,
       evidence,
-      secret: `過去の記録に${index + 1}つの不自然な空白がある`,
-      midpointTwist,
-      finalTwist: `主人公が信じた証拠の意味が最後に反転する`,
-      villainConsequence: `反対者は公開の場で責任と選択の結果を引き受ける`,
-      ending: '主人公が自分の生活と境界線を選び直す',
-      moralDilemma: '真実を公開して関係を壊すことは正義なのか。',
+      secret: variant.secret,
+      midpointTwist: `${midpointBase}。${variant.midpointLayer}`,
+      finalTwist: variant.finalTwist,
+      villainConsequence: variant.consequence,
+      ending: variant.ending,
+      moralDilemma: variant.dilemma,
     });
   });
 }
@@ -160,47 +363,90 @@ export async function generateStoryDnaMatrix({
   targetCount = 30,
   existingRows = [],
   callStructuredAi,
-  random = Math.random,
   onStatus = () => {},
 } = {}) {
   const count = Math.max(1, Math.min(50, Math.floor(Number(targetCount) || 30)));
+  const aiBatchSize = Math.min(5, count);
+  const maxCalls = count * 3;
   let rows = [];
-  let usedFallback = false;
-  const call = async remaining => {
-    if (typeof callStructuredAi !== 'function') throw new Error('structured_ai_unavailable');
-    onStatus({ phase: 'ai', message: `AI đang tạo ${remaining} story card còn thiếu…` });
-    return callStructuredAi(buildStoryDnaMatrixPrompt({
+  const errors = [];
+  let totalCalls = 0;
+  let batchIndex = 0;
+  if (typeof callStructuredAi !== 'function') {
+    throw new Error('Không có AI provider để tạo Story DNA Matrix. Matrix không sử dụng fallback local.');
+  }
+  while (rows.length < count && totalCalls < maxCalls) {
+    const requested = Math.min(aiBatchSize, count - rows.length);
+    const basePrompt = buildStoryDnaMatrixPrompt({
       formula,
-      targetCount: remaining,
+      targetCount: requested,
       existingRows: [...existingRows, ...rows],
-    }));
-  };
-  try {
-    const first = parseStoryDnaMatrixResponse(await call(count), {
-      formulaId: formula.id,
-      targetCount: count,
     });
-    rows = dedupeRows(first.rows, existingRows);
-    if (rows.length < count) {
-      const supplement = parseStoryDnaMatrixResponse(await call(count - rows.length), {
-        formulaId: formula.id,
-        targetCount: count - rows.length,
+    let previousResponse = '';
+    let acceptedThisBatch = [];
+    const batchErrors = [];
+    for (let repairAttempt = 0; repairAttempt < 3 && totalCalls < maxCalls; repairAttempt += 1) {
+      const prompt = repairAttempt === 0
+        ? basePrompt
+        : [
+          basePrompt,
+          '',
+          `前回の回答は無効でした: ${batchErrors.at(-1) || 'invalid_json'}`,
+          `完全な {"rows":[...]} JSON objectだけを返してください。rows配列には必ず${requested}件を入れてください。`,
+          'Markdown、説明文、途中で切れたJSONは禁止です。',
+          `修正対象の前回答:\n${text(previousResponse, 30000)}`,
+        ].join('\n\n');
+      onStatus({
+        phase: repairAttempt === 0 ? 'ai' : 'ai-repair',
+        message: repairAttempt === 0
+          ? `AI đang tạo batch ${batchIndex + 1}: ${requested} card (đã có ${rows.length}/${count})…`
+          : `AI đang sửa JSON batch ${batchIndex + 1}, lần ${repairAttempt}/2…`,
       });
-      rows = [...rows, ...dedupeRows(supplement.rows, [...existingRows, ...rows])];
+      totalCalls += 1;
+      try {
+        previousResponse = await callStructuredAi(prompt);
+        const parsed = parseStoryDnaMatrixResponse(previousResponse, {
+          formulaId: formula.id,
+          targetCount: requested,
+        });
+        const accepted = dedupeRows(parsed.rows, [...existingRows, ...rows]);
+        if (accepted.length) {
+          acceptedThisBatch = accepted;
+          if (parsed.errors.length) {
+            errors.push(...parsed.errors.map(message => `Batch ${batchIndex + 1}: ${message}`));
+          }
+          break;
+        }
+        const detail = parsed.errors.join(', ') || 'AI returned no usable unique rows.';
+        const preview = text(
+          typeof previousResponse === 'string'
+            ? previousResponse
+            : JSON.stringify(previousResponse),
+          600,
+        ).replace(/\s+/gu, ' ');
+        batchErrors.push(`${detail}${preview ? ` Response preview: ${preview}` : ''}`);
+      } catch (cause) {
+        batchErrors.push(text(cause?.message || cause, 1000));
+      }
     }
-  } catch {
-    usedFallback = true;
-    onStatus({ phase: 'fallback', message: 'AI không phản hồi; đang dùng Matrix fallback…' });
+    if (!acceptedThisBatch.length) {
+      const detail = batchErrors.at(-1) || 'AI returned no usable rows.';
+      throw new Error(
+        `AI không tạo được Story DNA Matrix ở batch ${batchIndex + 1} sau 3 lần thử: ${detail} Không có fallback local và chưa lưu Matrix.`,
+      );
+    }
+    rows = [...rows, ...acceptedThisBatch].slice(0, count);
+    batchIndex += 1;
   }
   if (rows.length < count) {
-    const fallback = buildFallbackStoryDnaRows(formula, count - rows.length, { random });
-    rows = [...rows, ...dedupeRows(fallback, [...existingRows, ...rows])];
-    usedFallback = true;
+    throw new Error(
+      `AI chỉ tạo được ${rows.length}/${count} Story DNA card trong giới hạn ${maxCalls} lần gọi. Không có fallback local và chưa lưu Matrix.`,
+    );
   }
   return {
-    rows: rows.slice(0, count),
-    usedFallback,
-    errors: [],
+    rows: reindexStoryDnaRows(rows.slice(0, count), { formulaId: formula.id }),
+    usedFallback: false,
+    errors,
     targetCount: count,
   };
 }
@@ -219,13 +465,30 @@ export function syncStoryDnaMatrixGenerationButton({
   button,
   matrix = null,
   hasFormula = false,
+  formulaReady = hasFormula,
 } = {}) {
-  const ready = Boolean(hasFormula && Array.isArray(matrix?.rows) && matrix.rows.length > 0);
+  const ready = Boolean(
+    hasFormula
+    && formulaReady
+    && Array.isArray(matrix?.rows)
+    && matrix.rows.length > 0
+  );
   if (button) {
     button.classList?.toggle?.('hidden', !ready);
     button.disabled = !ready;
   }
   return ready;
+}
+
+export function dispatchStoryDnaMatrixUpdated(win = globalThis.window, detail = {}) {
+  if (typeof win?.dispatchEvent !== 'function' || typeof win?.CustomEvent !== 'function') return false;
+  win.dispatchEvent(new win.CustomEvent('story-maker:matrix-updated', {
+    detail: {
+      source: 'story-dna-matrix-runtime',
+      ...detail,
+    },
+  }));
+  return true;
 }
 
 export async function deleteSelectedStoryDnaMatrix({
@@ -295,9 +558,10 @@ function createDefaultMatrixCaller() {
   return async prompt => {
     const key = resolveSessionKey(readApiSession());
     if (!key) throw new Error('API key chưa được nhập.');
-    const result = await Gt(key, 'gemini-3.5-flash', prompt, {
+    const result = await Gt(key, 'gemini-3.5-flash', prompt, null, {
       responseMimeType: 'application/json',
       maxTokens: 12000,
+      timeoutMs: 300000,
       disableGoogleSearch: true,
     });
     return result?.text ?? result;
@@ -341,6 +605,7 @@ export function installStoryDnaMatrixRuntime({
     button: generateButton,
     matrix: selectedMatrix,
     hasFormula: Boolean(getFormula()?.id),
+    formulaReady: isChannelFormulaAnalysisReady(getFormula() || {}),
   });
   const load = async () => {
     const formula = getFormula();
@@ -374,6 +639,9 @@ export function installStoryDnaMatrixRuntime({
     if (target.id === 'cf-matrix-create') {
       const formula = getFormula();
       if (!formula?.id) return error('Hãy chọn công thức kênh trước.');
+      if (!isChannelFormulaAnalysisReady(formula)) {
+        return error('Công thức chưa đạt quality gate hoặc là bản fallback cũ. Hãy Phân tích folder thành công trước khi tạo Matrix.');
+      }
       const targetCount = Number(doc.getElementById('cf-matrix-count')?.value) || 30;
       target.disabled = true;
       if (status) status.textContent = `Đang tạo Matrix ${targetCount} story card…`;
@@ -391,10 +659,13 @@ export function installStoryDnaMatrixRuntime({
           rows: result.rows,
         });
         await load();
-        if (status) status.textContent = result.usedFallback
-          ? 'Đã tạo Matrix bằng fallback local.'
-          : 'Đã tạo Story DNA Matrix.';
+        dispatchStoryDnaMatrixUpdated(win, {
+          matrixId: selectedMatrix?.id || '',
+          status: 'created',
+        });
+        if (status) status.textContent = `Đã tạo đủ ${result.rows.length}/${targetCount} Story DNA card hoàn toàn bằng AI.`;
       } catch (cause) {
+        if (status) status.textContent = 'Tạo Story DNA Matrix thất bại; không lưu Matrix.';
         error(cause?.message || cause);
       } finally {
         target.disabled = false;
@@ -411,6 +682,10 @@ export function installStoryDnaMatrixRuntime({
       if (!result.deleted) return;
       selectedMatrix = null;
       await load();
+      dispatchStoryDnaMatrixUpdated(win, {
+        matrixId: result.id || '',
+        status: 'deleted',
+      });
       if (status) status.textContent = 'Đã xóa Story DNA Matrix.';
       return;
     }
@@ -441,6 +716,11 @@ export function installStoryDnaMatrixRuntime({
       });
     }
     render();
+    dispatchStoryDnaMatrixUpdated(win, {
+      matrixId: selectedMatrix?.id || '',
+      matrixRowId: rowId,
+      status: selectedMatrix?.rows?.find(item => item.id === rowId)?.status || row.status,
+    });
   });
   doc.addEventListener('change', event => {
     if (event.target?.id === 'cf-formula-select') load().catch(cause => error(cause?.message || cause));

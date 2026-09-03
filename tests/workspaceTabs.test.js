@@ -108,6 +108,25 @@ assert.equal(runtime.getActiveTab(), 'formulas');
 assert.equal(formulasPanel.hidden, false);
 assert.equal(projectsPanel.hidden, true);
 
+win.listeners['story-maker:batch-state']({ detail: { running: true } });
+assert.equal(runtime.isBatchNavigationProtected(), true);
+win.listeners['story-maker:open-dashboard']();
+assert.equal(runtime.getActiveTab(), 'formulas');
+assert.equal(formulasPanel.hidden, false);
+win.listeners['story-maker:settings-imported']();
+assert.equal(runtime.getActiveTab(), 'formulas');
+
+projectsTab.listeners.click();
+assert.equal(runtime.getActiveTab(), 'projects');
+win.listeners['story-maker:open-dashboard']();
+assert.equal(runtime.getActiveTab(), 'projects');
+
+win.listeners['story-maker:batch-state']({ detail: { running: false } });
+assert.equal(runtime.isBatchNavigationProtected(), false);
+win.listeners['story-maker:open-dashboard']();
+assert.equal(runtime.getActiveTab(), 'dashboard');
+formulasTab.listeners.click();
+
 let prevented = false;
 settingsTab.listeners.keydown({
   key: 'Home',
